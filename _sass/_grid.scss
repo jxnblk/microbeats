@@ -1,8 +1,14 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+
 .single-column {
   margin:0 auto;
-  padding:1em;
-  width:100%;
-  max-width:768px!important;
+  padding:1em 5%;
+  width:90%;
+
 }
 
 @mixin breakpoint($viewport-width) {

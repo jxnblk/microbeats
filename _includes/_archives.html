@@ -1,7 +1,7 @@
 <article>
   <h1 class="h2 ct">Archives</h1>
   <ul class="large-list ct mt-1">
-    {% for post in site.posts limit: 25 %}
+    {% for post in site.posts %}
       <li><a href="{{ post.url }}" title="{{post.title}}">
         <date datetime="{{post.date}}" class="meta">{{ post.date | date_to_long_string }}</date>
         {{ post.title }}

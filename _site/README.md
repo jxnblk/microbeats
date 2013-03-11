@@ -1,4 +1,8 @@
-# JKL - Is a light-weight JKL scaffolding that's ready to deploy after setting up one config.
+# Microbeats
+
+Beats Created in Under an Hour
+
+Powered by Jekyll
 
 
 

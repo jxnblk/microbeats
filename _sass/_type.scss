@@ -1,13 +1,20 @@
 // The internet is run on paragraphs and links. Let people see them please.
 
+body {
+  font-family: 'Skolar', Georgia, serif;
+  font-weight: 400;
+  font-size: 100%;
+  line-height: 1.5;
+}
+
 h1,h2,h3,h4,h5,h6 {
-  font-weight:100;
+  font-weight:400;
 }
 
 // I mean it's not that big.
 
 h1,.h2,.h3,.h4,.h5,.h6 {
-  margin-bottom:.25em;
+  margin-top:0.5rem;
 }
 
 h1,.h1 {
@@ -22,19 +29,6 @@ h3,.h3 {
   font-size:$type-3;
 }
 
-h4,.h4 {
-  font-size:$type-4;
-  font-weight:900;
-}
-
-h5,.h5 {
-  font-size:$type-4;
-  font-style:italic;
-}
-
-h6,.h6 {
-  font-size:$type-5;
-}
 
 p {
   // Because 20px body copy is the new Black
@@ -66,15 +60,9 @@ p {
 
 // Uh you don't need to read this stuff. Let's make it small.
 .meta {
-  font-size:$type-5; 
+  font-size:$type-4; 
 }
 
-.ct {
-  text-align:center;
-  @include breakpoint(one-hand) {
-    text-align:left;
-  }
-}
 
 blockquote {
   padding:1em 0 1.75em 0;
@@ -94,14 +82,6 @@ em {
   font-style:italic;
 }
 
-.bump-it {
-  font-size:$type-3; 
-  margin-bottom:1em;
-}
-
-.author {
-  text-transform:uppercase;
-}
 
 date {
   color:$grey-medium;
