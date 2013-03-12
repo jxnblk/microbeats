@@ -2,10 +2,12 @@
 layout: default
 ---
 
-<section class="single-column">
+<section id="content" role="main">
+
   {% for post in paginator.posts %}
-  <article class="post mt-4">
-       <a href="{{ post.url }}" title="{{post.title}}"><h1 class="ct h1">{{ post.title }}</h1></a>
+  <article class="post">
+       <a href="{{site.url}}{{ post.url }}" title="{{post.title}}"><h2>{{ post.title }}</h2></a>
+       <time  class="entry-meta" datetime="{{post.date}}">{{post.date | date: "%d %B %Y"}}</time>
       {{ post.content }}
   </article>
   {% endfor %}

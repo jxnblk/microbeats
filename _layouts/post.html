@@ -1,22 +1,20 @@
 {% include _head.html %}
-<body>
-
-<strong>Post Layout</strong>
 
 {% include _header.html %}
 
+<section id="content" role="main">
 
-    <article class="mt-2 post single-column">
-      <h1>{{page.title}}</h1>
+    <article class="post">
+      <h2>{{page.title}}</h2>
       
-      <time  class="meta" datetime="{{page.date}}">{{page.date | date: "%d %B %Y"}}</time><br />
+      <time  class="entry-meta" datetime="{{page.date}}">{{page.date | date: "%d %B %Y"}}</time><br />
   
       <!-- This is where post content lives -->
       {{content}}
       <!-- end of post content -->
   
     </article>
+    
+</section>
 
-  {% include _footer.html %}
-</body>
-</html>
+{% include _footer.html %}

@@ -8,6 +8,7 @@ author: "Jxnblk"
 
 #url: "[http:// ]"
 url: "http://microbeats.cc/jkl"
+#url: "localhost:4000"
 
 # Pagination variable for how many posts to show in a list
 paginate: 12

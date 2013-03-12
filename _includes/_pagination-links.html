@@ -1,48 +1,52 @@
 <!-- Pagination links -->
-<div id="post-pagination" class="pagination">
-
+<div id="nav-below" class="navigation">
+  
+  <ul class="pages">
+  
   {% if paginator.previous_page %}
-  <p class="previous">
+  <li>
     {% if paginator.previous_page == 1 %}
-    <a href="/">Previous</a>
+    <a href="/" class="prev page-numbers">&laquo; Previous</a>
     {% else %}
-    <a href="{{site.url}}/page{{paginator.previous_page}}">Previous</a>
+    <a href="{{site.url}}/page{{paginator.previous_page}}" class="prev page-numbers">&laquo; Previous</a>
     {% endif %}
-  </p>
+  </li>
   {% else %}
-  <p class="previous disabled">
-    <span>Previous</span>
-  </p>
+  <li>
+    <span class="prev page-numbers">Previous</span>
+  </li>
   {% endif %}
 
-  <ul class="pages">
-    <li class="page">
+  
+    <li class="">
       {% if paginator.page == 1 %}
-      <span class="current-page">1</span>
+      <span class="page-numbers current">1</span>
       {% else %}
-      <a href="{{site.url}}/">1</a>
+      <a href="{{site.url}}/" class="page-numbers">1</a>
       {% endif %}
     </li>
 
     {% for count in (2..paginator.total_pages) %}
-    <li class="page">
+    <li class="">
       {% if count == paginator.page %}
-      <span class="current-page">{{count}}</span>
+      <span class="page-numbers current">{{count}}</span>
       {% else %}
-      <a href="{{site.url}}/page{{count}}">{{count}}</a>
+      <a href="{{site.url}}/page{{count}}" class="page-numbers">{{count}}</a>
       {% endif %}
     </li>
     {% endfor %}
-  </ul>
+  
 
   {% if paginator.next_page %}
-  <p class="next">
-    <a href="{{site.url}}/page{{paginator.next_page}}">Next</a>
-  </p>
+  <li>
+    <a href="{{site.url}}/page{{paginator.next_page}}" class="next page-numbers">Next &raquo;</a>
+  </li>
   {% else %}
-  <p class="next disabled">
-    <span>Next</span>
-  </p>
+  <li>
+    <span class="next page-numbers">Next &raquo;</span>
+  </li>
   {% endif %}
+  
+  </ul>
 
 </div>
