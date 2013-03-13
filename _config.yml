@@ -1,7 +1,7 @@
 # This will be the first part of the title tag for your site <title> site.name + page.title </title>
 name: "Microbeats"
 # Populates the meta description for the site. Should be under 150 characters for best SEO purposes.
-descripiton: "Beats Created in Under an Hour"
+description: "Beats Created in Under an Hour"
 
 # Owner (organization or individual) of site content
 author: "Jxnblk"

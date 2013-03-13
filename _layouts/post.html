@@ -5,9 +5,10 @@
 <section id="content" role="main">
 
     <article class="post">
+      <time  class="entry-meta" datetime="{{page.date}}">{{page.date | date: "%B %d, %Y"}}</time>
       <h1>{{page.title}}</h1>
       
-      <time  class="entry-meta" datetime="{{page.date}}">{{page.date | date: "%B %d, %Y"}}</time><br />
+      
   
       <!-- This is where post content lives -->
       {{content}}

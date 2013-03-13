@@ -21,12 +21,12 @@ h1, h2 {
 h1, .large {
   font-size: 2rem;
   line-height: 1.25;
-  margin-top: .5em;
+  margin-top: .5rem;
 }
 
 h2, .medium {
   font-size: 1.5rem;
-  margin-top: .5em;
+  margin-top: .5rem;
 }
 
 h1+h2, h1+p, h2+p, h3+p { margin-top: 0; }
@@ -93,20 +93,6 @@ header {
   
 }
 
-a.twitter-follow {
-  display: inline-block;
-  line-height: 2rem;
-  color: #fff;
-  background: #0ae;
-  border-radius: 0.125rem;
-  padding: 0 1rem;
-  margin: .5rem 0;
-}
-
-a.twitter-follow:hover {
-  background: #0bf;
-}
-
 header div#header-title {
   width: 90%;
   padding: 0 5%;
@@ -147,7 +133,7 @@ header div#header-title img {
   margin: 0 5%;
 }
 
-article.post {
+.post {
   margin-bottom: 4rem;
 }
 
@@ -156,19 +142,16 @@ article.post {
   color: #bbb;
 }
 
-.entry-meta a {
-  color: #444;
+.post h1 {
+  line-height: 1;
 }
 
 .navigation {
   display: block;
-  min-height: 3em;
-  line-height: 3em;
+  min-height: 3rem;
+  line-height: 3rem;
   margin-bottom: 3rem;
 }
-
-
-
 
 .navigation ul {
   list-style: none;
@@ -215,13 +198,13 @@ article.post {
 .navigation ul li a.prev,
 .navigation ul li span.next,
 .navigation ul li span.prev {
-  padding: 0 1em;
+  padding: 0 1rem;
 /*   width: 7rem; */
   text-align: left;
 }
 
 .navigation ul li span.current {
-  background: #dcdcdc;
+  background: #bbb;
   color: #fff;
 }
 
@@ -234,24 +217,47 @@ div.nav-previous {
   float: right;
 }
 
+/*
 nav#nav-above {
   border-bottom: 1px solid #ddd;
-  margin-bottom: 1em;
+  margin-bottom: 1rem;
 }
+*/
 
-footer.sitefooter {
+.sitefooter {
   display: block;
   width: 90%;
-  padding: 2em 5%;
-  margin-top: 2em;
-  color: #aaa;
-  background: #eee;
-  border-top: 1px solid #e5e5e5;
+  padding: 2rem 5%;
+  margin-top: 2rem;
+  color: #bbb;
+  background: #fcfcfc;
 }
 
-footer.sitefooter a {
-  margin-right: 2em;
+.sitefooter a {
+  color: #bbb;
+  margin-right: 2rem;
   line-height: 2rem;
+}
+.sitefooter a:hover {
+  color: #069; 
+}
+
+.sitefooter a.twitter-follow {
+  display: inline-block;
+  line-height: 2rem;
+  color: #fff;
+  background: #0ae;
+  border-radius: 0.125rem;
+  padding: 0 1rem;
+  margin: .5rem 0;
+}
+
+.sitefooter a.twitter-follow:hover {
+  background: #0bf;
+}
+
+.colophon {
+  margin-top: 0;
 }
 
 
