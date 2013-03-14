@@ -51,17 +51,17 @@ strong {
   font-weight: 700;
 }
 
-@media screen and (min-width: 480px) {
-  h1, .large { font-size: 3rem; }
-  h2, .medium { font-size: 1.75rem; }
-}
-
-@media screen and (min-width: 640px) {
-  h1, .large { font-size: 4rem; }
-  h2, .medium { font-size: 2rem; }
-  h3, p, strong { font-size: 1.25rem; }
-  small, .small { font-size: 1rem; } 
-}
+    @media screen and (min-width: 480px) {
+      h1, .large { font-size: 3rem; }
+      h2, .medium { font-size: 1.75rem; }
+    }
+    
+    @media screen and (min-width: 640px) {
+      h1, .large { font-size: 4rem; }
+      h2, .medium { font-size: 2rem; }
+      h3, p, strong { font-size: 1.25rem; }
+      small, .small { font-size: 1rem; } 
+    }
 
 
 body {
@@ -217,13 +217,6 @@ div.nav-previous {
   float: right;
 }
 
-/*
-nav#nav-above {
-  border-bottom: 1px solid #ddd;
-  margin-bottom: 1rem;
-}
-*/
-
 .sitefooter {
   display: block;
   width: 90%;
@@ -242,18 +235,22 @@ nav#nav-above {
   color: #069; 
 }
 
-.sitefooter a.twitter-follow {
+.sitefooter a.btn {
+  color: #fff;
+}
+
+.btn {
   display: inline-block;
   line-height: 2rem;
   color: #fff;
-  background: #0ae;
+  background: #0bf;
   border-radius: 0.125rem;
   padding: 0 1rem;
   margin: .5rem 0;
 }
 
-.sitefooter a.twitter-follow:hover {
-  background: #0bf;
+.sc {
+  background: #f8640f;
 }
 
 .colophon {
@@ -302,7 +299,8 @@ nav#nav-above {
           padding-bottom: .5rem
         }
         
-        footer.sitefooter a.twitter-follow {
+        .sitefooter .btn {
+          text-align: center;
           width: 90%;
           padding: 0 5%;
         }

@@ -6,7 +6,7 @@ layout: default
 
   {% for post in paginator.posts %}
   <article class="post">
-      <time  class="entry-meta" datetime="{{post.date}}">{{post.date | date: "%B %d, %Y"}}</time>
+      <time  class="entry-meta" datetime="{{post.date | date: "%Y-%m-%d"}}">{{post.date | date: "%B %d, %Y"}}</time>
       <a href="{{site.url}}{{ post.url }}" title="{{post.title}}"><h2>{{ post.title }}</h2></a>
       {{ post.content }}
   </article>
