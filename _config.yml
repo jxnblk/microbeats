@@ -11,7 +11,7 @@ url: "http://microbeats.cc"
 #url: "localhost:4000"
 
 # Pagination variable for how many posts to show in a list
-paginate: 12
+paginate: 20
 
 # Style of permalinks
 permalink: /:title/

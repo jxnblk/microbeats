@@ -138,12 +138,14 @@ header div#header-title img {
 }
 
 .entry-meta {
-  margin-bottom: 1rem;
+  line-height: 1;
+  margin-bottom: 0;
   color: #bbb;
 }
 
 .post h1 {
   line-height: 1;
+  margin-bottom: 1rem;
 }
 
 .navigation {
@@ -340,7 +342,6 @@ div.nav-previous {
   border-radius: 4px;
   position: relative;
   overflow: hidden;
-  margin-top: 1rem;
 }
 
 .sc-info,

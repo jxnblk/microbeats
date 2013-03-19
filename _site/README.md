@@ -4,7 +4,9 @@ http://microbeats.cc
 
 Beats Created in Under an Hour
 
-Powered by Jekyll
+![Microbeats Screenshot](screenshot.png)
+
+Uses custom SoundCloud players & powered by Jekyll
 
 
 
