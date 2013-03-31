@@ -375,7 +375,7 @@
         $player
           .find('.sc-controls')
                 // Custom Geomicons SVG Play/Pause Buttons
-                .append('<a href="#play" class="sc-play"><img src="images/play-btn.svg"/></a> <a href="#pause" class="sc-pause hidden"><img src="images/pause-btn.svg"/></a>')
+                .append('<a href="#play" class="sc-play"><img src="/images/play-btn.svg"/></a> <a href="#pause" class="sc-pause hidden"><img src="/images/pause-btn.svg"/></a>')
           .end()
           
           .append('<div class="sc-scrubber"></div>')
