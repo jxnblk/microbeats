@@ -453,17 +453,17 @@ div.nav-previous {
 
 .sc-waveform-container img {
   display: block;
-  height: 100%;
+  height: 2px;
+  margin: 31px 0;
   width: 100%;
   -webkit-filter: contrast(200%);
+  -webkit-transition: all .1s linear;
 }
 
-/*
 .playing .sc-waveform-container img {
   height: 64px;
   margin: 0;
 }
-*/
 
 .sc-buffer {
   background-color: #eee;  
