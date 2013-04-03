@@ -403,7 +403,7 @@ div.nav-previous {
   background-color: #eee; 
 }
 
-.playing .time-span {
+.playing .sc-time-span {
   height: 64px;
   margin: 0;
 }
