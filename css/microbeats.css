@@ -139,7 +139,6 @@ header div#header-title img {
 
 .entry-meta {
   line-height: 1;
-  margin-left: 4.5rem;
   margin-bottom: 0;
   color: #444;
 }
@@ -344,6 +343,15 @@ div.nav-previous {
 
 /* Play/Pause Button */
 
+@-webkit-keyframes popin {
+  0% { -webkit-transform: scale(.2); }
+  80% { -webkit-transform: scale(1.1); }
+  100% { -webkit-transform: scale(1); }
+} 
+.sc-play, .sc-pause {
+  -webkit-animation: popin .2s linear;
+}
+
 .sc-play,
 .sc-pause {
   float: left;
@@ -389,9 +397,15 @@ div.nav-previous {
 }
 
 .sc-time-span {
+  height: 2px;
+  margin: 31px 0;
+  -webkit-transition: all .1s linear;
+  background-color: #eee; 
+}
+
+.playing .time-span {
   height: 64px;
-  /* background-color: #bbb; */
-  
+  margin: 0;
 }
 
 .sc-buffer,
@@ -430,7 +444,8 @@ div.nav-previous {
 
 .sc-waveform-container img {
   display: block;
-  height: 64px;
+  height: 2px;
+  margin: 31px 0;
   width: 100%;
   -webkit-filter: contrast(200%);
 }
@@ -463,13 +478,18 @@ div.nav-previous {
 
 .sc-time-indicators {
   position: absolute;
-  left: 0;
-  bottom: 0;
+  right: 20%;
+  top: 26px;
   z-index: 2000;
-  background: #fff;
   padding: 4px 8px 8px;
-  font-size: 12px;
+/*   font-size: 12px; */
   line-height: 1;
   opacity: 0.6;
+  -webkit-animation: popin .2s linear;
+  display: none;
+}
+
+.playing .sc-time-indicators {
+  display: block;
 }
 
