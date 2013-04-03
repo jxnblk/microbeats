@@ -527,7 +527,7 @@ div.nav-previous {
 .sc-time-indicators {
   position: absolute;
   right: 20%;
-  top: 22px;
+  top: 24px;
   z-index: 2000;
   line-height: 1;
   opacity: 0.6;
