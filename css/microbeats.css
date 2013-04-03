@@ -408,6 +408,7 @@ div.nav-previous {
   top: 0;
   left: 0;
   padding: 0 8px 8px 8px;
+  display: none;
 }
 
 .sc-title h2 {
