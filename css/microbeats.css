@@ -450,6 +450,11 @@ div.nav-previous {
   -webkit-filter: contrast(200%);
 }
 
+.playing .sc-waveform-container img {
+  height: 64px;
+  margin: 0;
+}
+
 .sc-buffer {
   background-color: #eee;  
   height: 2px;
