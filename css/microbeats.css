@@ -404,8 +404,11 @@ div.nav-previous {
 /* Scrubber */
 
 .sc-scrubber {
-  margin-left: 80px;
+  margin-left: 64px;
   position: relative;
+}
+.post-detail .sc-scrubber {
+  margin-left: 80px;
 }
 
 .sc-time-span {
