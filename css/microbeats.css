@@ -534,6 +534,9 @@ div.nav-previous {
   -webkit-animation: popin .2s linear;
   display: none;
 }
+.post-detail .sc-time-indicators {
+  top: 56px;
+}
 
 .playing .sc-time-indicators {
   display: block;
