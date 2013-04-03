@@ -471,7 +471,6 @@ div.nav-previous {
 .sc-buffer {
   background-color: #eee;  
   height: 2px;
-  margin: 31px 0;
   -webkit-transition: all .1s linear;
 }
 .playing .sc-buffer {
@@ -484,7 +483,6 @@ div.nav-previous {
   background-image: -webkit-linear-gradient(#0bf,#09c);
   opacity: 0.5;
   height: 2px;
-  margin: 31px 0;
   -webkit-transition: height .1s linear, margin .1s linear;
 }
 
@@ -497,7 +495,7 @@ div.nav-previous {
 .sc-time-indicators {
   position: absolute;
   right: 20%;
-  top: 26px;
+  top: 23px;
   z-index: 2000;
   padding: 4px 8px 8px;
 /*   font-size: 12px; */
