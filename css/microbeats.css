@@ -458,6 +458,8 @@ div.nav-previous {
   width: 100%;
   -webkit-filter: contrast(200%);
   -webkit-transition: all .1s linear;
+  position: absolute;
+  top: 0;
 }
 
 .playing .sc-waveform-container img {
