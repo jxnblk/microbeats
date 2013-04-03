@@ -410,9 +410,14 @@ div.nav-previous {
 
 .sc-buffer,
 .sc-played {
-  height: 100%;
+  height: 2px;
   position: absolute;
   top: 0;
+}
+
+.playing .sc-buffer,
+.playing .sc-played {
+  height: 2px;
 }
 
 .sc-title {
@@ -439,7 +444,6 @@ div.nav-previous {
 .sc-waveform-container {
   width: 100%;
   height: 2px;
-  margin: 31px 0;
   position: absolute;
   top: 0;
   z-index: 1000;
