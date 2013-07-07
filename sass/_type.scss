@@ -1,0 +1,67 @@
+/*
+
+        Mathematical Type
+
+
+*/
+
+body {
+  font-size: 100%;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+/* Mobile-first font sizes
+*/
+h1, .h1 {
+  font-size: 2rem;
+  line-height: 1.5;
+  @include break(medium) {
+    font-size: 4rem;
+  }
+  // @include break(large) {
+  //   font-size: 6rem;
+  // }
+}
+
+h2, .h2 {
+  font-size: 2rem;
+  line-height: 1.5;
+}
+
+h3, .h3 {
+  font-size: 1.5rem;
+}
+
+h4, h5, h6, p, ul, ol, .p {
+  font-size: 1.25rem;
+}
+
+small, .small {
+  font-size: .875rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+strong, .bold {
+  font-weight: 700;
+}
+.reg {
+  font-weight: normal;
+}
+.i {
+  font-style: italic;
+}
+
+.caps { 
+  text-transform: uppercase;
+  letter-spacing: .2em;
+}
+
+.txtcen { text-align: center; }
+.txtri  { text-align: right; }
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
