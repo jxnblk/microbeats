@@ -8,6 +8,7 @@
   <link rel="icon" href="http://microbeats.cc/favicon.png" />
   <link rel="apple-touch-icon-precomposed" href="http://microbeats.cc/apple-touch-icon.png" />
   <link rel="stylesheet" href="style.css"/>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.4/angular.min.js"></script>
   <script type="text/javascript" src="//use.typekit.net/bds4kkt.js"></script>
   <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 </head>
@@ -17,7 +18,7 @@
       
       <h1 ng-hide="player.tracks" class="reg">Microbeats</h1>
       <!-- <p>Beats created in under an hour</p> -->
-      <h1 ng-show="player.tracks" class="reg truncate">{{player.tracks[player.i].title}}</h1>
+      <h1 ng-show="player.tracks" class="reg truncate" ng-cloak>{{player.tracks[player.i].title}}</h1>
 
       <div class="txtcen overhide">
         <div class="overhide dib wi-auto">
@@ -46,7 +47,7 @@
         <!-- <li class="pt1 borbo bor-ltgry">
           <input type="text" placeholder="search" class="input wi100 borbox bor-ltgry" ng-model="query" />
         </li> -->
-        <li ng-repeat="track in tracks | filter:query" class="posrel borbo bor-ltgry">
+        <li ng-repeat="track in tracks | filter:query" class="posrel borbo bor-ltgry" ng-cloak>
           <span id="{{track.permalink}}" class="offset-link"></span>
           <a href="" ng-click="player.play(tracks, $index)" class="posrel db pt-5 pb-5"ng-class="{'dkgry': player.playing.id != track.id && player.paused.id != track.id}">
             <p class="small mdgry">{{track.created_at | dateSimple}}</p>
@@ -66,10 +67,8 @@
   </div>
 
 
-
-  <!-- Only need this for object getter app -->
-  <!-- <script src="//connect.soundcloud.com/sdk.js"></script> -->
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.4/angular.min.js"></script>
+  <!-- MediaTemple -->
+  <!-- <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.4/angular.min.js"></script> -->
   <script src="js/lib/moment.min.js"></script>
   <script src="js/lib/smoothscroll.min.js"></script>
   <script src="js/app.js"></script>
