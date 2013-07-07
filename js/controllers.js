@@ -11,10 +11,14 @@ angular.module('microbeats.controllers', [])
       $scope.tracks = data;
       if($location.hash()){
         for (var i = 0; i < $scope.tracks.length; i++) {
-          if ($scope.tracks[i].permalink == $location.hash()) player.loadTrack($scope.tracks, i);
+          if ($scope.tracks[i].permalink == $location.hash()) {
+            player.loadTrack($scope.tracks, i);
+          }; 
         };
       };
     });
+
+    $scope.query = null;
     
   }])
 
