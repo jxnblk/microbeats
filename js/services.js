@@ -34,7 +34,7 @@ angular.module('microbeats.services', [])
         player.paused = false;
         var playCount = storage.get('playCount');
         if (playCount == 1000) alert("holy fucking shit you've listened to 1,000 microbeats you are awesome i will buy you a drink and give you lots of hugs");
-        if (playCount == 2000) alert("2,000 plays you are awesome if we are not friends why are not friends you are probably really rad");
+        if (playCount == 2000) alert("2,000 plays you are awesome if we are not friends why are we not friends you are probably really rad");
         playCount = playCount + 1; 
         storage.set('playCount', playCount);
       },
