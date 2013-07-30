@@ -1,5 +1,20 @@
 [
 {
+    "kind": "track",
+    "id": 103315175,
+    "created_at": "2013/07/30 22:23:34 +0000",
+    "permalink": "how-fast",
+    "title": "How Fast",
+    "description": "",
+    "uri": "http://api.soundcloud.com/tracks/103315175",
+    "permalink_url": "http://soundcloud.com/jxnblk/how-fast",
+    "artwork_url": null,
+    "waveform_url": "http://w1.sndcdn.com/85UfyTSqxZ8q_m.png",
+    "stream_url": "http://api.soundcloud.com/tracks/103315175/stream",
+    "download_url": "http://api.soundcloud.com/tracks/103315175/download",
+    "attachments_uri": "http://api.soundcloud.com/tracks/103315175/attachments"
+  }
+{
     "id": 101253637,
     "created_at": "2013/07/16 06:36:27 +0000",
     "permalink": "everything-you-do-to-me",
