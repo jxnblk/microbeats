@@ -1,5 +1,20 @@
 [
 {
+  "kind": "track",
+  "id": 120488511,
+  "created_at": "2013/11/17 00:22:12 +0000",
+  "permalink": "near-and-far",
+  "title": "Near and Far",
+  "description": "",
+  "uri": "http://api.soundcloud.com/tracks/120488511",
+  "permalink_url": "http://soundcloud.com/jxnblk/near-and-far",
+  "artwork_url": null,
+  "waveform_url": "http://w1.sndcdn.com/QfM5IBisBPo5_m.png",
+  "stream_url": "http://api.soundcloud.com/tracks/120488511/stream",
+  "download_url": "http://api.soundcloud.com/tracks/120488511/download",
+  "attachments_uri": "http://api.soundcloud.com/tracks/120488511/attachments"
+},
+{
     "kind": "track",
     "id": 103315175,
     "created_at": "2013/07/30 22:23:34 +0000",
