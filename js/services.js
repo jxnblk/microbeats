@@ -5,7 +5,7 @@ var clientID = '1c21814089b72a7cd4ce9246009ddcfb';
 angular.module('microbeats.services', [])
 
   // Player
-  .factory('player', function($rootScope, audio, $location) {
+  .factory('player', function($rootScope, audio, $location, storage) {
     var player,
         tracks,
         track,
@@ -19,18 +19,6 @@ angular.module('microbeats.services', [])
       i: i,
       playing: false,
       paused: false,
-      /*play: function(track) {
-        player.track = track;
-        if (player.paused != track) {
-          audio.src = track.stream_url + '?client_id=' + clientID;
-        };
-        audio.play();
-        player.playing = track;
-        //player.i = i;
-        $location.hash(track.permalink);
-        window.smoothScroll(document.getElementById(track.permalink));
-        player.paused = false;
-      },*/
       
       play: function(tracks, i) {
         player.tracks = tracks;
@@ -44,6 +32,11 @@ angular.module('microbeats.services', [])
         $location.hash(player.tracks[player.i].permalink);
         window.smoothScroll(document.getElementById(player.tracks[player.i].permalink));
         player.paused = false;
+        var playCount = storage.get('playCount');
+        if (playCount == 1000) alert("holy fucking shit you've listened to 1,000 microbeats you are awesome i will buy you a drink and give you lots of hugs");
+        if (playCount == 2000) alert("2,000 plays you are awesome if we are not friends why are we not friends you are probably really rad");
+        playCount = playCount + 1; 
+        storage.set('playCount', playCount);
       },
       
       pause: function(track) {
@@ -88,6 +81,24 @@ angular.module('microbeats.services', [])
   .factory('audio', function($document, $rootScope) {
     var audio = $document[0].createElement('audio');  
     return audio;
+  })
+
+  // Local Storage Factory
+  .factory('storage', function(){            
+    return {
+      set: function(key, obj){
+        var string = JSON.stringify(obj)
+        localStorage.setItem(key, string);
+      },
+      get: function(key){
+        var data = localStorage.getItem(key);
+        var obj = JSON.parse(data);
+        return obj;
+      },
+      clearAll: function(){
+        localStorage.clear();
+      }
+    }     
   })
 
   .filter('playTime', function() {

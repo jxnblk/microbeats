@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en" ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="author" content="">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/favicon.png" />
+  <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body ng-controller="MainCtrl">
+
+<!-- <div ng-view></div> -->
+
+<form ng-submit="resolve()">
+  <label>URL:</label>
+  <input type="text" ng-model="url" />
+  <input type="submit" value="Resolve" />
+</form>
+
+<p>Track Object:</p>
+<div plangular src="url">
+  <textarea>{{ track | json }}</textarea>
+</div>
+
+<script src="//connect.soundcloud.com/sdk.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+<script src="app.js"></script>
+<!-- <script src="plangular.js"></script> -->
+</body>
+</html>
