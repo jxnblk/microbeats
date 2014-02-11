@@ -69,11 +69,39 @@ angular.module('microbeats.services', [])
         player.tracks = tracks;
         player.i = i;
         $location.hash(tracks[i].permalink);
+      },
+      togglePause: function() {
+        if (player.playing) {
+          player.pause(player.track);
+        } else {
+          player.play(player.tracks, player.i);
+        }
       }
     };
+
     audio.addEventListener('ended', function() {
       $rootScope.$apply(player.next());
     }, false);
+
+    // Add native JS event listener for keyboard shortcuts.
+    var checkKey = function checkKey(e) {
+        var e = e || window.event;
+
+        if (e.keyCode == '32') {
+          // Spacebar
+          player.togglePause();
+          // Stop event bubbling so window doesn't scroll
+          return false;
+        } else if (e.keyCode == '74') {
+          // j = down in vim
+          $rootScope.$apply(player.next());
+        } else if (e.keyCode == '75') {
+          // k = up in vim
+          $rootScope.$apply(player.previous());
+        }
+    };
+    document.onkeydown = checkKey;
+
     return player;
   })
 
