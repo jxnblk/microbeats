@@ -14,17 +14,17 @@ gulp.task('default', function() {
 });
 
 gulp.task('add', function() {
-  var baseUrl = 'http://soundcloud.com/jxnblk/';
-  var track;
-  var clientID = '0d33361983f16d2527b01fbf6408b7d7';
-  var api = 'https://api.soundcloud.com/resolve.json';
-  var url;
-  var data;
+  var baseUrl = 'http://soundcloud.com/jxnblk/',
+      clientID = '0d33361983f16d2527b01fbf6408b7d7',
+      api = 'https://api.soundcloud.com/resolve.json',
+      track,
+      url,
+      data;
+
   if(minimist.track) {
     track = minimist.track;
     url = api + '?client_id=' + clientID + '&url=' + baseUrl + track;
-    console.log(track);
-    console.log(url);
+    console.log('Getting data for ' + track);
     request(url, function (error, response, body) {
       if(error) console.error(error);
       if (!error && response.statusCode == 200) {
@@ -39,10 +39,8 @@ gulp.task('add', function() {
           .pipe(gulp.dest('.'));
       }
     });
-
   } else {
     console.log('no track provided, use the --track flag');
   }
-
 });
 
