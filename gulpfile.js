@@ -15,12 +15,11 @@ gulp.task('default', function() {
 
 gulp.task('add', function() {
   var baseUrl = 'http://soundcloud.com/jxnblk/',
-      clientID = '0d33361983f16d2527b01fbf6408b7d7',
-      api = 'https://api.soundcloud.com/resolve.json',
+      clientID = '1c21814089b72a7cd4ce9246009ddcfb',
+      api = 'http://api.soundcloud.com/resolve.json',
       track,
       url,
       data;
-
   if(minimist.track) {
     track = minimist.track;
     url = api + '?client_id=' + clientID + '&url=' + baseUrl + track;
@@ -30,8 +29,17 @@ gulp.task('add', function() {
       if (!error && response.statusCode == 200) {
         delete body.user_id;
         var data = JSON.parse(body);
-        delete data.user_id; delete data.duration; delete data.commentable; delete data.state; delete data.original_content_size; delete data.sharing; delete data.tag_list; delete data.permalink; delete data.streamable; delete data.embeddable_by; delete data.downloadable; delete data.purchase_url; delete data.label_id; delete data.purchase_title; delete data.genre; delete data.label_name; delete data.release; delete data.track_type; delete data.key_signature; delete data.isrc; delete data.video_url; delete data.bpm; delete data.release_year; delete data.release_month; delete data.release_day; delete data.original_format; delete data.license; delete data.user; delete data.playback_count; delete data.download_count; delete data.favoritings_count; delete data.comment_count;
-        return gulp.src('tracks-lite.json')
+        delete data.user_id; delete data.duration; delete data.commentable;
+        delete data.state; delete data.original_content_size; delete data.sharing;
+        delete data.tag_list; delete data.streamable; delete data.embeddable_by;
+        delete data.downloadable; delete data.purchase_url; delete data.label_id;
+        delete data.purchase_title; delete data.genre; delete data.label_name;
+        delete data.release; delete data.track_type; delete data.key_signature;
+        delete data.isrc; delete data.video_url; delete data.bpm; delete data.release_year;
+        delete data.release_month; delete data.release_day; delete data.original_format;
+        delete data.license; delete data.user; delete data.playback_count;
+        delete data.download_count; delete data.favoritings_count; delete data.comment_count;
+        return gulp.src('tracks.json')
           .pipe(jsonEditor(function(json) {
             json.unshift(data);
             return json;
