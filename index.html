@@ -1,76 +1,3069 @@
-<!doctype html>
-<html lang="en" ng-app="microbeats">
+<!DOCTYPE html>
+<html
+  ng-app="app"
+  ng-controller="MainCtrl">
 <head>
   <meta charset="utf-8">
   <title>Microbeats</title>
-  <meta name="description" content="Beats created in under an hour by Jxnblk">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" href="http://microbeats.cc/favicon.png" />
-  <link rel="apple-touch-icon-precomposed" href="http://microbeats.cc/apple-touch-icon.png" />
-  <link rel="stylesheet" href="style.css"/>
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
-  <script type="text/javascript" src="//use.typekit.net/bds4kkt.js"></script>
-  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+  <meta name="viewport" content="width:device-width, initial-scale:1">
+  <link rel="stylesheet" href="/css/base.min.css">
 </head>
-<body ng-controller="MainCtrl">
+<body>
 
-  <header class="header overhide txtcen bg-wht pt-5 pr1 pl1 borbo bor-ltgry">
-      
-      <h1 ng-hide="player.tracks" class="reg">Microbeats</h1>
-      <!-- <p>Beats created in under an hour</p> -->
-      <h1 ng-show="player.tracks" class="reg truncate" ng-cloak>{{player.tracks[player.i].title}}</h1>
-
-      <div class="txtcen overhide">
-        <div class="overhide dib wi-auto">
-          <a href="" ng-click="player.previous()" class="fl lh4 pl1 pr1 mr2 maxhi4 txtcen link-dark no-tap-highlight"><i class="icon icon-previous db"></i></a>
-          <a href="" ng-click="player.play(tracks, player.i)" class="fl sq4 lh4 txtcen link-dark no-tap-highlight" ng-hide="player.playing"><i class="icon icon-play h3 lh4 db anim-pop-in"></i></a>
-          <a href="" ng-click="player.pause(player.playing)" class="fl sq4 lh4 txtcen link-dark no-tap-highlight" ng-show="player.playing"><i class="icon icon-pause h3 lh4 db anim-pop-in"></i></a>
-          <a href="" ng-click="player.next()" class="fl lh4 pl1 pr1 ml2 maxhi4 txtcen link-dark no-tap-highlight"><i class="icon icon-skip db"></i></a>
-        </div>
-      </div>
-
-      <div class="posrel maxwi3 minhi3 wrap hide-short" ng-controller="ScrubberCtrl">
-        <div class="posabs top0 right0 bottom0 left0 mb2 bg-ltgry"></div>
-        <div class="posabs top0 bottom0 left0 mb2 bg-ltgry" style="width: {{currentBufferPercentage}}%"></div>
-        <div class="posabs top0 bottom0 left0 mb2 bg-mdgry" style="width: {{currentTimePercentage}}%"></div>
-        <div class="posabs fill z2 no-tap-highlight" ng-click="seekTo($event)"></div>
-        <div class="posabs left0 bottom0 pb-5 small mdgry">{{currentTimeMS | playTime}}</div>
-        <div class="posabs right0 bottom0 pb-5 small mdgry">{{durationMS | playTime}}</div>
-      </div>
-
+  <header class="border-bottom">
+    <div class="container p2">
+      <h1 class="m0">Microbeats {% herro %}</h1>
+    </div>
   </header>
 
-  <div class="scroll-area">
+<div class="container p2">
+  <ul class="list-reset">
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="https://api.soundcloud.com/tracks/178322740/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="0"
+          ng-click="play(0)">
+          <p class="h5 regular m0">
+            November 23, 2014
+          </p>
+          <h2 class="h3 bold m0">Hold It</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/hold-it" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/150853946/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="1"
+          ng-click="play(1)">
+          <p class="h5 regular m0">
+            May 22, 2014
+          </p>
+          <h2 class="h3 bold m0">Let Go</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/let-go" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/150188137/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="2"
+          ng-click="play(2)">
+          <p class="h5 regular m0">
+            May 18, 2014
+          </p>
+          <h2 class="h3 bold m0">Really Wanna</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/really-wanna" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/150042357/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="3"
+          ng-click="play(3)">
+          <p class="h5 regular m0">
+            May 17, 2014
+          </p>
+          <h2 class="h3 bold m0">Me &amp; You</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/me-and-you" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/149242545/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="4"
+          ng-click="play(4)">
+          <p class="h5 regular m0">
+            May 12, 2014
+          </p>
+          <h2 class="h3 bold m0">You&#x27;re Not Anywhere</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/youre-not-anywhere" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/149079894/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="5"
+          ng-click="play(5)">
+          <p class="h5 regular m0">
+            May 11, 2014
+          </p>
+          <h2 class="h3 bold m0">It was Always</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/it-was-always" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/137608823/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="6"
+          ng-click="play(6)">
+          <p class="h5 regular m0">
+            March 2, 2014
+          </p>
+          <h2 class="h3 bold m0">MMMXIII</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/mmmxiii" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/120488511/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="7"
+          ng-click="play(7)">
+          <p class="h5 regular m0">
+            November 16, 2013
+          </p>
+          <h2 class="h3 bold m0">Near and Far</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/near-and-far" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/103315175/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="8"
+          ng-click="play(8)">
+          <p class="h5 regular m0">
+            July 30, 2013
+          </p>
+          <h2 class="h3 bold m0">How Fast</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/how-fast" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/101253637/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="9"
+          ng-click="play(9)">
+          <p class="h5 regular m0">
+            July 16, 2013
+          </p>
+          <h2 class="h3 bold m0">Everything You Do to Me</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/everything-you-do-to-me" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/99998559/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="10"
+          ng-click="play(10)">
+          <p class="h5 regular m0">
+            July 7, 2013
+          </p>
+          <h2 class="h3 bold m0">I Just Can&#x27;t</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/i-just-cant" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/92845350/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="11"
+          ng-click="play(11)">
+          <p class="h5 regular m0">
+            May 18, 2013
+          </p>
+          <h2 class="h3 bold m0">Keep Me</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/keep-me" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/91058817/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="12"
+          ng-click="play(12)">
+          <p class="h5 regular m0">
+            May 6, 2013
+          </p>
+          <h2 class="h3 bold m0">This City</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/this-city" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/91064141/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="13"
+          ng-click="play(13)">
+          <p class="h5 regular m0">
+            May 7, 2013
+          </p>
+          <h2 class="h3 bold m0">In Your Heart</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/in-your-heart" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/87218205/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="14"
+          ng-click="play(14)">
+          <p class="h5 regular m0">
+            April 10, 2013
+          </p>
+          <h2 class="h3 bold m0">Fuck That</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/fuck-that" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/86911647/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="15"
+          ng-click="play(15)">
+          <p class="h5 regular m0">
+            April 8, 2013
+          </p>
+          <h2 class="h3 bold m0">As of Late</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/as-of-late" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/86897244/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="16"
+          ng-click="play(16)">
+          <p class="h5 regular m0">
+            April 8, 2013
+          </p>
+          <h2 class="h3 bold m0">Awkward Turtle</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/awkward-turtle" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/86014571/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="17"
+          ng-click="play(17)">
+          <p class="h5 regular m0">
+            April 2, 2013
+          </p>
+          <h2 class="h3 bold m0">Whiskey &amp; Allegra</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/whiskey-and-allegra" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/84785863/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="18"
+          ng-click="play(18)">
+          <p class="h5 regular m0">
+            March 24, 2013
+          </p>
+          <h2 class="h3 bold m0">March Mallets 04</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/march-mallets-04" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/83028104/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="19"
+          ng-click="play(19)">
+          <p class="h5 regular m0">
+            March 13, 2013
+          </p>
+          <h2 class="h3 bold m0">March Mallets 03</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/march-mallets-03" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/82876194/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="20"
+          ng-click="play(20)">
+          <p class="h5 regular m0">
+            March 12, 2013
+          </p>
+          <h2 class="h3 bold m0">March Mallets 02</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/march-mallets-02" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/81710495/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="21"
+          ng-click="play(21)">
+          <p class="h5 regular m0">
+            March 3, 2013
+          </p>
+          <h2 class="h3 bold m0">March Mallets 01</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/march-mallets-01" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/79861856/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="22"
+          ng-click="play(22)">
+          <p class="h5 regular m0">
+            February 18, 2013
+          </p>
+          <h2 class="h3 bold m0">Quantum Tunneling</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/quantum-tunneling" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/79589290/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="23"
+          ng-click="play(23)">
+          <p class="h5 regular m0">
+            February 16, 2013
+          </p>
+          <h2 class="h3 bold m0">All That I Could Give You</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/all-that-i-could-give-you" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/75513753/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="24"
+          ng-click="play(24)">
+          <p class="h5 regular m0">
+            January 18, 2013
+          </p>
+          <h2 class="h3 bold m0">Last Forever</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/last-forever" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/75118046/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="25"
+          ng-click="play(25)">
+          <p class="h5 regular m0">
+            January 15, 2013
+          </p>
+          <h2 class="h3 bold m0">Talk to Me</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/talk-to-me" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/74985860/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="26"
+          ng-click="play(26)">
+          <p class="h5 regular m0">
+            January 15, 2013
+          </p>
+          <h2 class="h3 bold m0">More Tall Girls</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/more-tall-girls" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/74851525/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="27"
+          ng-click="play(27)">
+          <p class="h5 regular m0">
+            January 13, 2013
+          </p>
+          <h2 class="h3 bold m0">Severed</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/severed" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/74325799/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="28"
+          ng-click="play(28)">
+          <p class="h5 regular m0">
+            January 9, 2013
+          </p>
+          <h2 class="h3 bold m0">Inside Out</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/inside-out" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/74189032/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="29"
+          ng-click="play(29)">
+          <p class="h5 regular m0">
+            January 8, 2013
+          </p>
+          <h2 class="h3 bold m0">My Place</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/my-place" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/74066845/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="30"
+          ng-click="play(30)">
+          <p class="h5 regular m0">
+            January 7, 2013
+          </p>
+          <h2 class="h3 bold m0">About Time</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/about-time" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/73918938/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="31"
+          ng-click="play(31)">
+          <p class="h5 regular m0">
+            January 6, 2013
+          </p>
+          <h2 class="h3 bold m0">You&#x27;re Alright</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/youre-alright" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/72994162/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="32"
+          ng-click="play(32)">
+          <p class="h5 regular m0">
+            December 29, 2012
+          </p>
+          <h2 class="h3 bold m0">Sloppy (MrsJxn 048 Rework)</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/sloppy" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/71860251/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="33"
+          ng-click="play(33)">
+          <p class="h5 regular m0">
+            December 19, 2012
+          </p>
+          <h2 class="h3 bold m0">Scratch</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/scratch" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/71760867/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="34"
+          ng-click="play(34)">
+          <p class="h5 regular m0">
+            December 18, 2012
+          </p>
+          <h2 class="h3 bold m0">All I Want</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/all-i-want" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/71295693/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="35"
+          ng-click="play(35)">
+          <p class="h5 regular m0">
+            December 14, 2012
+          </p>
+          <h2 class="h3 bold m0">Slippery</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/slippery" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/71056822/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="36"
+          ng-click="play(36)">
+          <p class="h5 regular m0">
+            December 13, 2012
+          </p>
+          <h2 class="h3 bold m0">Over</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/over" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/70667216/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="37"
+          ng-click="play(37)">
+          <p class="h5 regular m0">
+            December 10, 2012
+          </p>
+          <h2 class="h3 bold m0">It All Started With a Smile – Microbeats 2012 Mix</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/it-all-started-with-a-smile" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/70411896/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="38"
+          ng-click="play(38)">
+          <p class="h5 regular m0">
+            December 7, 2012
+          </p>
+          <h2 class="h3 bold m0">Ever Since</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/ever-since" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/70028500/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="39"
+          ng-click="play(39)">
+          <p class="h5 regular m0">
+            December 4, 2012
+          </p>
+          <h2 class="h3 bold m0">Panty Draws</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/panty-draws" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/68832671/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="40"
+          ng-click="play(40)">
+          <p class="h5 regular m0">
+            November 25, 2012
+          </p>
+          <h2 class="h3 bold m0">Gotta Tell You Remix</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/gotta-tell-you-remix" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/68599088/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="41"
+          ng-click="play(41)">
+          <p class="h5 regular m0">
+            November 23, 2012
+          </p>
+          <h2 class="h3 bold m0">Your Move</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/your-move" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/68605632/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="42"
+          ng-click="play(42)">
+          <p class="h5 regular m0">
+            November 23, 2012
+          </p>
+          <h2 class="h3 bold m0">Chipped Tooth</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/chipped-tooth" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/68451268/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="43"
+          ng-click="play(43)">
+          <p class="h5 regular m0">
+            November 22, 2012
+          </p>
+          <h2 class="h3 bold m0">Thank You</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/thank-you" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/68247713/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="44"
+          ng-click="play(44)">
+          <p class="h5 regular m0">
+            November 20, 2012
+          </p>
+          <h2 class="h3 bold m0">You Never Know</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/you-never-know" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/67599899/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="45"
+          ng-click="play(45)">
+          <p class="h5 regular m0">
+            November 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Maybe</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/maybe" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/67062373/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="46"
+          ng-click="play(46)">
+          <p class="h5 regular m0">
+            November 11, 2012
+          </p>
+          <h2 class="h3 bold m0">Walk and Talk Remix</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/walk-and-talk-remix" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/67046691/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="47"
+          ng-click="play(47)">
+          <p class="h5 regular m0">
+            November 11, 2012
+          </p>
+          <h2 class="h3 bold m0">The Game</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/the-game" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/66925837/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="48"
+          ng-click="play(48)">
+          <p class="h5 regular m0">
+            November 10, 2012
+          </p>
+          <h2 class="h3 bold m0">Funny How Time Flies</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/funny-how-time-flies" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/66812312/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="49"
+          ng-click="play(49)">
+          <p class="h5 regular m0">
+            November 9, 2012
+          </p>
+          <h2 class="h3 bold m0">Where Are You</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/where-are-you" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/66812234/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="50"
+          ng-click="play(50)">
+          <p class="h5 regular m0">
+            November 9, 2012
+          </p>
+          <h2 class="h3 bold m0">No One Understands You</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/no-one-understands-you" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/66179413/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="51"
+          ng-click="play(51)">
+          <p class="h5 regular m0">
+            November 5, 2012
+          </p>
+          <h2 class="h3 bold m0">Like You</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/like-you" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/66155970/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="52"
+          ng-click="play(52)">
+          <p class="h5 regular m0">
+            November 4, 2012
+          </p>
+          <h2 class="h3 bold m0">Two Drifters</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/two-drifters" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/65323993/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="53"
+          ng-click="play(53)">
+          <p class="h5 regular m0">
+            October 30, 2012
+          </p>
+          <h2 class="h3 bold m0">Mix You Up</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/mix-you-up" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/65179440/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="54"
+          ng-click="play(54)">
+          <p class="h5 regular m0">
+            October 29, 2012
+          </p>
+          <h2 class="h3 bold m0">The One I Dream Of</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/the-one-i-dream-of" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/64949447/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="55"
+          ng-click="play(55)">
+          <p class="h5 regular m0">
+            October 26, 2012
+          </p>
+          <h2 class="h3 bold m0">Fridays</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/fridays" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/64719900/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="56"
+          ng-click="play(56)">
+          <p class="h5 regular m0">
+            October 25, 2012
+          </p>
+          <h2 class="h3 bold m0">The Undead</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/the-undead" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/64457131/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="57"
+          ng-click="play(57)">
+          <p class="h5 regular m0">
+            October 23, 2012
+          </p>
+          <h2 class="h3 bold m0">Phantom</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/phantom" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/64184510/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="58"
+          ng-click="play(58)">
+          <p class="h5 regular m0">
+            October 20, 2012
+          </p>
+          <h2 class="h3 bold m0">Spooks</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/spooks" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/63595276/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="59"
+          ng-click="play(59)">
+          <p class="h5 regular m0">
+            October 16, 2012
+          </p>
+          <h2 class="h3 bold m0">Zombies</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/zombies" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/63463364/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="60"
+          ng-click="play(60)">
+          <p class="h5 regular m0">
+            October 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Strange Creatures Remix</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/strange-creatures-remix" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/63325922/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="61"
+          ng-click="play(61)">
+          <p class="h5 regular m0">
+            October 13, 2012
+          </p>
+          <h2 class="h3 bold m0">Eyefucking</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/eyefucking" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/62974251/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="62"
+          ng-click="play(62)">
+          <p class="h5 regular m0">
+            October 10, 2012
+          </p>
+          <h2 class="h3 bold m0">Witches</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/witches" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/62875417/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="63"
+          ng-click="play(63)">
+          <p class="h5 regular m0">
+            October 10, 2012
+          </p>
+          <h2 class="h3 bold m0">Pretty Face</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/pretty-face" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/62747749/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="64"
+          ng-click="play(64)">
+          <p class="h5 regular m0">
+            October 9, 2012
+          </p>
+          <h2 class="h3 bold m0">Shadows</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/shadows" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/62597395/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="65"
+          ng-click="play(65)">
+          <p class="h5 regular m0">
+            October 7, 2012
+          </p>
+          <h2 class="h3 bold m0">Demons</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/demons" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/61939784/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="66"
+          ng-click="play(66)">
+          <p class="h5 regular m0">
+            October 2, 2012
+          </p>
+          <h2 class="h3 bold m0">Ghosts</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/ghosts" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/61786746/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="67"
+          ng-click="play(67)">
+          <p class="h5 regular m0">
+            October 1, 2012
+          </p>
+          <h2 class="h3 bold m0">Monsters</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/monsters" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/61657277/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="68"
+          ng-click="play(68)">
+          <p class="h5 regular m0">
+            September 29, 2012
+          </p>
+          <h2 class="h3 bold m0">You Remind Me of Someone</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/you-remind-me-of-someone" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/61458671/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="69"
+          ng-click="play(69)">
+          <p class="h5 regular m0">
+            September 28, 2012
+          </p>
+          <h2 class="h3 bold m0">No More Room for Us</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/no-more-room-for-us" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/61332465/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="70"
+          ng-click="play(70)">
+          <p class="h5 regular m0">
+            September 27, 2012
+          </p>
+          <h2 class="h3 bold m0">Down</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/down" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/60928487/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="71"
+          ng-click="play(71)">
+          <p class="h5 regular m0">
+            September 23, 2012
+          </p>
+          <h2 class="h3 bold m0">Pod Bay Door</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/pod-bay-door" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/60616151/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="72"
+          ng-click="play(72)">
+          <p class="h5 regular m0">
+            September 20, 2012
+          </p>
+          <h2 class="h3 bold m0">Women, Not Girls</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/women-not-girls" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/60502845/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="73"
+          ng-click="play(73)">
+          <p class="h5 regular m0">
+            September 20, 2012
+          </p>
+          <h2 class="h3 bold m0">All You</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/all-you" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/60392061/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="74"
+          ng-click="play(74)">
+          <p class="h5 regular m0">
+            September 19, 2012
+          </p>
+          <h2 class="h3 bold m0">I Can&#x27;t Help Myself</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/i-cant-help-myself" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/60261717/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="75"
+          ng-click="play(75)">
+          <p class="h5 regular m0">
+            September 18, 2012
+          </p>
+          <h2 class="h3 bold m0">Bounce Past (Vocal Version)</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/bounce-past-vocal-version" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/60249946/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="76"
+          ng-click="play(76)">
+          <p class="h5 regular m0">
+            September 17, 2012
+          </p>
+          <h2 class="h3 bold m0">Bounce Past</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/bounce-past" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/59997930/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="77"
+          ng-click="play(77)">
+          <p class="h5 regular m0">
+            September 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Next to Me</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/next-to-me" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/59449747/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="78"
+          ng-click="play(78)">
+          <p class="h5 regular m0">
+            September 11, 2012
+          </p>
+          <h2 class="h3 bold m0">You Don&#x27;t</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/you-dont" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/58596347/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="79"
+          ng-click="play(79)">
+          <p class="h5 regular m0">
+            September 3, 2012
+          </p>
+          <h2 class="h3 bold m0">Steppin&#x27;</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/steppin" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/57835150/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="80"
+          ng-click="play(80)">
+          <p class="h5 regular m0">
+            August 28, 2012
+          </p>
+          <h2 class="h3 bold m0">Let You Know</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/let-you-know" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/57593632/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="81"
+          ng-click="play(81)">
+          <p class="h5 regular m0">
+            August 26, 2012
+          </p>
+          <h2 class="h3 bold m0">In Your Eyes</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/in-your-eyes" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/56897995/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="82"
+          ng-click="play(82)">
+          <p class="h5 regular m0">
+            August 19, 2012
+          </p>
+          <h2 class="h3 bold m0">Late Nights</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/late-nights" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/56000793/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="83"
+          ng-click="play(83)">
+          <p class="h5 regular m0">
+            August 11, 2012
+          </p>
+          <h2 class="h3 bold m0">California</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/california" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/54027974/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="84"
+          ng-click="play(84)">
+          <p class="h5 regular m0">
+            July 25, 2012
+          </p>
+          <h2 class="h3 bold m0">Moving</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/moving" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/52096631/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="85"
+          ng-click="play(85)">
+          <p class="h5 regular m0">
+            July 7, 2012
+          </p>
+          <h2 class="h3 bold m0">Small Girls</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/small-girls" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/51725902/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="86"
+          ng-click="play(86)">
+          <p class="h5 regular m0">
+            July 3, 2012
+          </p>
+          <h2 class="h3 bold m0">Fast Girls</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/fast-girls" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/51803494/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="87"
+          ng-click="play(87)">
+          <p class="h5 regular m0">
+            July 4, 2012
+          </p>
+          <h2 class="h3 bold m0">American Party</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/american-party" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/51699824/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="88"
+          ng-click="play(88)">
+          <p class="h5 regular m0">
+            July 3, 2012
+          </p>
+          <h2 class="h3 bold m0">Shy Girls</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/shy-girls" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/51466387/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="89"
+          ng-click="play(89)">
+          <p class="h5 regular m0">
+            July 1, 2012
+          </p>
+          <h2 class="h3 bold m0">Tall Girls</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/tall-girls" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/51091072/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="90"
+          ng-click="play(90)">
+          <p class="h5 regular m0">
+            June 27, 2012
+          </p>
+          <h2 class="h3 bold m0">Imminent</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/imminent" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/50661395/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="91"
+          ng-click="play(91)">
+          <p class="h5 regular m0">
+            June 23, 2012
+          </p>
+          <h2 class="h3 bold m0">Forward</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/forward" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/50011346/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="92"
+          ng-click="play(92)">
+          <p class="h5 regular m0">
+            June 17, 2012
+          </p>
+          <h2 class="h3 bold m0">Soon Enough</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/soon-enough" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/49274201/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="93"
+          ng-click="play(93)">
+          <p class="h5 regular m0">
+            June 10, 2012
+          </p>
+          <h2 class="h3 bold m0">Leave/Fly</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/leave-fly" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/48437560/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="94"
+          ng-click="play(94)">
+          <p class="h5 regular m0">
+            June 2, 2012
+          </p>
+          <h2 class="h3 bold m0">VCDN</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/vcdn" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/47399503/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="95"
+          ng-click="play(95)">
+          <p class="h5 regular m0">
+            May 24, 2012
+          </p>
+          <h2 class="h3 bold m0">Spiders</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/spiders" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/47058408/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="96"
+          ng-click="play(96)">
+          <p class="h5 regular m0">
+            May 21, 2012
+          </p>
+          <h2 class="h3 bold m0">Little Wiggle</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/little-wiggle" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/46763218/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="97"
+          ng-click="play(97)">
+          <p class="h5 regular m0">
+            May 18, 2012
+          </p>
+          <h2 class="h3 bold m0">Go Home</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/go-home" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/45773835/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="98"
+          ng-click="play(98)">
+          <p class="h5 regular m0">
+            May 8, 2012
+          </p>
+          <h2 class="h3 bold m0">Threshold</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/threshold" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/45550426/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="99"
+          ng-click="play(99)">
+          <p class="h5 regular m0">
+            May 6, 2012
+          </p>
+          <h2 class="h3 bold m0">(I Will Go) In Your Stead</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/in-your-stead" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/45258984/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="100"
+          ng-click="play(100)">
+          <p class="h5 regular m0">
+            May 4, 2012
+          </p>
+          <h2 class="h3 bold m0">Sparkle Jerk</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/sparkle-jerk" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/44919878/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="101"
+          ng-click="play(101)">
+          <p class="h5 regular m0">
+            May 1, 2012
+          </p>
+          <h2 class="h3 bold m0">Dusty Closet</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/dusty-closet" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/44773167/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="102"
+          ng-click="play(102)">
+          <p class="h5 regular m0">
+            April 29, 2012
+          </p>
+          <h2 class="h3 bold m0">Rainbow Juice</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/rainbow-juice" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/44153363/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="103"
+          ng-click="play(103)">
+          <p class="h5 regular m0">
+            April 23, 2012
+          </p>
+          <h2 class="h3 bold m0">Unicorn Bump &#x27;n&#x27; Grind</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/unicorn-bump-n-grind" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43505339/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="104"
+          ng-click="play(104)">
+          <p class="h5 regular m0">
+            April 17, 2012
+          </p>
+          <h2 class="h3 bold m0">Can&#x27;t Stop</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/cant-stop" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43380777/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="105"
+          ng-click="play(105)">
+          <p class="h5 regular m0">
+            April 16, 2012
+          </p>
+          <h2 class="h3 bold m0">Airlock</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/airlock" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43247356/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="106"
+          ng-click="play(106)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Can&#x27;t Get Out of This Funk</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/cant-get-out-of-this-funk" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/41767468/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="107"
+          ng-click="play(107)">
+          <p class="h5 regular m0">
+            April 2, 2012
+          </p>
+          <h2 class="h3 bold m0">Microbeat: Paleosynth</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/paleosynth" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/41835264/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="108"
+          ng-click="play(108)">
+          <p class="h5 regular m0">
+            April 2, 2012
+          </p>
+          <h2 class="h3 bold m0">Microbeat: Lock Groove 01</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/lock-groove-01" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/38304389/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="109"
+          ng-click="play(109)">
+          <p class="h5 regular m0">
+            February 29, 2012
+          </p>
+          <h2 class="h3 bold m0">Microbeat: Smile</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/smile" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/36064235/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="110"
+          ng-click="play(110)">
+          <p class="h5 regular m0">
+            February 9, 2012
+          </p>
+          <h2 class="h3 bold m0">Microbeat: Cyberdyne Systems</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/cyberdyne-systems" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/35644628/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="111"
+          ng-click="play(111)">
+          <p class="h5 regular m0">
+            February 5, 2012
+          </p>
+          <h2 class="h3 bold m0">Microbeat: Shapeshifter</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/shapeshifter" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43250750/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="112"
+          ng-click="play(112)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Tachyons</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/tachyons" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/34606043/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="113"
+          ng-click="play(113)">
+          <p class="h5 regular m0">
+            January 26, 2012
+          </p>
+          <h2 class="h3 bold m0">Microbeat: FTL Drive</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/ftl-drive" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43266636/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="114"
+          ng-click="play(114)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Sentience</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/sentience" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43266592/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="115"
+          ng-click="play(115)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Tycho Magnetic Anomaly</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/tycho-magnetic-anomaly" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43266525/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="116"
+          ng-click="play(116)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Tannhauser Gate</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/tannhauser-gate" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43266469/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="117"
+          ng-click="play(117)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Star Destroyer</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/star-destroyer" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43266408/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="118"
+          ng-click="play(118)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Moonrise</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/moonrise" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43266296/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="119"
+          ng-click="play(119)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Triumphant</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/triumphant" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43266212/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="120"
+          ng-click="play(120)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Sky Left</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/sky-left" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43266163/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="121"
+          ng-click="play(121)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Evil</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/evil" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43266115/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="122"
+          ng-click="play(122)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Buttercut</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/buttercut" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43266050/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="123"
+          ng-click="play(123)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Fabrique</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/fabrique" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43265971/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="124"
+          ng-click="play(124)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Vibrating Glass</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/vibrating-glass" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43265922/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="125"
+          ng-click="play(125)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Funkwave No. 2</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/funkwave-no-2" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43265864/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="126"
+          ng-click="play(126)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Sunday Shiner</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/sunday-shiner" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43265791/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="127"
+          ng-click="play(127)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Sunday Shakaigaku</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/sunday-shakaigaku" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43265721/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="128"
+          ng-click="play(128)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Sunday Sizzledown</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/sunday-sizzledown" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43265671/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="129"
+          ng-click="play(129)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Monday Monomobo</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/monday-monomobo" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43265591/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="130"
+          ng-click="play(130)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Sunday Skottleboz</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/sunday-skottleboz" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43265531/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="131"
+          ng-click="play(131)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Wednesday Wacid</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/wednesday-wacid" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43265480/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="132"
+          ng-click="play(132)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Monday Muzzybuzz</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/monday-muzzybuzz" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43265379/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="133"
+          ng-click="play(133)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Wednesday Wabbadabba</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/wednesday-wabbadabba" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43265435/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="134"
+          ng-click="play(134)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Thursday Thirstank</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/thursday-thirstank" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43265311/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="135"
+          ng-click="play(135)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Tuesday Taste</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/tuesday-taste" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43265267/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="136"
+          ng-click="play(136)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Monday Mumbler</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/monday-mumbler" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43265216/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="137"
+          ng-click="play(137)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Sunday Somber</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/sunday-somber" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43265116/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="138"
+          ng-click="play(138)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Saturday Substrate</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/saturday-substrate" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43265036/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="139"
+          ng-click="play(139)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Friday Fricative</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/friday-fricative" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43264948/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="140"
+          ng-click="play(140)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Monday Masher</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/monday-masher" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43264875/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="141"
+          ng-click="play(141)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Sunday Stranger</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/sunday-stranger" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43264736/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="142"
+          ng-click="play(142)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Saturday Sentiment</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/saturday-sentiment" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43264544/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="143"
+          ng-click="play(143)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Wednesday Wrinkle</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/wednesday-wrinkle" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43264606/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="144"
+          ng-click="play(144)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Thursday Throughput</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/thursday-throughput" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43264650/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="145"
+          ng-click="play(145)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Friday Fuckabout</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/friday-fuckabout" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43264494/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="146"
+          ng-click="play(146)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Tuesday Temperament</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/tuesday-temperament" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43264438/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="147"
+          ng-click="play(147)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Monday Method</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/monday-method" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43264381/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="148"
+          ng-click="play(148)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Sunday Serenade</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/sunday-serenade" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43264287/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="149"
+          ng-click="play(149)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Saturday Sidestep</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/saturday-sidestep" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43264234/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="150"
+          ng-click="play(150)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Friday Flex</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/friday-flex" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43264177/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="151"
+          ng-click="play(151)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Wednesday Warrior</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/wednesday-warrior" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43264101/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="152"
+          ng-click="play(152)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Tuesday Timewarp</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/tuesday-timewarp" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43264010/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="153"
+          ng-click="play(153)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Monday Memory</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/monday-memory" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43263931/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="154"
+          ng-click="play(154)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Sunday Skygaze</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/sunday-skygaze" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43263841/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="155"
+          ng-click="play(155)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Saturday Sweetness</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/saturday-sweetness" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43256050/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="156"
+          ng-click="play(156)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Friday Furniture</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/friday-furniture" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43255962/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="157"
+          ng-click="play(157)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Wednesday Wanderlust</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/wednesday-wanderlust" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43255895/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="158"
+          ng-click="play(158)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Tuesday Tubestep</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/tuesday-tubestep" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43255833/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="159"
+          ng-click="play(159)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Monday Megatheme</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/monday-megatheme" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43255699/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="160"
+          ng-click="play(160)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Sunday Spaceout</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/sunday-spaceout" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43255607/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="161"
+          ng-click="play(161)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Saturday Shuffle</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/saturday-shuffle" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43255506/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="162"
+          ng-click="play(162)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Friday Futuredub</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/friday-futuredub" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43255431/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="163"
+          ng-click="play(163)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Wednesday Wobble</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/wednesday-wobble" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43255382/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="164"
+          ng-click="play(164)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Tuesday Synthgaze</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/tuesday-synthgaze" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43255289/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="165"
+          ng-click="play(165)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Monday Melody</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/monday-melody" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43255206/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="166"
+          ng-click="play(166)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Sunday Brunch</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/sunday-brunch" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43254871/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="167"
+          ng-click="play(167)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 035</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-035" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43254789/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="168"
+          ng-click="play(168)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 034</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-034" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43254729/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="169"
+          ng-click="play(169)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 033</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-033" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43254658/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="170"
+          ng-click="play(170)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 032</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-032" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43254595/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="171"
+          ng-click="play(171)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 031</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-031" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43254265/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="172"
+          ng-click="play(172)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 030</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-030" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43254031/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="173"
+          ng-click="play(173)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 029</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-029" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43253978/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="174"
+          ng-click="play(174)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 028</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-028" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43253888/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="175"
+          ng-click="play(175)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 027</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-027" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43253724/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="176"
+          ng-click="play(176)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 026</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-026" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43253669/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="177"
+          ng-click="play(177)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 025</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-025" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43253473/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="178"
+          ng-click="play(178)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 024</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-024" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43253385/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="179"
+          ng-click="play(179)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 023</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-023" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43253311/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="180"
+          ng-click="play(180)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 022</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-022" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43253164/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="181"
+          ng-click="play(181)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 021</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-021" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43253092/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="182"
+          ng-click="play(182)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 020</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-020" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43253027/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="183"
+          ng-click="play(183)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 019</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-019" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43252976/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="184"
+          ng-click="play(184)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 018</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-018" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43252914/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="185"
+          ng-click="play(185)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 017</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-017" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43252853/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="186"
+          ng-click="play(186)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 016</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-016" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43252746/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="187"
+          ng-click="play(187)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 015</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-015" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43252595/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="188"
+          ng-click="play(188)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 014</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-014" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43252533/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="189"
+          ng-click="play(189)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 013</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-013" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43252469/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="190"
+          ng-click="play(190)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 012</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-012" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43252414/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="191"
+          ng-click="play(191)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 011</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-011" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43252356/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="192"
+          ng-click="play(192)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 010</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-010" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43252224/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="193"
+          ng-click="play(193)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 009</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-009" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43252174/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="194"
+          ng-click="play(194)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 008</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-008" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43252057/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="195"
+          ng-click="play(195)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 007</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-007" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43251978/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="196"
+          ng-click="play(196)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 006</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-006" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43251887/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="197"
+          ng-click="play(197)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 005</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-005" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43251696/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="198"
+          ng-click="play(198)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 004</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-004" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43251510/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="199"
+          ng-click="play(199)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 003</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-003" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43251431/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="200"
+          ng-click="play(200)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 002</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-002" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="http://api.soundcloud.com/tracks/43251383/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+          data-index="201"
+          ng-click="play(201)">
+          <p class="h5 regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 bold m0">Untitled 001</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-001" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+  </ul>
+</div>
 
-    <div class="maxwi3 wrap pr1 pl1">
-      <ul class="list-style-none">
-        <!-- <li class="pt1 borbo bor-ltgry">
-          <input type="text" placeholder="search" class="input wi100 borbox bor-ltgry" ng-model="query" />
-        </li> -->
-        <li ng-repeat="track in tracks | filter:query" class="posrel borbo bor-ltgry" ng-cloak>
-          <span id="{{track.permalink}}" class="offset-link"></span>
-          <a href="" ng-click="player.play(tracks, $index)" class="posrel db pt-5 pb-5"ng-class="{'dkgry': player.playing.id != track.id && player.paused.id != track.id}">
-            <p class="small mdgry">{{track.created_at | dateSimple}}</p>
-            <h2 class="p reg truncate pr1">{{track.title}}</h2>
-            <a ng-href="{{track.permalink_url}}" target="_blank" class="posabs top0 right0 bottom0 db lh3 pt-5 pr1 pb-5 pl1 mdgry">&raquo;</a>
-          </a>
-          
-        </li>
-      </ul>
-    </div>
+  <footer>
+    <p>
+      Microbeats is an experiment in music production emphasizing quantity over quality. All loops are created by Jxnblk in under an hour and not mixed down or mastered.
+    </p>
+    <p>
+      <a href="http://jxnblk.com">Created by Jxnblk</a>
+      <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Licensed under Creative Commons</a>
+      <a href="http://soundcloud.com/jxnblk">SoundCloud</a>
+    </p>
+  </footer>
 
-    <footer class="pt2 pr1 pb2 pl1 maxwi3 wrap" ng-show="tracks">
-      <p class="small mdgry">Microbeats is an experiment in music production emphasizing quantity over quality. All loops are created by Jxnblk in under an hour and not mixed down or mastered.</p>
-      <p><a href="http://jxnblk.com" class="small mdgry mr1">Created by Jxnblk</a> <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/" class="small mdgry mr1">Licensed under Creative Commons</a> <a href="http://soundcloud.com/jxnblk" class="small mdgry mr1">SoundCloud</a></p>
-    </footer>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.4/angular.min.js"></script>
+  <script src="/js/app.min.js"></script>
 
-  </div>
-
-
-  <script src="js/lib/moment.min.js"></script>
-  <script src="js/lib/smoothscroll.min.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/services.js"></script>
-  <script src="js/controllers.js"></script>
 </body>
 </html>

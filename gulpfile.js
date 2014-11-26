@@ -1,53 +1,40 @@
-var gulp = require('gulp');
-var concat = require('gulp-concat');
-var rename = require('gulp-rename');
-var minimist = require('minimist')(process.argv.slice(2));
-var request = require('request');
-var jsonEditor = require('gulp-json-editor');
 
-gulp.task('default', function() {
-  console.log('herro!');
-  if(minimist) {
-    console.log(minimist);
-  }
+var gulp = require('gulp');
+var rename = require('gulp-rename');
+var basswork = require('gulp-basswork');
+var minifyCss = require('gulp-minify-css');
+var browserify = require('gulp-browserify');
+var ngAnnotate = require('gulp-ng-annotate');
+var uglify = require('gulp-uglify');
+var webserver = require('gulp-webserver');
+
+gulp.task('css', function() {
+  gulp.src('./src/css/base.css')
+    .pipe(basswork())
+    .pipe(minifyCss())
+    .pipe(rename({ extname: '.min.css' }))
+    .pipe(gulp.dest('./css'));
 });
 
-gulp.task('add', function() {
-  var baseUrl = 'http://soundcloud.com/jxnblk/',
-      clientID = '1c21814089b72a7cd4ce9246009ddcfb',
-      api = 'http://api.soundcloud.com/resolve.json',
-      track,
-      url,
-      data;
-  if(minimist.track) {
-    track = minimist.track;
-    url = api + '?client_id=' + clientID + '&url=' + baseUrl + track;
-    console.log('Getting data for ' + track);
-    request(url, function (error, response, body) {
-      if(error) console.error(error);
-      if (!error && response.statusCode == 200) {
-        delete body.user_id;
-        var data = JSON.parse(body);
-        delete data.user_id; delete data.duration; delete data.commentable;
-        delete data.state; delete data.original_content_size; delete data.sharing;
-        delete data.tag_list; delete data.streamable; delete data.embeddable_by;
-        delete data.downloadable; delete data.purchase_url; delete data.label_id;
-        delete data.purchase_title; delete data.genre; delete data.label_name;
-        delete data.release; delete data.track_type; delete data.key_signature;
-        delete data.isrc; delete data.video_url; delete data.bpm; delete data.release_year;
-        delete data.release_month; delete data.release_day; delete data.original_format;
-        delete data.license; delete data.user; delete data.playback_count;
-        delete data.download_count; delete data.favoritings_count; delete data.comment_count;
-        return gulp.src('tracks.json')
-          .pipe(jsonEditor(function(json) {
-            json.unshift(data);
-            return json;
-          }))
-          .pipe(gulp.dest('.'));
-      }
-    });
-  } else {
-    console.log('no track provided, use the --track flag');
-  }
+gulp.task('js', function() {
+  gulp.src('./src/js/app.js')
+    .pipe(browserify())
+    //.pipe(ngAnnotate())
+    //.pipe(uglify())
+    .pipe(rename({ extname: '.min.js' }))
+    .pipe(gulp.dest('./js'));
+});
+
+gulp.task('serve', function() {
+  gulp.src('.')
+    .pipe(webserver({}));
+});
+
+gulp.task('add-track', require('./tasks/add-track'));
+
+gulp.task('build', require('./tasks/build'));
+
+gulp.task('default', ['css', 'js', 'build', 'serve'], function() {
+  gulp.watch(['./src/**/*', './templates/**/*'], ['css', 'js', 'build']);
 });
 

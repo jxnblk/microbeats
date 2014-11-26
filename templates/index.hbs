@@ -1,0 +1,27 @@
+{{#extend "application" }}
+
+{{#content "body" }}
+<div class="container p2">
+  <ul class="list-reset">
+    {{#each tracks }}
+      <li class="flex flex-center mxn2 border-bottom">
+        <a href="#!"
+          class="flex-grow col-10 button button-nav-light"
+          data-url="{{ stream_url }}?client_id={{ ../client_id }}"
+          data-index="{{ @index }}"
+          ng-click="play({{ @index }})">
+          <p class="h5 regular m0">
+            {{date created_at }}
+          </p>
+          <h2 class="h3 bold m0">{{ title }}</h2>
+        </a>
+        <a href="{{ permalink_url }}" class="button button-nav-light" target="_blank">
+          &raquo;
+        </a>
+      </li>
+    {{/each}}
+  </ul>
+</div>
+{{/content}}
+
+{{/extend}}
