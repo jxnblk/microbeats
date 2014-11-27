@@ -1,14 +1,21 @@
 {{#extend "application" }}
 
 {{#content "body" }}
-<div class="container p2">
-  <ul class="list-reset">
+<div class="container px2">
+  <h3>
+    ng tracks
+    {% tracks.length %}
+    {% tracks[0].title %}
+    {% tracks[0].url %}
+  </h3>
+  <ul class="list-reset" tracklist>
     {{#each tracks }}
-      <li class="flex flex-center mxn2 border-bottom">
+      <li class="flex flex-center mxn2 border-bottom"
+        data-url="{{ stream_url }}?client_id={{ ../client_id }}"
+        data-title="{{ title }}"
+        data-index="{{ @index }}">
         <a href="#!"
           class="flex-grow col-10 button button-nav-light"
-          data-url="{{ stream_url }}?client_id={{ ../client_id }}"
-          data-index="{{ @index }}"
           ng-click="play({{ @index }})">
           <p class="h5 regular m0">
             {{date created_at }}

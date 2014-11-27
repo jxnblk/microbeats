@@ -8,10 +8,14 @@ var app = angular.module('app', [], function($interpolateProvider) {
 });
 
 // Services
-app.service('player', require('./services/player'));
+app.factory('player', require('./services/player'));
+
+// Directives
+app.directive('tracklist', require('./directives/tracklist'));
 
 // Filters
 
 // Controllers
 app.controller('MainCtrl', require('./controllers/main'));
 
+module.exports = app;

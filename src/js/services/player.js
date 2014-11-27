@@ -4,13 +4,13 @@
 
 
 var audio = require('./audio');
-//var client_id = require('../../../model').client_id;
 
-var Player = function() {
+//var Player = function() {
+module.exports = function() {
 
   var player = {};
   // Expose audio element
-  player.audio = audio;
+  //player.audio = audio;
   player.i = 0;
   player.playlistIndex = 0;
   player.playing = false;
@@ -113,7 +113,7 @@ var Player = function() {
 
 };
 
-var player = player || new Player();
+//var player = player || new Player();
 
-module.exports = player;
+//module.exports = player;
 

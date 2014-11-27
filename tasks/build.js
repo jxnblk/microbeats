@@ -16,7 +16,7 @@ layouts(Handlebars);
 var options = {
   handlebars: Handlebars,
   partials: {
-    application: fs.readFileSync('./templates/layouts/application.hbs', 'utf8')
+    application: fs.readFileSync('./views/layouts/application.hbs', 'utf8')
   },
   helpers: {
     date: require('../helpers/date')
@@ -24,7 +24,7 @@ var options = {
 };
 
 module.exports = function() {
-  gulp.src('./templates/**/*.hbs')
+  gulp.src('./views/**/*.hbs')
     .pipe(gulpHandlebars(model, options))
     .pipe(rename({ extname: '.html' }))
     .pipe(gulp.dest('.'));

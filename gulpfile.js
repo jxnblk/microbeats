@@ -19,7 +19,7 @@ gulp.task('css', function() {
 gulp.task('js', function() {
   gulp.src('./src/js/app.js')
     .pipe(browserify())
-    //.pipe(ngAnnotate())
+    .pipe(ngAnnotate())
     //.pipe(uglify())
     .pipe(rename({ extname: '.min.js' }))
     .pipe(gulp.dest('./js'));
