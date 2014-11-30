@@ -10,8 +10,8 @@ var rename = require('gulp-rename');
 var model = require('../model');
 
 layouts(Handlebars);
-// Doesn't work with layouts ??
-//delimiters(Handlebars, ['<%=', '%>']);
+  // Doesn't work with layouts ??
+  //delimiters(Handlebars, ['<%=', '%>']);
 
 var options = {
   handlebars: Handlebars,
@@ -19,7 +19,8 @@ var options = {
     application: fs.readFileSync('./views/layouts/application.hbs', 'utf8')
   },
   helpers: {
-    date: require('../helpers/date')
+    date: require('../helpers/date'),
+    icon: require('../helpers/icon')
   }
 };
 

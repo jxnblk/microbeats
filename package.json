@@ -30,7 +30,7 @@
     "handlebars-layouts": "^1.0.0",
     "moment": "^2.8.4",
     "flex-object": "0.0.4",
-    "geomicons-open": "0.0.4",
+    "geomicons-open": "^0.0.6",
     "gulp-ng-annotate": "^0.3.6",
     "plangular": "0.0.1"
   },

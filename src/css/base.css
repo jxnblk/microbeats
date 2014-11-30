@@ -17,8 +17,7 @@
 @import 'basscss-color-basic';
 
 
-/* Example custom file import */
-@import './color/borders';
+@import './base/svg';
 
 
 /* Custom media queries */

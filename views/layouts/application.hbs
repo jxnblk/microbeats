@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <title>{{ title }}</title>
-  <meta name="viewport" content="width:device-width, initial-scale:1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/css/base.min.css">
 </head>
 <body>
@@ -13,8 +13,29 @@
   <header class="border-bottom">
     <div class="container p2">
       <h1 class="bold m0">
-        {{ title }}
+        <span ng-hide="player.currentTrack">
+          {{ title }}
+        </span>
+        <span ng-show="player.currentTrack">
+          {% player.currentTrack.title %}
+        </span>
       </h1>
+      <button ng-click="player.previous()">
+        {{icon 'previous' }}
+      </button>
+      <button ng-hide="player.playing" ng-click="player.play(player.i)">
+        {{icon 'play' }}
+      </button>
+      <button ng-show="player.playing" ng-click="player.pause()">
+        {{icon 'pause' }}
+      </button>
+      <button ng-click="player.next()">
+        {{icon 'next' }}
+      </button>
+      <div>
+        <progress value="{% currentTime / duration %}"></progress>
+        <p>{% currentTime %} / {% duration %} {% currentTime / duration %}</p>
+      </div>
     </div>
   </header>
 

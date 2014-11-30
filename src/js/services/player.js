@@ -10,7 +10,7 @@ module.exports = function() {
 
   var player = {};
   // Expose audio element
-  //player.audio = audio;
+  player.audio = audio;
   player.i = 0;
   player.playlistIndex = 0;
   player.playing = false;
@@ -19,77 +19,48 @@ module.exports = function() {
   player.currentTime = 0;
   player.duration = 0;
 
-  player.play = function(i, playlistIndex) {
-    this.i = i || 0;
-    var track = this.tracks[this.i];
-    if (track.tracks) {
-      this.playlistIndex = playlistIndex;
-      this.playing = track.tracks[playlistIndex];
-      var src = track.tracks[playlistIndex].stream_url + '?client_id=' + client_id;
-    } else {
-      this.playing = track;
-      var src = track.stream_url + '?client_id=' + client_id;
-    }
-    this.currentTrack = this.playing;
+  player.play = function(i) {
+    player.i = i || 0;
+    var track = player.tracks[player.i];
+    player.playing = track;
+    var src = track.src;
+    player.currentTrack = player.playing;
     if (src != audio.src) audio.src = src;
     audio.play();
   };
 
   player.pause = function() {
     audio.pause();
-    this.playing = false;
+    player.playing = false;
   };
 
-  player.playPause = function(i, playlistIndex) {
-    var track = this.tracks[i];
-    if (track.tracks && this.playing != track.tracks[playlistIndex]) {
-      if (!playlistIndex) playlistIndex = 0;
-      this.play(i, playlistIndex);
-    } else if (!track.tracks && this.playing != track) {
-      this.play(i);
+  player.playPause = function(i) {
+    var track = player.tracks[i];
+    if (player.playing != track) {
+      player.play(i);
     } else {
-      this.pause();
+      player.pause();
     }
   };
 
   player.next = function() {
-    var playlist = this.tracks[this.i].tracks || null;
-    if (playlist && this.playlistIndex < playlist.length - 1) {
-      this.playlistIndex++;
-      this.play(this.i, this.playlistIndex);
-    } else if (this.i < this.tracks.length - 1) {
-      this.i++;
-      // Handle advancing to new playlist
-      var playlist = this.tracks[this.i].tracks || null;
-      if (this.tracks[this.i].tracks) {
-        this.playlistIndex = 0;
-        this.play(this.i, this.playlistIndex);
-      } else {
-        this.play(this.i);
-      }
+    if (player.i < player.tracks.length - 1) {
+      player.i++;
+      player.play(player.i);
     }
   };
 
   player.previous = function() {
-    var playlist = this.tracks[this.i].tracks || null;
-    if (playlist && this.playlistIndex > 0) {
-      this.playlistIndex--;
-      this.play(this.i, this.playlistIndex);
-    } else if (this.i > 0) {
-      this.i--;
-      if (this.tracks[this.i].tracks) {
-        this.playlistIndex = this.tracks[this.i].tracks.length - 1;
-        this.play(this.i, this.playlistIndex);
-      } else {
-        this.play(this.i);
-      }
+    if (player.i > 0) {
+      player.i--;
+      player.play(player.i);
     }
   };
 
   player.load = function(track, index) {
-    this.tracks[index] = track;
-    if (!this.playing && !this.i && index == 0) {
-      this.currentTrack = this.tracks[0];
+    player.tracks[index] = track;
+    if (!player.playing && !player.i && index == 0) {
+      //player.currentTrack = player.tracks[0];
     }
   };
 
@@ -113,7 +84,4 @@ module.exports = function() {
 
 };
 
-//var player = player || new Player();
-
-//module.exports = player;
 

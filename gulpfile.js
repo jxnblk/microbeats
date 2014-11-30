@@ -35,6 +35,6 @@ gulp.task('add-track', require('./tasks/add-track'));
 gulp.task('build', require('./tasks/build'));
 
 gulp.task('default', ['css', 'js', 'build', 'serve'], function() {
-  gulp.watch(['./src/**/*', './templates/**/*'], ['css', 'js', 'build']);
+  gulp.watch(['./src/**/*', './views/**/*'], ['css', 'js', 'build']);
 });
 
