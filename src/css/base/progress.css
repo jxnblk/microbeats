@@ -1,0 +1,26 @@
+
+.progress {
+  display: block;
+  width: 100%;
+  height: 0.5rem;
+  margin: 0.75rem 0;
+  background-color: rgba(0, 0, 0, 0.125);
+  border: 0;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+.progress::-webkit-progress-bar {
+  -webkit-appearance: none;
+  background-color: rgba(0, 0, 0, 0.125);
+}
+
+.progress::-webkit-progress-value {
+  -webkit-appearance: none;
+  background-color: #f52;
+}
+
+.progress::-moz-progress-bar {
+  background-color: #f52;
+}
+

@@ -16,8 +16,10 @@ module.exports = function($scope, player) {
   $scope.duration = player.duration;
 
   audio.addEventListener('timeupdate', function() {
-    $scope.currentTime = audio.currentTime;
-    $scope.duration = audio.duration;
+    $scope.$apply(function() {
+      $scope.currentTime = audio.currentTime;
+      $scope.duration = audio.duration;
+    });
   });
   
 };

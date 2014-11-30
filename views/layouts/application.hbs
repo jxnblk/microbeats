@@ -33,8 +33,8 @@
         {{icon 'next' }}
       </button>
       <div>
-        <progress value="{% currentTime / duration %}"></progress>
-        <p>{% currentTime %} / {% duration %} {% currentTime / duration %}</p>
+        <progress class="progress progress-light" value="{% currentTime / duration %}" ng-click="player.seek($event)"></progress>
+        <div>{% currentTime %} / {% duration %} </div>
       </div>
     </div>
   </header>

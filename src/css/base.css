@@ -16,7 +16,7 @@
 @import 'basscss-grid';
 @import 'basscss-color-basic';
 
-
+@import './base/progress';
 @import './base/svg';
 
 
