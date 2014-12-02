@@ -10,9 +10,9 @@
 </head>
 <body>
 
-  <header class="sticky top-0 bg-white border-bottom">
-    <div class="container p2">
-      <h1 class="bold m0">
+  <header class="sm-sticky top-0 px2 bg-white">
+    <div class="center container py2 border-bottom">
+      <h1 class="h2 bold caps m0">
         <span ng-hide="player.currentTrack">
           {{ title }}
         </span>
@@ -20,23 +20,26 @@
           {% player.currentTrack.title %}
         </span>
       </h1>
-      <button ng-click="player.previous()">
-        {{icon 'previous' }}
-      </button>
-      <button ng-hide="player.playing" ng-click="player.play(player.i)">
-        {{icon 'play' }}
-      </button>
-      <button class="ng-hide" ng-show="player.playing" ng-click="player.pause()">
-        {{icon 'pause' }}
-      </button>
-      <button ng-click="player.next()">
-        {{icon 'next' }}
-      </button>
+      <div class="flex flex-center">
+        <button class="flex-grow button-transparent" ng-click="player.previous()">
+          {{icon "previous" }}
+        </button>
+        <button class="flex-grow h2 button-transparent bg-lighter-gray" ng-hide="player.playing" ng-click="player.play(player.i)">
+          {{icon "play" }}
+        </button>
+        <button class="flex-grow h2 button-transparent" class="init-hide" ng-show="player.playing" ng-click="player.pause()">
+          {{icon "pause" }}
+        </button>
+        <button class="flex-grow button-transparent bg-lighter-gray" ng-click="player.next()">
+          {{icon "next" }}
+        </button>
+      </div>
       <div>
-        <progress class="progress progress-light" value="{% currentTime / duration %}" ng-click="player.seek($event)"></progress>
-        <div>
-          <span class="ng-hide" ng-show="currentTime >= 0">{% currentTime | time %} / {% duration | time %}</span>
-          <span>&nbsp;</span>
+        <progress class="progress progress-blue mt1" value="{% currentTime / duration %}" ng-click="player.seek($event)"></progress>
+        <div class="h6 flex">
+          <div class="ng-hide" ng-show="currentTime >= 0">{% currentTime | time %}</div>
+          <div class="flex-grow">&nbsp;</div>
+          <div class="right-align">{% duration | time %}</div>
         </div>
       </div>
     </div>
@@ -46,15 +49,15 @@
     empty body
   {{/block}}
 
-  <footer>
+  <footer class="h5 container p2">
     <p>
       Microbeats is an experiment in music production emphasizing quantity over quality. All loops are created by Jxnblk in under an hour and not mixed down or mastered.
     </p>
-    <p>
-      <a href="http://jxnblk.com">Created by Jxnblk</a>
-      <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Licensed under Creative Commons</a>
-      <a href="http://soundcloud.com/jxnblk">SoundCloud</a>
-    </p>
+    <div class="center mxn2 sm-flex">
+      <a href="http://jxnblk.com" class="flex-grow button">Created by Jxnblk</a>
+      <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/" class="flex-grow button">Licensed under Creative Commons</a>
+      <a href="http://soundcloud.com/jxnblk" class="flex-grow button">SoundCloud</a>
+    </div>
   </footer>
 
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.4/angular.min.js"></script>

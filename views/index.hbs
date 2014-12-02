@@ -4,19 +4,19 @@
 <div class="container px2">
   <ul class="list-reset" tracklist>
     {{#each tracks }}
-      <li class="flex flex-center mxn2 border-bottom"
+      <li class="flex flex-center border-bottom"
         data-src="{{ stream_url }}?client_id={{ ../client_id }}"
         data-title="{{ title }}"
         data-index="{{ @index }}">
         <a href="#!"
-          class="flex-grow col-10 button button-nav-light"
+          class="flex-grow col-10 button mxn2 button-transparent"
           ng-click="player.playPause({{ @index }})">
           <p class="h5 regular m0">
             {{date created_at }}
           </p>
           <h2 class="h3 bold m0">{{ title }}</h2>
         </a>
-        <a href="{{ permalink_url }}" class="button button-nav-light" target="_blank">
+        <a href="{{ permalink_url }}" class="button mxn2 button-transparent" target="_blank">
           &raquo;
         </a>
       </li>

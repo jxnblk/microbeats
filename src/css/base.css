@@ -19,6 +19,8 @@
 @import './base/progress';
 @import './base/svg';
 @import './utility/position';
+@import './color/progress-blue';
+@import './color/button-transparent';
 
 
 /* Custom media queries */
@@ -52,7 +54,7 @@
   --space-4: 4rem;
 
   /* Grid container max-width */
-  --container-width: 56em;
+  --container-width: 56rem;
 
   /* Colors */
   --blue: #0076df;
@@ -76,5 +78,6 @@
 
 }
 
-.ng-hide { display: none }
+.ng-hide,
+.init-hide { display: none }
 
