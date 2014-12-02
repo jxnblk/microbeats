@@ -14,6 +14,7 @@ app.factory('player', require('./services/player'));
 app.directive('tracklist', require('./directives/tracklist'));
 
 // Filters
+app.filter('time', require('./filters/time'));
 
 // Controllers
 app.controller('MainCtrl', require('./controllers/main'));

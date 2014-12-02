@@ -13,18 +13,19 @@ layouts(Handlebars);
   // Doesn't work with layouts ??
   //delimiters(Handlebars, ['<%=', '%>']);
 
-var options = {
-  handlebars: Handlebars,
-  partials: {
-    application: fs.readFileSync('./views/layouts/application.hbs', 'utf8')
-  },
-  helpers: {
-    date: require('../helpers/date'),
-    icon: require('../helpers/icon')
-  }
-};
-
 module.exports = function() {
+  
+  var options = {
+    handlebars: Handlebars,
+    partials: {
+      application: fs.readFileSync('./views/layouts/application.hbs', 'utf8')
+    },
+    helpers: {
+      date: require('../helpers/date'),
+      icon: require('../helpers/icon')
+    }
+  };
+
   gulp.src('./views/**/*.hbs')
     .pipe(gulpHandlebars(model, options))
     .pipe(rename({ extname: '.html' }))

@@ -10,13 +10,13 @@
 </head>
 <body>
 
-  <header class="border-bottom">
+  <header class="sticky top-0 bg-white border-bottom">
     <div class="container p2">
       <h1 class="bold m0">
         <span ng-hide="player.currentTrack">
           Microbeats
         </span>
-        <span ng-show="player.currentTrack">
+        <span class="ng-hide" ng-show="player.currentTrack">
           {% player.currentTrack.title %}
         </span>
       </h1>
@@ -30,7 +30,7 @@
 <path d="M4 4 L28 16 L4 28 z "/>
 </svg>
       </button>
-      <button ng-show="player.playing" ng-click="player.pause()">
+      <button class="ng-hide" ng-show="player.playing" ng-click="player.pause()">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
 <path d="M4 4 H12 V28 H4 z M20 4 H28 V28 H20 z "/>
 </svg>
@@ -42,7 +42,10 @@
       </button>
       <div>
         <progress class="progress progress-light" value="{% currentTime / duration %}" ng-click="player.seek($event)"></progress>
-        <div>{% currentTime %} / {% duration %} </div>
+        <div>
+          <span class="ng-hide" ng-show="currentTime >= 0">{% currentTime | time %} / {% duration | time %}</span>
+          <span>&nbsp;</span>
+        </div>
       </div>
     </div>
   </header>

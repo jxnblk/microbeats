@@ -18,6 +18,7 @@
 
 @import './base/progress';
 @import './base/svg';
+@import './utility/position';
 
 
 /* Custom media queries */
@@ -74,4 +75,6 @@
   --border-radius: 3px;
 
 }
+
+.ng-hide { display: none }
 

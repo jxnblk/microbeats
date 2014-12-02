@@ -10,13 +10,13 @@
 </head>
 <body>
 
-  <header class="border-bottom">
+  <header class="sticky top-0 bg-white border-bottom">
     <div class="container p2">
       <h1 class="bold m0">
         <span ng-hide="player.currentTrack">
           {{ title }}
         </span>
-        <span ng-show="player.currentTrack">
+        <span class="ng-hide" ng-show="player.currentTrack">
           {% player.currentTrack.title %}
         </span>
       </h1>
@@ -26,7 +26,7 @@
       <button ng-hide="player.playing" ng-click="player.play(player.i)">
         {{icon 'play' }}
       </button>
-      <button ng-show="player.playing" ng-click="player.pause()">
+      <button class="ng-hide" ng-show="player.playing" ng-click="player.pause()">
         {{icon 'pause' }}
       </button>
       <button ng-click="player.next()">
@@ -34,7 +34,10 @@
       </button>
       <div>
         <progress class="progress progress-light" value="{% currentTime / duration %}" ng-click="player.seek($event)"></progress>
-        <div>{% currentTime %} / {% duration %} </div>
+        <div>
+          <span class="ng-hide" ng-show="currentTime >= 0">{% currentTime | time %} / {% duration | time %}</span>
+          <span>&nbsp;</span>
+        </div>
       </div>
     </div>
   </header>
