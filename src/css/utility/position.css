@@ -1,0 +1,20 @@
+
+.sticky { position: sticky }
+
+@media (min-height: 24em) {
+  .tall-sticky { position: sticky }
+}
+
+@media (--breakpoint-sm) {
+  .sm-sticky { position: sticky }
+}
+
+@media (--breakpoint-md) {
+  .md-sticky { position: sticky }
+}
+
+@media (--breakpoint-lg) {
+  .lg-sticky { position: sticky }
+}
+
+

@@ -1,5 +1,29 @@
 [{
   "kind": "track",
+  "id": 178322740,
+  "created_at": "2014/11/23 22:22:31 +0000",
+  "last_modified": "2014/11/23 22:32:30 +0000",
+  "permalink": "hold-it",
+  "title": "Hold It",
+  "description": null,
+  "uri": "https://api.soundcloud.com/tracks/178322740",
+  "created_with": {
+    "id": 45176,
+    "kind": "app",
+    "name": "Ableton Live",
+    "uri": "https://api.soundcloud.com/apps/45176",
+    "permalink_url": "http://soundcloud.com/apps/ableton-live",
+    "external_url": "http://www.ableton.com/free-trial"
+  },
+  "permalink_url": "http://soundcloud.com/jxnblk/hold-it",
+  "artwork_url": null,
+  "waveform_url": "https://w1.sndcdn.com/wDAGY5hcgiFd_m.png",
+  "stream_url": "https://api.soundcloud.com/tracks/178322740/stream",
+  "download_url": "https://api.soundcloud.com/tracks/178322740/download",
+  "attachments_uri": "https://api.soundcloud.com/tracks/178322740/attachments",
+  "policy": "ALLOW"
+}, {
+  "kind": "track",
   "id": 150853946,
   "created_at": "2014/05/23 03:32:59 +0000",
   "permalink": "let-go",

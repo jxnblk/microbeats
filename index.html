@@ -1,76 +1,4322 @@
-<!doctype html>
-<html lang="en" ng-app="microbeats">
+<!DOCTYPE html>
+<html
+  ng-app="app"
+  ng-controller="MainCtrl">
 <head>
   <meta charset="utf-8">
   <title>Microbeats</title>
-  <meta name="description" content="Beats created in under an hour by Jxnblk">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" href="http://microbeats.cc/favicon.png" />
-  <link rel="apple-touch-icon-precomposed" href="http://microbeats.cc/apple-touch-icon.png" />
-  <link rel="stylesheet" href="style.css"/>
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
-  <script type="text/javascript" src="//use.typekit.net/bds4kkt.js"></script>
-  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+  <link rel="stylesheet" href="css/base.min.css">
 </head>
-<body ng-controller="MainCtrl">
+<body ng-keydown="keydown($event)">
 
-  <header class="header overhide txtcen bg-wht pt-5 pr1 pl1 borbo bor-ltgry">
-      
-      <h1 ng-hide="player.tracks" class="reg">Microbeats</h1>
-      <!-- <p>Beats created in under an hour</p> -->
-      <h1 ng-show="player.tracks" class="reg truncate" ng-cloak>{{player.tracks[player.i].title}}</h1>
-
-      <div class="txtcen overhide">
-        <div class="overhide dib wi-auto">
-          <a href="" ng-click="player.previous()" class="fl lh4 pl1 pr1 mr2 maxhi4 txtcen link-dark no-tap-highlight"><i class="icon icon-previous db"></i></a>
-          <a href="" ng-click="player.play(tracks, player.i)" class="fl sq4 lh4 txtcen link-dark no-tap-highlight" ng-hide="player.playing"><i class="icon icon-play h3 lh4 db anim-pop-in"></i></a>
-          <a href="" ng-click="player.pause(player.playing)" class="fl sq4 lh4 txtcen link-dark no-tap-highlight" ng-show="player.playing"><i class="icon icon-pause h3 lh4 db anim-pop-in"></i></a>
-          <a href="" ng-click="player.next()" class="fl lh4 pl1 pr1 ml2 maxhi4 txtcen link-dark no-tap-highlight"><i class="icon icon-skip db"></i></a>
+  <header class="tall-sticky top-0 z1 bg-white">
+    <div class="py1 border-bottom">
+      <h1 class="h2 md-h1 lg-h0 caps bold center md-left-align px2 m0">
+        <span ng-hide="player.currentTrack">
+          Microbeats
+        </span>
+        <span class="ng-hide" ng-show="player.currentTrack">
+          {% player.currentTrack.title %}
+        </span>
+      </h1>
+      <div class="md-flex flex-center">
+        <div class="flex flex-center">
+          <button class="flex-grow button-transparent" ng-click="previous()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M4 4 H8 V14 L28 4 V28 L8 18 V28 H4 z "/>
+</svg>
+          </button>
+          <button class="flex-grow h2 button-transparent bg-lighter-gray" ng-click="playPause(player.i)">
+            <span ng-hide="player.playing">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M4 4 L28 16 L4 28 z "/>
+</svg>
+            </span>
+            <span class="ng-hide" ng-show="player.playing">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M4 4 H12 V28 H4 z M20 4 H28 V28 H20 z "/>
+</svg>
+            </span>
+          </button>
+          <button class="flex-grow button-transparent bg-lighter-gray" ng-click="next()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M4 4 L24 14 V4 H28 V28 H24 V18 L4 28 z "/>
+</svg>
+          </button>
+        </div>
+        <div class="flex-auto px2">
+          <progress class="progress mt1 mb1 progress-blue" value="{% currentTime / duration %}" ng-click="player.seek($event)"></progress>
+        </div>
+        <div class="h6 flex px2">
+          <div class="ng-hide mr1" ng-show="currentTime >= 0">{% currentTime | time %}</div>
+          <div class="flex-grow">&nbsp;</div>
+          <div class="ng-hide right-align" ng-show="currentTime >= 0">{% duration | time %}</div>
         </div>
       </div>
-
-      <div class="posrel maxwi3 minhi3 wrap hide-short" ng-controller="ScrubberCtrl">
-        <div class="posabs top0 right0 bottom0 left0 mb2 bg-ltgry"></div>
-        <div class="posabs top0 bottom0 left0 mb2 bg-ltgry" style="width: {{currentBufferPercentage}}%"></div>
-        <div class="posabs top0 bottom0 left0 mb2 bg-mdgry" style="width: {{currentTimePercentage}}%"></div>
-        <div class="posabs fill z2 no-tap-highlight" ng-click="seekTo($event)"></div>
-        <div class="posabs left0 bottom0 pb-5 small mdgry">{{currentTimeMS | playTime}}</div>
-        <div class="posabs right0 bottom0 pb-5 small mdgry">{{durationMS | playTime}}</div>
-      </div>
-
+    </div>
   </header>
 
-  <div class="scroll-area">
+<div class="sticky-offset">
+  <ul class="list-reset" tracklist>
+      <li id="hold-it" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 0 }"
+        data-src="https://api.soundcloud.com/tracks/178322740/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="0"
+        data-permalink="hold-it"
+        data-title="Hold It"
+        >
+        <a href="##hold-it"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(0)">
+          <p class="h6 caps regular m0">
+            November 23, 2014
+          </p>
+          <h2 class="h3 caps bold m0">Hold It</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/hold-it" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="let-go" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 1 }"
+        data-src="http://api.soundcloud.com/tracks/150853946/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="1"
+        data-permalink="let-go"
+        data-title="Let Go"
+        >
+        <a href="##let-go"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(1)">
+          <p class="h6 caps regular m0">
+            May 22, 2014
+          </p>
+          <h2 class="h3 caps bold m0">Let Go</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/let-go" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="really-wanna" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 2 }"
+        data-src="http://api.soundcloud.com/tracks/150188137/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="2"
+        data-permalink="really-wanna"
+        data-title="Really Wanna"
+        >
+        <a href="##really-wanna"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(2)">
+          <p class="h6 caps regular m0">
+            May 18, 2014
+          </p>
+          <h2 class="h3 caps bold m0">Really Wanna</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/really-wanna" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="me-and-you" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 3 }"
+        data-src="http://api.soundcloud.com/tracks/150042357/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="3"
+        data-permalink="me-and-you"
+        data-title="Me &amp; You"
+        >
+        <a href="##me-and-you"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(3)">
+          <p class="h6 caps regular m0">
+            May 17, 2014
+          </p>
+          <h2 class="h3 caps bold m0">Me &amp; You</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/me-and-you" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="youre-not-anywhere" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 4 }"
+        data-src="http://api.soundcloud.com/tracks/149242545/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="4"
+        data-permalink="youre-not-anywhere"
+        data-title="You&#x27;re Not Anywhere"
+        >
+        <a href="##youre-not-anywhere"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(4)">
+          <p class="h6 caps regular m0">
+            May 12, 2014
+          </p>
+          <h2 class="h3 caps bold m0">You&#x27;re Not Anywhere</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/youre-not-anywhere" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="it-was-always" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 5 }"
+        data-src="http://api.soundcloud.com/tracks/149079894/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="5"
+        data-permalink="it-was-always"
+        data-title="It was Always"
+        >
+        <a href="##it-was-always"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(5)">
+          <p class="h6 caps regular m0">
+            May 11, 2014
+          </p>
+          <h2 class="h3 caps bold m0">It was Always</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/it-was-always" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="mmmxiii" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 6 }"
+        data-src="http://api.soundcloud.com/tracks/137608823/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="6"
+        data-permalink="mmmxiii"
+        data-title="MMMXIII"
+        >
+        <a href="##mmmxiii"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(6)">
+          <p class="h6 caps regular m0">
+            March 2, 2014
+          </p>
+          <h2 class="h3 caps bold m0">MMMXIII</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/mmmxiii" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="near-and-far" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 7 }"
+        data-src="http://api.soundcloud.com/tracks/120488511/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="7"
+        data-permalink="near-and-far"
+        data-title="Near and Far"
+        >
+        <a href="##near-and-far"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(7)">
+          <p class="h6 caps regular m0">
+            November 16, 2013
+          </p>
+          <h2 class="h3 caps bold m0">Near and Far</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/near-and-far" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="how-fast" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 8 }"
+        data-src="http://api.soundcloud.com/tracks/103315175/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="8"
+        data-permalink="how-fast"
+        data-title="How Fast"
+        >
+        <a href="##how-fast"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(8)">
+          <p class="h6 caps regular m0">
+            July 30, 2013
+          </p>
+          <h2 class="h3 caps bold m0">How Fast</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/how-fast" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="everything-you-do-to-me" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 9 }"
+        data-src="http://api.soundcloud.com/tracks/101253637/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="9"
+        data-permalink="everything-you-do-to-me"
+        data-title="Everything You Do to Me"
+        >
+        <a href="##everything-you-do-to-me"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(9)">
+          <p class="h6 caps regular m0">
+            July 16, 2013
+          </p>
+          <h2 class="h3 caps bold m0">Everything You Do to Me</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/everything-you-do-to-me" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="i-just-cant" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 10 }"
+        data-src="http://api.soundcloud.com/tracks/99998559/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="10"
+        data-permalink="i-just-cant"
+        data-title="I Just Can&#x27;t"
+        >
+        <a href="##i-just-cant"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(10)">
+          <p class="h6 caps regular m0">
+            July 7, 2013
+          </p>
+          <h2 class="h3 caps bold m0">I Just Can&#x27;t</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/i-just-cant" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="keep-me" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 11 }"
+        data-src="http://api.soundcloud.com/tracks/92845350/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="11"
+        data-permalink="keep-me"
+        data-title="Keep Me"
+        >
+        <a href="##keep-me"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(11)">
+          <p class="h6 caps regular m0">
+            May 18, 2013
+          </p>
+          <h2 class="h3 caps bold m0">Keep Me</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/keep-me" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="this-city" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 12 }"
+        data-src="http://api.soundcloud.com/tracks/91058817/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="12"
+        data-permalink="this-city"
+        data-title="This City"
+        >
+        <a href="##this-city"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(12)">
+          <p class="h6 caps regular m0">
+            May 6, 2013
+          </p>
+          <h2 class="h3 caps bold m0">This City</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/this-city" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="in-your-heart" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 13 }"
+        data-src="http://api.soundcloud.com/tracks/91064141/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="13"
+        data-permalink="in-your-heart"
+        data-title="In Your Heart"
+        >
+        <a href="##in-your-heart"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(13)">
+          <p class="h6 caps regular m0">
+            May 7, 2013
+          </p>
+          <h2 class="h3 caps bold m0">In Your Heart</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/in-your-heart" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="fuck-that" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 14 }"
+        data-src="http://api.soundcloud.com/tracks/87218205/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="14"
+        data-permalink="fuck-that"
+        data-title="Fuck That"
+        >
+        <a href="##fuck-that"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(14)">
+          <p class="h6 caps regular m0">
+            April 10, 2013
+          </p>
+          <h2 class="h3 caps bold m0">Fuck That</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/fuck-that" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="as-of-late" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 15 }"
+        data-src="http://api.soundcloud.com/tracks/86911647/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="15"
+        data-permalink="as-of-late"
+        data-title="As of Late"
+        >
+        <a href="##as-of-late"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(15)">
+          <p class="h6 caps regular m0">
+            April 8, 2013
+          </p>
+          <h2 class="h3 caps bold m0">As of Late</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/as-of-late" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="awkward-turtle" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 16 }"
+        data-src="http://api.soundcloud.com/tracks/86897244/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="16"
+        data-permalink="awkward-turtle"
+        data-title="Awkward Turtle"
+        >
+        <a href="##awkward-turtle"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(16)">
+          <p class="h6 caps regular m0">
+            April 8, 2013
+          </p>
+          <h2 class="h3 caps bold m0">Awkward Turtle</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/awkward-turtle" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="whiskey-and-allegra" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 17 }"
+        data-src="http://api.soundcloud.com/tracks/86014571/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="17"
+        data-permalink="whiskey-and-allegra"
+        data-title="Whiskey &amp; Allegra"
+        >
+        <a href="##whiskey-and-allegra"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(17)">
+          <p class="h6 caps regular m0">
+            April 2, 2013
+          </p>
+          <h2 class="h3 caps bold m0">Whiskey &amp; Allegra</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/whiskey-and-allegra" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="march-mallets-04" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 18 }"
+        data-src="http://api.soundcloud.com/tracks/84785863/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="18"
+        data-permalink="march-mallets-04"
+        data-title="March Mallets 04"
+        >
+        <a href="##march-mallets-04"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(18)">
+          <p class="h6 caps regular m0">
+            March 24, 2013
+          </p>
+          <h2 class="h3 caps bold m0">March Mallets 04</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/march-mallets-04" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="march-mallets-03" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 19 }"
+        data-src="http://api.soundcloud.com/tracks/83028104/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="19"
+        data-permalink="march-mallets-03"
+        data-title="March Mallets 03"
+        >
+        <a href="##march-mallets-03"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(19)">
+          <p class="h6 caps regular m0">
+            March 13, 2013
+          </p>
+          <h2 class="h3 caps bold m0">March Mallets 03</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/march-mallets-03" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="march-mallets-02" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 20 }"
+        data-src="http://api.soundcloud.com/tracks/82876194/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="20"
+        data-permalink="march-mallets-02"
+        data-title="March Mallets 02"
+        >
+        <a href="##march-mallets-02"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(20)">
+          <p class="h6 caps regular m0">
+            March 12, 2013
+          </p>
+          <h2 class="h3 caps bold m0">March Mallets 02</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/march-mallets-02" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="march-mallets-01" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 21 }"
+        data-src="http://api.soundcloud.com/tracks/81710495/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="21"
+        data-permalink="march-mallets-01"
+        data-title="March Mallets 01"
+        >
+        <a href="##march-mallets-01"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(21)">
+          <p class="h6 caps regular m0">
+            March 3, 2013
+          </p>
+          <h2 class="h3 caps bold m0">March Mallets 01</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/march-mallets-01" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="quantum-tunneling" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 22 }"
+        data-src="http://api.soundcloud.com/tracks/79861856/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="22"
+        data-permalink="quantum-tunneling"
+        data-title="Quantum Tunneling"
+        >
+        <a href="##quantum-tunneling"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(22)">
+          <p class="h6 caps regular m0">
+            February 18, 2013
+          </p>
+          <h2 class="h3 caps bold m0">Quantum Tunneling</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/quantum-tunneling" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="all-that-i-could-give-you" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 23 }"
+        data-src="http://api.soundcloud.com/tracks/79589290/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="23"
+        data-permalink="all-that-i-could-give-you"
+        data-title="All That I Could Give You"
+        >
+        <a href="##all-that-i-could-give-you"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(23)">
+          <p class="h6 caps regular m0">
+            February 16, 2013
+          </p>
+          <h2 class="h3 caps bold m0">All That I Could Give You</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/all-that-i-could-give-you" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="last-forever" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 24 }"
+        data-src="http://api.soundcloud.com/tracks/75513753/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="24"
+        data-permalink="last-forever"
+        data-title="Last Forever"
+        >
+        <a href="##last-forever"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(24)">
+          <p class="h6 caps regular m0">
+            January 18, 2013
+          </p>
+          <h2 class="h3 caps bold m0">Last Forever</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/last-forever" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="talk-to-me" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 25 }"
+        data-src="http://api.soundcloud.com/tracks/75118046/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="25"
+        data-permalink="talk-to-me"
+        data-title="Talk to Me"
+        >
+        <a href="##talk-to-me"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(25)">
+          <p class="h6 caps regular m0">
+            January 15, 2013
+          </p>
+          <h2 class="h3 caps bold m0">Talk to Me</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/talk-to-me" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="more-tall-girls" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 26 }"
+        data-src="http://api.soundcloud.com/tracks/74985860/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="26"
+        data-permalink="more-tall-girls"
+        data-title="More Tall Girls"
+        >
+        <a href="##more-tall-girls"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(26)">
+          <p class="h6 caps regular m0">
+            January 15, 2013
+          </p>
+          <h2 class="h3 caps bold m0">More Tall Girls</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/more-tall-girls" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="severed" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 27 }"
+        data-src="http://api.soundcloud.com/tracks/74851525/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="27"
+        data-permalink="severed"
+        data-title="Severed"
+        >
+        <a href="##severed"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(27)">
+          <p class="h6 caps regular m0">
+            January 13, 2013
+          </p>
+          <h2 class="h3 caps bold m0">Severed</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/severed" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="inside-out" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 28 }"
+        data-src="http://api.soundcloud.com/tracks/74325799/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="28"
+        data-permalink="inside-out"
+        data-title="Inside Out"
+        >
+        <a href="##inside-out"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(28)">
+          <p class="h6 caps regular m0">
+            January 9, 2013
+          </p>
+          <h2 class="h3 caps bold m0">Inside Out</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/inside-out" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="my-place" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 29 }"
+        data-src="http://api.soundcloud.com/tracks/74189032/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="29"
+        data-permalink="my-place"
+        data-title="My Place"
+        >
+        <a href="##my-place"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(29)">
+          <p class="h6 caps regular m0">
+            January 8, 2013
+          </p>
+          <h2 class="h3 caps bold m0">My Place</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/my-place" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="about-time" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 30 }"
+        data-src="http://api.soundcloud.com/tracks/74066845/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="30"
+        data-permalink="about-time"
+        data-title="About Time"
+        >
+        <a href="##about-time"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(30)">
+          <p class="h6 caps regular m0">
+            January 7, 2013
+          </p>
+          <h2 class="h3 caps bold m0">About Time</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/about-time" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="youre-alright" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 31 }"
+        data-src="http://api.soundcloud.com/tracks/73918938/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="31"
+        data-permalink="youre-alright"
+        data-title="You&#x27;re Alright"
+        >
+        <a href="##youre-alright"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(31)">
+          <p class="h6 caps regular m0">
+            January 6, 2013
+          </p>
+          <h2 class="h3 caps bold m0">You&#x27;re Alright</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/youre-alright" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="sloppy" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 32 }"
+        data-src="http://api.soundcloud.com/tracks/72994162/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="32"
+        data-permalink="sloppy"
+        data-title="Sloppy (MrsJxn 048 Rework)"
+        >
+        <a href="##sloppy"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(32)">
+          <p class="h6 caps regular m0">
+            December 29, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Sloppy (MrsJxn 048 Rework)</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/sloppy" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="scratch" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 33 }"
+        data-src="http://api.soundcloud.com/tracks/71860251/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="33"
+        data-permalink="scratch"
+        data-title="Scratch"
+        >
+        <a href="##scratch"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(33)">
+          <p class="h6 caps regular m0">
+            December 19, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Scratch</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/scratch" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="all-i-want" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 34 }"
+        data-src="http://api.soundcloud.com/tracks/71760867/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="34"
+        data-permalink="all-i-want"
+        data-title="All I Want"
+        >
+        <a href="##all-i-want"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(34)">
+          <p class="h6 caps regular m0">
+            December 18, 2012
+          </p>
+          <h2 class="h3 caps bold m0">All I Want</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/all-i-want" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="slippery" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 35 }"
+        data-src="http://api.soundcloud.com/tracks/71295693/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="35"
+        data-permalink="slippery"
+        data-title="Slippery"
+        >
+        <a href="##slippery"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(35)">
+          <p class="h6 caps regular m0">
+            December 14, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Slippery</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/slippery" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="over" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 36 }"
+        data-src="http://api.soundcloud.com/tracks/71056822/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="36"
+        data-permalink="over"
+        data-title="Over"
+        >
+        <a href="##over"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(36)">
+          <p class="h6 caps regular m0">
+            December 13, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Over</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/over" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="it-all-started-with-a-smile" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 37 }"
+        data-src="http://api.soundcloud.com/tracks/70667216/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="37"
+        data-permalink="it-all-started-with-a-smile"
+        data-title="It All Started With a Smile – Microbeats 2012 Mix"
+        >
+        <a href="##it-all-started-with-a-smile"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(37)">
+          <p class="h6 caps regular m0">
+            December 10, 2012
+          </p>
+          <h2 class="h3 caps bold m0">It All Started With a Smile – Microbeats 2012 Mix</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/it-all-started-with-a-smile" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="ever-since" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 38 }"
+        data-src="http://api.soundcloud.com/tracks/70411896/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="38"
+        data-permalink="ever-since"
+        data-title="Ever Since"
+        >
+        <a href="##ever-since"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(38)">
+          <p class="h6 caps regular m0">
+            December 7, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Ever Since</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/ever-since" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="panty-draws" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 39 }"
+        data-src="http://api.soundcloud.com/tracks/70028500/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="39"
+        data-permalink="panty-draws"
+        data-title="Panty Draws"
+        >
+        <a href="##panty-draws"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(39)">
+          <p class="h6 caps regular m0">
+            December 4, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Panty Draws</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/panty-draws" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="gotta-tell-you-remix" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 40 }"
+        data-src="http://api.soundcloud.com/tracks/68832671/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="40"
+        data-permalink="gotta-tell-you-remix"
+        data-title="Gotta Tell You Remix"
+        >
+        <a href="##gotta-tell-you-remix"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(40)">
+          <p class="h6 caps regular m0">
+            November 25, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Gotta Tell You Remix</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/gotta-tell-you-remix" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="your-move" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 41 }"
+        data-src="http://api.soundcloud.com/tracks/68599088/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="41"
+        data-permalink="your-move"
+        data-title="Your Move"
+        >
+        <a href="##your-move"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(41)">
+          <p class="h6 caps regular m0">
+            November 23, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Your Move</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/your-move" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="chipped-tooth" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 42 }"
+        data-src="http://api.soundcloud.com/tracks/68605632/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="42"
+        data-permalink="chipped-tooth"
+        data-title="Chipped Tooth"
+        >
+        <a href="##chipped-tooth"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(42)">
+          <p class="h6 caps regular m0">
+            November 23, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Chipped Tooth</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/chipped-tooth" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="thank-you" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 43 }"
+        data-src="http://api.soundcloud.com/tracks/68451268/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="43"
+        data-permalink="thank-you"
+        data-title="Thank You"
+        >
+        <a href="##thank-you"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(43)">
+          <p class="h6 caps regular m0">
+            November 22, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Thank You</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/thank-you" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="you-never-know" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 44 }"
+        data-src="http://api.soundcloud.com/tracks/68247713/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="44"
+        data-permalink="you-never-know"
+        data-title="You Never Know"
+        >
+        <a href="##you-never-know"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(44)">
+          <p class="h6 caps regular m0">
+            November 20, 2012
+          </p>
+          <h2 class="h3 caps bold m0">You Never Know</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/you-never-know" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="maybe" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 45 }"
+        data-src="http://api.soundcloud.com/tracks/67599899/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="45"
+        data-permalink="maybe"
+        data-title="Maybe"
+        >
+        <a href="##maybe"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(45)">
+          <p class="h6 caps regular m0">
+            November 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Maybe</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/maybe" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="walk-and-talk-remix" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 46 }"
+        data-src="http://api.soundcloud.com/tracks/67062373/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="46"
+        data-permalink="walk-and-talk-remix"
+        data-title="Walk and Talk Remix"
+        >
+        <a href="##walk-and-talk-remix"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(46)">
+          <p class="h6 caps regular m0">
+            November 11, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Walk and Talk Remix</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/walk-and-talk-remix" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="the-game" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 47 }"
+        data-src="http://api.soundcloud.com/tracks/67046691/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="47"
+        data-permalink="the-game"
+        data-title="The Game"
+        >
+        <a href="##the-game"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(47)">
+          <p class="h6 caps regular m0">
+            November 11, 2012
+          </p>
+          <h2 class="h3 caps bold m0">The Game</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/the-game" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="funny-how-time-flies" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 48 }"
+        data-src="http://api.soundcloud.com/tracks/66925837/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="48"
+        data-permalink="funny-how-time-flies"
+        data-title="Funny How Time Flies"
+        >
+        <a href="##funny-how-time-flies"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(48)">
+          <p class="h6 caps regular m0">
+            November 10, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Funny How Time Flies</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/funny-how-time-flies" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="where-are-you" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 49 }"
+        data-src="http://api.soundcloud.com/tracks/66812312/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="49"
+        data-permalink="where-are-you"
+        data-title="Where Are You"
+        >
+        <a href="##where-are-you"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(49)">
+          <p class="h6 caps regular m0">
+            November 9, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Where Are You</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/where-are-you" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="no-one-understands-you" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 50 }"
+        data-src="http://api.soundcloud.com/tracks/66812234/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="50"
+        data-permalink="no-one-understands-you"
+        data-title="No One Understands You"
+        >
+        <a href="##no-one-understands-you"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(50)">
+          <p class="h6 caps regular m0">
+            November 9, 2012
+          </p>
+          <h2 class="h3 caps bold m0">No One Understands You</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/no-one-understands-you" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="like-you" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 51 }"
+        data-src="http://api.soundcloud.com/tracks/66179413/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="51"
+        data-permalink="like-you"
+        data-title="Like You"
+        >
+        <a href="##like-you"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(51)">
+          <p class="h6 caps regular m0">
+            November 5, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Like You</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/like-you" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="two-drifters" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 52 }"
+        data-src="http://api.soundcloud.com/tracks/66155970/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="52"
+        data-permalink="two-drifters"
+        data-title="Two Drifters"
+        >
+        <a href="##two-drifters"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(52)">
+          <p class="h6 caps regular m0">
+            November 4, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Two Drifters</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/two-drifters" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="mix-you-up" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 53 }"
+        data-src="http://api.soundcloud.com/tracks/65323993/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="53"
+        data-permalink="mix-you-up"
+        data-title="Mix You Up"
+        >
+        <a href="##mix-you-up"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(53)">
+          <p class="h6 caps regular m0">
+            October 30, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Mix You Up</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/mix-you-up" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="the-one-i-dream-of" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 54 }"
+        data-src="http://api.soundcloud.com/tracks/65179440/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="54"
+        data-permalink="the-one-i-dream-of"
+        data-title="The One I Dream Of"
+        >
+        <a href="##the-one-i-dream-of"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(54)">
+          <p class="h6 caps regular m0">
+            October 29, 2012
+          </p>
+          <h2 class="h3 caps bold m0">The One I Dream Of</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/the-one-i-dream-of" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="fridays" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 55 }"
+        data-src="http://api.soundcloud.com/tracks/64949447/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="55"
+        data-permalink="fridays"
+        data-title="Fridays"
+        >
+        <a href="##fridays"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(55)">
+          <p class="h6 caps regular m0">
+            October 26, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Fridays</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/fridays" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="the-undead" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 56 }"
+        data-src="http://api.soundcloud.com/tracks/64719900/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="56"
+        data-permalink="the-undead"
+        data-title="The Undead"
+        >
+        <a href="##the-undead"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(56)">
+          <p class="h6 caps regular m0">
+            October 25, 2012
+          </p>
+          <h2 class="h3 caps bold m0">The Undead</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/the-undead" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="phantom" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 57 }"
+        data-src="http://api.soundcloud.com/tracks/64457131/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="57"
+        data-permalink="phantom"
+        data-title="Phantom"
+        >
+        <a href="##phantom"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(57)">
+          <p class="h6 caps regular m0">
+            October 23, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Phantom</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/phantom" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="spooks" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 58 }"
+        data-src="http://api.soundcloud.com/tracks/64184510/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="58"
+        data-permalink="spooks"
+        data-title="Spooks"
+        >
+        <a href="##spooks"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(58)">
+          <p class="h6 caps regular m0">
+            October 20, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Spooks</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/spooks" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="zombies" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 59 }"
+        data-src="http://api.soundcloud.com/tracks/63595276/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="59"
+        data-permalink="zombies"
+        data-title="Zombies"
+        >
+        <a href="##zombies"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(59)">
+          <p class="h6 caps regular m0">
+            October 16, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Zombies</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/zombies" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="strange-creatures-remix" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 60 }"
+        data-src="http://api.soundcloud.com/tracks/63463364/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="60"
+        data-permalink="strange-creatures-remix"
+        data-title="Strange Creatures Remix"
+        >
+        <a href="##strange-creatures-remix"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(60)">
+          <p class="h6 caps regular m0">
+            October 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Strange Creatures Remix</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/strange-creatures-remix" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="eyefucking" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 61 }"
+        data-src="http://api.soundcloud.com/tracks/63325922/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="61"
+        data-permalink="eyefucking"
+        data-title="Eyefucking"
+        >
+        <a href="##eyefucking"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(61)">
+          <p class="h6 caps regular m0">
+            October 13, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Eyefucking</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/eyefucking" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="witches" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 62 }"
+        data-src="http://api.soundcloud.com/tracks/62974251/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="62"
+        data-permalink="witches"
+        data-title="Witches"
+        >
+        <a href="##witches"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(62)">
+          <p class="h6 caps regular m0">
+            October 10, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Witches</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/witches" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="pretty-face" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 63 }"
+        data-src="http://api.soundcloud.com/tracks/62875417/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="63"
+        data-permalink="pretty-face"
+        data-title="Pretty Face"
+        >
+        <a href="##pretty-face"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(63)">
+          <p class="h6 caps regular m0">
+            October 10, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Pretty Face</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/pretty-face" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="shadows" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 64 }"
+        data-src="http://api.soundcloud.com/tracks/62747749/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="64"
+        data-permalink="shadows"
+        data-title="Shadows"
+        >
+        <a href="##shadows"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(64)">
+          <p class="h6 caps regular m0">
+            October 9, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Shadows</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/shadows" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="demons" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 65 }"
+        data-src="http://api.soundcloud.com/tracks/62597395/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="65"
+        data-permalink="demons"
+        data-title="Demons"
+        >
+        <a href="##demons"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(65)">
+          <p class="h6 caps regular m0">
+            October 7, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Demons</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/demons" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="ghosts" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 66 }"
+        data-src="http://api.soundcloud.com/tracks/61939784/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="66"
+        data-permalink="ghosts"
+        data-title="Ghosts"
+        >
+        <a href="##ghosts"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(66)">
+          <p class="h6 caps regular m0">
+            October 2, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Ghosts</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/ghosts" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="monsters" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 67 }"
+        data-src="http://api.soundcloud.com/tracks/61786746/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="67"
+        data-permalink="monsters"
+        data-title="Monsters"
+        >
+        <a href="##monsters"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(67)">
+          <p class="h6 caps regular m0">
+            October 1, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Monsters</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/monsters" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="you-remind-me-of-someone" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 68 }"
+        data-src="http://api.soundcloud.com/tracks/61657277/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="68"
+        data-permalink="you-remind-me-of-someone"
+        data-title="You Remind Me of Someone"
+        >
+        <a href="##you-remind-me-of-someone"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(68)">
+          <p class="h6 caps regular m0">
+            September 29, 2012
+          </p>
+          <h2 class="h3 caps bold m0">You Remind Me of Someone</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/you-remind-me-of-someone" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="no-more-room-for-us" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 69 }"
+        data-src="http://api.soundcloud.com/tracks/61458671/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="69"
+        data-permalink="no-more-room-for-us"
+        data-title="No More Room for Us"
+        >
+        <a href="##no-more-room-for-us"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(69)">
+          <p class="h6 caps regular m0">
+            September 28, 2012
+          </p>
+          <h2 class="h3 caps bold m0">No More Room for Us</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/no-more-room-for-us" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="down" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 70 }"
+        data-src="http://api.soundcloud.com/tracks/61332465/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="70"
+        data-permalink="down"
+        data-title="Down"
+        >
+        <a href="##down"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(70)">
+          <p class="h6 caps regular m0">
+            September 27, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Down</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/down" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="pod-bay-door" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 71 }"
+        data-src="http://api.soundcloud.com/tracks/60928487/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="71"
+        data-permalink="pod-bay-door"
+        data-title="Pod Bay Door"
+        >
+        <a href="##pod-bay-door"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(71)">
+          <p class="h6 caps regular m0">
+            September 23, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Pod Bay Door</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/pod-bay-door" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="women-not-girls" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 72 }"
+        data-src="http://api.soundcloud.com/tracks/60616151/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="72"
+        data-permalink="women-not-girls"
+        data-title="Women, Not Girls"
+        >
+        <a href="##women-not-girls"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(72)">
+          <p class="h6 caps regular m0">
+            September 20, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Women, Not Girls</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/women-not-girls" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="all-you" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 73 }"
+        data-src="http://api.soundcloud.com/tracks/60502845/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="73"
+        data-permalink="all-you"
+        data-title="All You"
+        >
+        <a href="##all-you"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(73)">
+          <p class="h6 caps regular m0">
+            September 20, 2012
+          </p>
+          <h2 class="h3 caps bold m0">All You</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/all-you" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="i-cant-help-myself" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 74 }"
+        data-src="http://api.soundcloud.com/tracks/60392061/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="74"
+        data-permalink="i-cant-help-myself"
+        data-title="I Can&#x27;t Help Myself"
+        >
+        <a href="##i-cant-help-myself"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(74)">
+          <p class="h6 caps regular m0">
+            September 19, 2012
+          </p>
+          <h2 class="h3 caps bold m0">I Can&#x27;t Help Myself</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/i-cant-help-myself" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="bounce-past-vocal-version" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 75 }"
+        data-src="http://api.soundcloud.com/tracks/60261717/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="75"
+        data-permalink="bounce-past-vocal-version"
+        data-title="Bounce Past (Vocal Version)"
+        >
+        <a href="##bounce-past-vocal-version"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(75)">
+          <p class="h6 caps regular m0">
+            September 18, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Bounce Past (Vocal Version)</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/bounce-past-vocal-version" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="bounce-past" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 76 }"
+        data-src="http://api.soundcloud.com/tracks/60249946/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="76"
+        data-permalink="bounce-past"
+        data-title="Bounce Past"
+        >
+        <a href="##bounce-past"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(76)">
+          <p class="h6 caps regular m0">
+            September 17, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Bounce Past</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/bounce-past" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="next-to-me" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 77 }"
+        data-src="http://api.soundcloud.com/tracks/59997930/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="77"
+        data-permalink="next-to-me"
+        data-title="Next to Me"
+        >
+        <a href="##next-to-me"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(77)">
+          <p class="h6 caps regular m0">
+            September 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Next to Me</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/next-to-me" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="you-dont" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 78 }"
+        data-src="http://api.soundcloud.com/tracks/59449747/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="78"
+        data-permalink="you-dont"
+        data-title="You Don&#x27;t"
+        >
+        <a href="##you-dont"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(78)">
+          <p class="h6 caps regular m0">
+            September 11, 2012
+          </p>
+          <h2 class="h3 caps bold m0">You Don&#x27;t</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/you-dont" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="steppin" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 79 }"
+        data-src="http://api.soundcloud.com/tracks/58596347/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="79"
+        data-permalink="steppin"
+        data-title="Steppin&#x27;"
+        >
+        <a href="##steppin"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(79)">
+          <p class="h6 caps regular m0">
+            September 3, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Steppin&#x27;</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/steppin" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="let-you-know" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 80 }"
+        data-src="http://api.soundcloud.com/tracks/57835150/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="80"
+        data-permalink="let-you-know"
+        data-title="Let You Know"
+        >
+        <a href="##let-you-know"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(80)">
+          <p class="h6 caps regular m0">
+            August 28, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Let You Know</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/let-you-know" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="in-your-eyes" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 81 }"
+        data-src="http://api.soundcloud.com/tracks/57593632/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="81"
+        data-permalink="in-your-eyes"
+        data-title="In Your Eyes"
+        >
+        <a href="##in-your-eyes"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(81)">
+          <p class="h6 caps regular m0">
+            August 26, 2012
+          </p>
+          <h2 class="h3 caps bold m0">In Your Eyes</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/in-your-eyes" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="late-nights" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 82 }"
+        data-src="http://api.soundcloud.com/tracks/56897995/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="82"
+        data-permalink="late-nights"
+        data-title="Late Nights"
+        >
+        <a href="##late-nights"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(82)">
+          <p class="h6 caps regular m0">
+            August 19, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Late Nights</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/late-nights" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="california" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 83 }"
+        data-src="http://api.soundcloud.com/tracks/56000793/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="83"
+        data-permalink="california"
+        data-title="California"
+        >
+        <a href="##california"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(83)">
+          <p class="h6 caps regular m0">
+            August 11, 2012
+          </p>
+          <h2 class="h3 caps bold m0">California</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/california" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="moving" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 84 }"
+        data-src="http://api.soundcloud.com/tracks/54027974/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="84"
+        data-permalink="moving"
+        data-title="Moving"
+        >
+        <a href="##moving"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(84)">
+          <p class="h6 caps regular m0">
+            July 25, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Moving</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/moving" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="small-girls" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 85 }"
+        data-src="http://api.soundcloud.com/tracks/52096631/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="85"
+        data-permalink="small-girls"
+        data-title="Small Girls"
+        >
+        <a href="##small-girls"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(85)">
+          <p class="h6 caps regular m0">
+            July 7, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Small Girls</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/small-girls" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="fast-girls" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 86 }"
+        data-src="http://api.soundcloud.com/tracks/51725902/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="86"
+        data-permalink="fast-girls"
+        data-title="Fast Girls"
+        >
+        <a href="##fast-girls"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(86)">
+          <p class="h6 caps regular m0">
+            July 3, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Fast Girls</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/fast-girls" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="american-party" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 87 }"
+        data-src="http://api.soundcloud.com/tracks/51803494/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="87"
+        data-permalink="american-party"
+        data-title="American Party"
+        >
+        <a href="##american-party"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(87)">
+          <p class="h6 caps regular m0">
+            July 4, 2012
+          </p>
+          <h2 class="h3 caps bold m0">American Party</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/american-party" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="shy-girls" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 88 }"
+        data-src="http://api.soundcloud.com/tracks/51699824/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="88"
+        data-permalink="shy-girls"
+        data-title="Shy Girls"
+        >
+        <a href="##shy-girls"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(88)">
+          <p class="h6 caps regular m0">
+            July 3, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Shy Girls</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/shy-girls" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="tall-girls" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 89 }"
+        data-src="http://api.soundcloud.com/tracks/51466387/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="89"
+        data-permalink="tall-girls"
+        data-title="Tall Girls"
+        >
+        <a href="##tall-girls"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(89)">
+          <p class="h6 caps regular m0">
+            July 1, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Tall Girls</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/tall-girls" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="imminent" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 90 }"
+        data-src="http://api.soundcloud.com/tracks/51091072/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="90"
+        data-permalink="imminent"
+        data-title="Imminent"
+        >
+        <a href="##imminent"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(90)">
+          <p class="h6 caps regular m0">
+            June 27, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Imminent</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/imminent" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="forward" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 91 }"
+        data-src="http://api.soundcloud.com/tracks/50661395/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="91"
+        data-permalink="forward"
+        data-title="Forward"
+        >
+        <a href="##forward"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(91)">
+          <p class="h6 caps regular m0">
+            June 23, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Forward</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/forward" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="soon-enough" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 92 }"
+        data-src="http://api.soundcloud.com/tracks/50011346/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="92"
+        data-permalink="soon-enough"
+        data-title="Soon Enough"
+        >
+        <a href="##soon-enough"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(92)">
+          <p class="h6 caps regular m0">
+            June 17, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Soon Enough</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/soon-enough" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="leave-fly" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 93 }"
+        data-src="http://api.soundcloud.com/tracks/49274201/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="93"
+        data-permalink="leave-fly"
+        data-title="Leave/Fly"
+        >
+        <a href="##leave-fly"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(93)">
+          <p class="h6 caps regular m0">
+            June 10, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Leave/Fly</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/leave-fly" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="vcdn" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 94 }"
+        data-src="http://api.soundcloud.com/tracks/48437560/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="94"
+        data-permalink="vcdn"
+        data-title="VCDN"
+        >
+        <a href="##vcdn"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(94)">
+          <p class="h6 caps regular m0">
+            June 2, 2012
+          </p>
+          <h2 class="h3 caps bold m0">VCDN</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/vcdn" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="spiders" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 95 }"
+        data-src="http://api.soundcloud.com/tracks/47399503/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="95"
+        data-permalink="spiders"
+        data-title="Spiders"
+        >
+        <a href="##spiders"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(95)">
+          <p class="h6 caps regular m0">
+            May 24, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Spiders</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/spiders" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="little-wiggle" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 96 }"
+        data-src="http://api.soundcloud.com/tracks/47058408/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="96"
+        data-permalink="little-wiggle"
+        data-title="Little Wiggle"
+        >
+        <a href="##little-wiggle"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(96)">
+          <p class="h6 caps regular m0">
+            May 21, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Little Wiggle</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/little-wiggle" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="go-home" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 97 }"
+        data-src="http://api.soundcloud.com/tracks/46763218/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="97"
+        data-permalink="go-home"
+        data-title="Go Home"
+        >
+        <a href="##go-home"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(97)">
+          <p class="h6 caps regular m0">
+            May 18, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Go Home</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/go-home" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="threshold" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 98 }"
+        data-src="http://api.soundcloud.com/tracks/45773835/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="98"
+        data-permalink="threshold"
+        data-title="Threshold"
+        >
+        <a href="##threshold"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(98)">
+          <p class="h6 caps regular m0">
+            May 8, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Threshold</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/threshold" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="in-your-stead" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 99 }"
+        data-src="http://api.soundcloud.com/tracks/45550426/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="99"
+        data-permalink="in-your-stead"
+        data-title="(I Will Go) In Your Stead"
+        >
+        <a href="##in-your-stead"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(99)">
+          <p class="h6 caps regular m0">
+            May 6, 2012
+          </p>
+          <h2 class="h3 caps bold m0">(I Will Go) In Your Stead</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/in-your-stead" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="sparkle-jerk" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 100 }"
+        data-src="http://api.soundcloud.com/tracks/45258984/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="100"
+        data-permalink="sparkle-jerk"
+        data-title="Sparkle Jerk"
+        >
+        <a href="##sparkle-jerk"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(100)">
+          <p class="h6 caps regular m0">
+            May 4, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Sparkle Jerk</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/sparkle-jerk" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="dusty-closet" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 101 }"
+        data-src="http://api.soundcloud.com/tracks/44919878/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="101"
+        data-permalink="dusty-closet"
+        data-title="Dusty Closet"
+        >
+        <a href="##dusty-closet"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(101)">
+          <p class="h6 caps regular m0">
+            May 1, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Dusty Closet</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/dusty-closet" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="rainbow-juice" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 102 }"
+        data-src="http://api.soundcloud.com/tracks/44773167/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="102"
+        data-permalink="rainbow-juice"
+        data-title="Rainbow Juice"
+        >
+        <a href="##rainbow-juice"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(102)">
+          <p class="h6 caps regular m0">
+            April 29, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Rainbow Juice</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/rainbow-juice" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="unicorn-bump-n-grind" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 103 }"
+        data-src="http://api.soundcloud.com/tracks/44153363/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="103"
+        data-permalink="unicorn-bump-n-grind"
+        data-title="Unicorn Bump &#x27;n&#x27; Grind"
+        >
+        <a href="##unicorn-bump-n-grind"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(103)">
+          <p class="h6 caps regular m0">
+            April 23, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Unicorn Bump &#x27;n&#x27; Grind</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/unicorn-bump-n-grind" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="cant-stop" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 104 }"
+        data-src="http://api.soundcloud.com/tracks/43505339/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="104"
+        data-permalink="cant-stop"
+        data-title="Can&#x27;t Stop"
+        >
+        <a href="##cant-stop"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(104)">
+          <p class="h6 caps regular m0">
+            April 17, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Can&#x27;t Stop</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/cant-stop" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="airlock" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 105 }"
+        data-src="http://api.soundcloud.com/tracks/43380777/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="105"
+        data-permalink="airlock"
+        data-title="Airlock"
+        >
+        <a href="##airlock"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(105)">
+          <p class="h6 caps regular m0">
+            April 16, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Airlock</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/airlock" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="cant-get-out-of-this-funk" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 106 }"
+        data-src="http://api.soundcloud.com/tracks/43247356/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="106"
+        data-permalink="cant-get-out-of-this-funk"
+        data-title="Can&#x27;t Get Out of This Funk"
+        >
+        <a href="##cant-get-out-of-this-funk"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(106)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Can&#x27;t Get Out of This Funk</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/cant-get-out-of-this-funk" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="paleosynth" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 107 }"
+        data-src="http://api.soundcloud.com/tracks/41767468/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="107"
+        data-permalink="paleosynth"
+        data-title="Microbeat: Paleosynth"
+        >
+        <a href="##paleosynth"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(107)">
+          <p class="h6 caps regular m0">
+            April 2, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Microbeat: Paleosynth</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/paleosynth" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="lock-groove-01" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 108 }"
+        data-src="http://api.soundcloud.com/tracks/41835264/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="108"
+        data-permalink="lock-groove-01"
+        data-title="Microbeat: Lock Groove 01"
+        >
+        <a href="##lock-groove-01"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(108)">
+          <p class="h6 caps regular m0">
+            April 2, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Microbeat: Lock Groove 01</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/lock-groove-01" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="smile" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 109 }"
+        data-src="http://api.soundcloud.com/tracks/38304389/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="109"
+        data-permalink="smile"
+        data-title="Microbeat: Smile"
+        >
+        <a href="##smile"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(109)">
+          <p class="h6 caps regular m0">
+            February 29, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Microbeat: Smile</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/smile" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="cyberdyne-systems" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 110 }"
+        data-src="http://api.soundcloud.com/tracks/36064235/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="110"
+        data-permalink="cyberdyne-systems"
+        data-title="Microbeat: Cyberdyne Systems"
+        >
+        <a href="##cyberdyne-systems"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(110)">
+          <p class="h6 caps regular m0">
+            February 9, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Microbeat: Cyberdyne Systems</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/cyberdyne-systems" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="shapeshifter" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 111 }"
+        data-src="http://api.soundcloud.com/tracks/35644628/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="111"
+        data-permalink="shapeshifter"
+        data-title="Microbeat: Shapeshifter"
+        >
+        <a href="##shapeshifter"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(111)">
+          <p class="h6 caps regular m0">
+            February 5, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Microbeat: Shapeshifter</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/shapeshifter" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="tachyons" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 112 }"
+        data-src="http://api.soundcloud.com/tracks/43250750/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="112"
+        data-permalink="tachyons"
+        data-title="Tachyons"
+        >
+        <a href="##tachyons"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(112)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Tachyons</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/tachyons" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="ftl-drive" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 113 }"
+        data-src="http://api.soundcloud.com/tracks/34606043/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="113"
+        data-permalink="ftl-drive"
+        data-title="Microbeat: FTL Drive"
+        >
+        <a href="##ftl-drive"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(113)">
+          <p class="h6 caps regular m0">
+            January 26, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Microbeat: FTL Drive</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/ftl-drive" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="sentience" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 114 }"
+        data-src="http://api.soundcloud.com/tracks/43266636/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="114"
+        data-permalink="sentience"
+        data-title="Sentience"
+        >
+        <a href="##sentience"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(114)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Sentience</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/sentience" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="tycho-magnetic-anomaly" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 115 }"
+        data-src="http://api.soundcloud.com/tracks/43266592/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="115"
+        data-permalink="tycho-magnetic-anomaly"
+        data-title="Tycho Magnetic Anomaly"
+        >
+        <a href="##tycho-magnetic-anomaly"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(115)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Tycho Magnetic Anomaly</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/tycho-magnetic-anomaly" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="tannhauser-gate" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 116 }"
+        data-src="http://api.soundcloud.com/tracks/43266525/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="116"
+        data-permalink="tannhauser-gate"
+        data-title="Tannhauser Gate"
+        >
+        <a href="##tannhauser-gate"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(116)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Tannhauser Gate</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/tannhauser-gate" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="star-destroyer" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 117 }"
+        data-src="http://api.soundcloud.com/tracks/43266469/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="117"
+        data-permalink="star-destroyer"
+        data-title="Star Destroyer"
+        >
+        <a href="##star-destroyer"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(117)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Star Destroyer</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/star-destroyer" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="moonrise" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 118 }"
+        data-src="http://api.soundcloud.com/tracks/43266408/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="118"
+        data-permalink="moonrise"
+        data-title="Moonrise"
+        >
+        <a href="##moonrise"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(118)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Moonrise</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/moonrise" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="triumphant" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 119 }"
+        data-src="http://api.soundcloud.com/tracks/43266296/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="119"
+        data-permalink="triumphant"
+        data-title="Triumphant"
+        >
+        <a href="##triumphant"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(119)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Triumphant</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/triumphant" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="sky-left" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 120 }"
+        data-src="http://api.soundcloud.com/tracks/43266212/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="120"
+        data-permalink="sky-left"
+        data-title="Sky Left"
+        >
+        <a href="##sky-left"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(120)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Sky Left</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/sky-left" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="evil" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 121 }"
+        data-src="http://api.soundcloud.com/tracks/43266163/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="121"
+        data-permalink="evil"
+        data-title="Evil"
+        >
+        <a href="##evil"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(121)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Evil</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/evil" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="buttercut" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 122 }"
+        data-src="http://api.soundcloud.com/tracks/43266115/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="122"
+        data-permalink="buttercut"
+        data-title="Buttercut"
+        >
+        <a href="##buttercut"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(122)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Buttercut</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/buttercut" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="fabrique" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 123 }"
+        data-src="http://api.soundcloud.com/tracks/43266050/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="123"
+        data-permalink="fabrique"
+        data-title="Fabrique"
+        >
+        <a href="##fabrique"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(123)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Fabrique</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/fabrique" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="vibrating-glass" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 124 }"
+        data-src="http://api.soundcloud.com/tracks/43265971/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="124"
+        data-permalink="vibrating-glass"
+        data-title="Vibrating Glass"
+        >
+        <a href="##vibrating-glass"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(124)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Vibrating Glass</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/vibrating-glass" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="funkwave-no-2" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 125 }"
+        data-src="http://api.soundcloud.com/tracks/43265922/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="125"
+        data-permalink="funkwave-no-2"
+        data-title="Funkwave No. 2"
+        >
+        <a href="##funkwave-no-2"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(125)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Funkwave No. 2</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/funkwave-no-2" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="sunday-shiner" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 126 }"
+        data-src="http://api.soundcloud.com/tracks/43265864/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="126"
+        data-permalink="sunday-shiner"
+        data-title="Sunday Shiner"
+        >
+        <a href="##sunday-shiner"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(126)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Sunday Shiner</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/sunday-shiner" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="sunday-shakaigaku" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 127 }"
+        data-src="http://api.soundcloud.com/tracks/43265791/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="127"
+        data-permalink="sunday-shakaigaku"
+        data-title="Sunday Shakaigaku"
+        >
+        <a href="##sunday-shakaigaku"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(127)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Sunday Shakaigaku</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/sunday-shakaigaku" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="sunday-sizzledown" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 128 }"
+        data-src="http://api.soundcloud.com/tracks/43265721/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="128"
+        data-permalink="sunday-sizzledown"
+        data-title="Sunday Sizzledown"
+        >
+        <a href="##sunday-sizzledown"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(128)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Sunday Sizzledown</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/sunday-sizzledown" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="monday-monomobo" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 129 }"
+        data-src="http://api.soundcloud.com/tracks/43265671/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="129"
+        data-permalink="monday-monomobo"
+        data-title="Monday Monomobo"
+        >
+        <a href="##monday-monomobo"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(129)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Monday Monomobo</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/monday-monomobo" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="sunday-skottleboz" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 130 }"
+        data-src="http://api.soundcloud.com/tracks/43265591/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="130"
+        data-permalink="sunday-skottleboz"
+        data-title="Sunday Skottleboz"
+        >
+        <a href="##sunday-skottleboz"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(130)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Sunday Skottleboz</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/sunday-skottleboz" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="wednesday-wacid" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 131 }"
+        data-src="http://api.soundcloud.com/tracks/43265531/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="131"
+        data-permalink="wednesday-wacid"
+        data-title="Wednesday Wacid"
+        >
+        <a href="##wednesday-wacid"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(131)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Wednesday Wacid</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/wednesday-wacid" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="monday-muzzybuzz" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 132 }"
+        data-src="http://api.soundcloud.com/tracks/43265480/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="132"
+        data-permalink="monday-muzzybuzz"
+        data-title="Monday Muzzybuzz"
+        >
+        <a href="##monday-muzzybuzz"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(132)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Monday Muzzybuzz</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/monday-muzzybuzz" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="wednesday-wabbadabba" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 133 }"
+        data-src="http://api.soundcloud.com/tracks/43265379/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="133"
+        data-permalink="wednesday-wabbadabba"
+        data-title="Wednesday Wabbadabba"
+        >
+        <a href="##wednesday-wabbadabba"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(133)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Wednesday Wabbadabba</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/wednesday-wabbadabba" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="thursday-thirstank" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 134 }"
+        data-src="http://api.soundcloud.com/tracks/43265435/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="134"
+        data-permalink="thursday-thirstank"
+        data-title="Thursday Thirstank"
+        >
+        <a href="##thursday-thirstank"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(134)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Thursday Thirstank</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/thursday-thirstank" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="tuesday-taste" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 135 }"
+        data-src="http://api.soundcloud.com/tracks/43265311/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="135"
+        data-permalink="tuesday-taste"
+        data-title="Tuesday Taste"
+        >
+        <a href="##tuesday-taste"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(135)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Tuesday Taste</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/tuesday-taste" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="monday-mumbler" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 136 }"
+        data-src="http://api.soundcloud.com/tracks/43265267/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="136"
+        data-permalink="monday-mumbler"
+        data-title="Monday Mumbler"
+        >
+        <a href="##monday-mumbler"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(136)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Monday Mumbler</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/monday-mumbler" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="sunday-somber" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 137 }"
+        data-src="http://api.soundcloud.com/tracks/43265216/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="137"
+        data-permalink="sunday-somber"
+        data-title="Sunday Somber"
+        >
+        <a href="##sunday-somber"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(137)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Sunday Somber</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/sunday-somber" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="saturday-substrate" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 138 }"
+        data-src="http://api.soundcloud.com/tracks/43265116/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="138"
+        data-permalink="saturday-substrate"
+        data-title="Saturday Substrate"
+        >
+        <a href="##saturday-substrate"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(138)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Saturday Substrate</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/saturday-substrate" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="friday-fricative" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 139 }"
+        data-src="http://api.soundcloud.com/tracks/43265036/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="139"
+        data-permalink="friday-fricative"
+        data-title="Friday Fricative"
+        >
+        <a href="##friday-fricative"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(139)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Friday Fricative</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/friday-fricative" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="monday-masher" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 140 }"
+        data-src="http://api.soundcloud.com/tracks/43264948/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="140"
+        data-permalink="monday-masher"
+        data-title="Monday Masher"
+        >
+        <a href="##monday-masher"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(140)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Monday Masher</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/monday-masher" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="sunday-stranger" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 141 }"
+        data-src="http://api.soundcloud.com/tracks/43264875/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="141"
+        data-permalink="sunday-stranger"
+        data-title="Sunday Stranger"
+        >
+        <a href="##sunday-stranger"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(141)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Sunday Stranger</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/sunday-stranger" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="saturday-sentiment" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 142 }"
+        data-src="http://api.soundcloud.com/tracks/43264736/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="142"
+        data-permalink="saturday-sentiment"
+        data-title="Saturday Sentiment"
+        >
+        <a href="##saturday-sentiment"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(142)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Saturday Sentiment</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/saturday-sentiment" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="wednesday-wrinkle" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 143 }"
+        data-src="http://api.soundcloud.com/tracks/43264544/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="143"
+        data-permalink="wednesday-wrinkle"
+        data-title="Wednesday Wrinkle"
+        >
+        <a href="##wednesday-wrinkle"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(143)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Wednesday Wrinkle</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/wednesday-wrinkle" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="thursday-throughput" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 144 }"
+        data-src="http://api.soundcloud.com/tracks/43264606/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="144"
+        data-permalink="thursday-throughput"
+        data-title="Thursday Throughput"
+        >
+        <a href="##thursday-throughput"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(144)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Thursday Throughput</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/thursday-throughput" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="friday-fuckabout" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 145 }"
+        data-src="http://api.soundcloud.com/tracks/43264650/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="145"
+        data-permalink="friday-fuckabout"
+        data-title="Friday Fuckabout"
+        >
+        <a href="##friday-fuckabout"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(145)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Friday Fuckabout</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/friday-fuckabout" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="tuesday-temperament" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 146 }"
+        data-src="http://api.soundcloud.com/tracks/43264494/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="146"
+        data-permalink="tuesday-temperament"
+        data-title="Tuesday Temperament"
+        >
+        <a href="##tuesday-temperament"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(146)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Tuesday Temperament</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/tuesday-temperament" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="monday-method" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 147 }"
+        data-src="http://api.soundcloud.com/tracks/43264438/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="147"
+        data-permalink="monday-method"
+        data-title="Monday Method"
+        >
+        <a href="##monday-method"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(147)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Monday Method</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/monday-method" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="sunday-serenade" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 148 }"
+        data-src="http://api.soundcloud.com/tracks/43264381/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="148"
+        data-permalink="sunday-serenade"
+        data-title="Sunday Serenade"
+        >
+        <a href="##sunday-serenade"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(148)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Sunday Serenade</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/sunday-serenade" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="saturday-sidestep" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 149 }"
+        data-src="http://api.soundcloud.com/tracks/43264287/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="149"
+        data-permalink="saturday-sidestep"
+        data-title="Saturday Sidestep"
+        >
+        <a href="##saturday-sidestep"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(149)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Saturday Sidestep</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/saturday-sidestep" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="friday-flex" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 150 }"
+        data-src="http://api.soundcloud.com/tracks/43264234/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="150"
+        data-permalink="friday-flex"
+        data-title="Friday Flex"
+        >
+        <a href="##friday-flex"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(150)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Friday Flex</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/friday-flex" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="wednesday-warrior" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 151 }"
+        data-src="http://api.soundcloud.com/tracks/43264177/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="151"
+        data-permalink="wednesday-warrior"
+        data-title="Wednesday Warrior"
+        >
+        <a href="##wednesday-warrior"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(151)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Wednesday Warrior</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/wednesday-warrior" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="tuesday-timewarp" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 152 }"
+        data-src="http://api.soundcloud.com/tracks/43264101/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="152"
+        data-permalink="tuesday-timewarp"
+        data-title="Tuesday Timewarp"
+        >
+        <a href="##tuesday-timewarp"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(152)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Tuesday Timewarp</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/tuesday-timewarp" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="monday-memory" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 153 }"
+        data-src="http://api.soundcloud.com/tracks/43264010/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="153"
+        data-permalink="monday-memory"
+        data-title="Monday Memory"
+        >
+        <a href="##monday-memory"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(153)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Monday Memory</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/monday-memory" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="sunday-skygaze" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 154 }"
+        data-src="http://api.soundcloud.com/tracks/43263931/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="154"
+        data-permalink="sunday-skygaze"
+        data-title="Sunday Skygaze"
+        >
+        <a href="##sunday-skygaze"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(154)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Sunday Skygaze</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/sunday-skygaze" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="saturday-sweetness" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 155 }"
+        data-src="http://api.soundcloud.com/tracks/43263841/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="155"
+        data-permalink="saturday-sweetness"
+        data-title="Saturday Sweetness"
+        >
+        <a href="##saturday-sweetness"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(155)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Saturday Sweetness</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/saturday-sweetness" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="friday-furniture" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 156 }"
+        data-src="http://api.soundcloud.com/tracks/43256050/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="156"
+        data-permalink="friday-furniture"
+        data-title="Friday Furniture"
+        >
+        <a href="##friday-furniture"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(156)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Friday Furniture</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/friday-furniture" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="wednesday-wanderlust" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 157 }"
+        data-src="http://api.soundcloud.com/tracks/43255962/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="157"
+        data-permalink="wednesday-wanderlust"
+        data-title="Wednesday Wanderlust"
+        >
+        <a href="##wednesday-wanderlust"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(157)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Wednesday Wanderlust</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/wednesday-wanderlust" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="tuesday-tubestep" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 158 }"
+        data-src="http://api.soundcloud.com/tracks/43255895/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="158"
+        data-permalink="tuesday-tubestep"
+        data-title="Tuesday Tubestep"
+        >
+        <a href="##tuesday-tubestep"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(158)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Tuesday Tubestep</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/tuesday-tubestep" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="monday-megatheme" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 159 }"
+        data-src="http://api.soundcloud.com/tracks/43255833/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="159"
+        data-permalink="monday-megatheme"
+        data-title="Monday Megatheme"
+        >
+        <a href="##monday-megatheme"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(159)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Monday Megatheme</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/monday-megatheme" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="sunday-spaceout" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 160 }"
+        data-src="http://api.soundcloud.com/tracks/43255699/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="160"
+        data-permalink="sunday-spaceout"
+        data-title="Sunday Spaceout"
+        >
+        <a href="##sunday-spaceout"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(160)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Sunday Spaceout</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/sunday-spaceout" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="saturday-shuffle" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 161 }"
+        data-src="http://api.soundcloud.com/tracks/43255607/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="161"
+        data-permalink="saturday-shuffle"
+        data-title="Saturday Shuffle"
+        >
+        <a href="##saturday-shuffle"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(161)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Saturday Shuffle</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/saturday-shuffle" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="friday-futuredub" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 162 }"
+        data-src="http://api.soundcloud.com/tracks/43255506/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="162"
+        data-permalink="friday-futuredub"
+        data-title="Friday Futuredub"
+        >
+        <a href="##friday-futuredub"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(162)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Friday Futuredub</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/friday-futuredub" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="wednesday-wobble" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 163 }"
+        data-src="http://api.soundcloud.com/tracks/43255431/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="163"
+        data-permalink="wednesday-wobble"
+        data-title="Wednesday Wobble"
+        >
+        <a href="##wednesday-wobble"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(163)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Wednesday Wobble</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/wednesday-wobble" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="tuesday-synthgaze" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 164 }"
+        data-src="http://api.soundcloud.com/tracks/43255382/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="164"
+        data-permalink="tuesday-synthgaze"
+        data-title="Tuesday Synthgaze"
+        >
+        <a href="##tuesday-synthgaze"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(164)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Tuesday Synthgaze</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/tuesday-synthgaze" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="monday-melody" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 165 }"
+        data-src="http://api.soundcloud.com/tracks/43255289/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="165"
+        data-permalink="monday-melody"
+        data-title="Monday Melody"
+        >
+        <a href="##monday-melody"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(165)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Monday Melody</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/monday-melody" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="sunday-brunch" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 166 }"
+        data-src="http://api.soundcloud.com/tracks/43255206/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="166"
+        data-permalink="sunday-brunch"
+        data-title="Sunday Brunch"
+        >
+        <a href="##sunday-brunch"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(166)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Sunday Brunch</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/sunday-brunch" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-035" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 167 }"
+        data-src="http://api.soundcloud.com/tracks/43254871/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="167"
+        data-permalink="untitled-035"
+        data-title="Untitled 035"
+        >
+        <a href="##untitled-035"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(167)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 035</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-035" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-034" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 168 }"
+        data-src="http://api.soundcloud.com/tracks/43254789/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="168"
+        data-permalink="untitled-034"
+        data-title="Untitled 034"
+        >
+        <a href="##untitled-034"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(168)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 034</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-034" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-033" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 169 }"
+        data-src="http://api.soundcloud.com/tracks/43254729/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="169"
+        data-permalink="untitled-033"
+        data-title="Untitled 033"
+        >
+        <a href="##untitled-033"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(169)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 033</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-033" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-032" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 170 }"
+        data-src="http://api.soundcloud.com/tracks/43254658/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="170"
+        data-permalink="untitled-032"
+        data-title="Untitled 032"
+        >
+        <a href="##untitled-032"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(170)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 032</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-032" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-031" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 171 }"
+        data-src="http://api.soundcloud.com/tracks/43254595/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="171"
+        data-permalink="untitled-031"
+        data-title="Untitled 031"
+        >
+        <a href="##untitled-031"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(171)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 031</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-031" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-030" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 172 }"
+        data-src="http://api.soundcloud.com/tracks/43254265/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="172"
+        data-permalink="untitled-030"
+        data-title="Untitled 030"
+        >
+        <a href="##untitled-030"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(172)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 030</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-030" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-029" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 173 }"
+        data-src="http://api.soundcloud.com/tracks/43254031/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="173"
+        data-permalink="untitled-029"
+        data-title="Untitled 029"
+        >
+        <a href="##untitled-029"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(173)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 029</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-029" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-028" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 174 }"
+        data-src="http://api.soundcloud.com/tracks/43253978/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="174"
+        data-permalink="untitled-028"
+        data-title="Untitled 028"
+        >
+        <a href="##untitled-028"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(174)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 028</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-028" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-027" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 175 }"
+        data-src="http://api.soundcloud.com/tracks/43253888/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="175"
+        data-permalink="untitled-027"
+        data-title="Untitled 027"
+        >
+        <a href="##untitled-027"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(175)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 027</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-027" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-026" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 176 }"
+        data-src="http://api.soundcloud.com/tracks/43253724/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="176"
+        data-permalink="untitled-026"
+        data-title="Untitled 026"
+        >
+        <a href="##untitled-026"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(176)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 026</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-026" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-025" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 177 }"
+        data-src="http://api.soundcloud.com/tracks/43253669/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="177"
+        data-permalink="untitled-025"
+        data-title="Untitled 025"
+        >
+        <a href="##untitled-025"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(177)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 025</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-025" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-024" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 178 }"
+        data-src="http://api.soundcloud.com/tracks/43253473/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="178"
+        data-permalink="untitled-024"
+        data-title="Untitled 024"
+        >
+        <a href="##untitled-024"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(178)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 024</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-024" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-023" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 179 }"
+        data-src="http://api.soundcloud.com/tracks/43253385/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="179"
+        data-permalink="untitled-023"
+        data-title="Untitled 023"
+        >
+        <a href="##untitled-023"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(179)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 023</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-023" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-022" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 180 }"
+        data-src="http://api.soundcloud.com/tracks/43253311/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="180"
+        data-permalink="untitled-022"
+        data-title="Untitled 022"
+        >
+        <a href="##untitled-022"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(180)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 022</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-022" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-021" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 181 }"
+        data-src="http://api.soundcloud.com/tracks/43253164/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="181"
+        data-permalink="untitled-021"
+        data-title="Untitled 021"
+        >
+        <a href="##untitled-021"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(181)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 021</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-021" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-020" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 182 }"
+        data-src="http://api.soundcloud.com/tracks/43253092/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="182"
+        data-permalink="untitled-020"
+        data-title="Untitled 020"
+        >
+        <a href="##untitled-020"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(182)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 020</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-020" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-019" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 183 }"
+        data-src="http://api.soundcloud.com/tracks/43253027/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="183"
+        data-permalink="untitled-019"
+        data-title="Untitled 019"
+        >
+        <a href="##untitled-019"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(183)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 019</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-019" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-018" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 184 }"
+        data-src="http://api.soundcloud.com/tracks/43252976/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="184"
+        data-permalink="untitled-018"
+        data-title="Untitled 018"
+        >
+        <a href="##untitled-018"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(184)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 018</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-018" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-017" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 185 }"
+        data-src="http://api.soundcloud.com/tracks/43252914/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="185"
+        data-permalink="untitled-017"
+        data-title="Untitled 017"
+        >
+        <a href="##untitled-017"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(185)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 017</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-017" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-016" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 186 }"
+        data-src="http://api.soundcloud.com/tracks/43252853/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="186"
+        data-permalink="untitled-016"
+        data-title="Untitled 016"
+        >
+        <a href="##untitled-016"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(186)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 016</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-016" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-015" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 187 }"
+        data-src="http://api.soundcloud.com/tracks/43252746/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="187"
+        data-permalink="untitled-015"
+        data-title="Untitled 015"
+        >
+        <a href="##untitled-015"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(187)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 015</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-015" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-014" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 188 }"
+        data-src="http://api.soundcloud.com/tracks/43252595/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="188"
+        data-permalink="untitled-014"
+        data-title="Untitled 014"
+        >
+        <a href="##untitled-014"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(188)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 014</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-014" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-013" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 189 }"
+        data-src="http://api.soundcloud.com/tracks/43252533/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="189"
+        data-permalink="untitled-013"
+        data-title="Untitled 013"
+        >
+        <a href="##untitled-013"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(189)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 013</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-013" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-012" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 190 }"
+        data-src="http://api.soundcloud.com/tracks/43252469/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="190"
+        data-permalink="untitled-012"
+        data-title="Untitled 012"
+        >
+        <a href="##untitled-012"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(190)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 012</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-012" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-011" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 191 }"
+        data-src="http://api.soundcloud.com/tracks/43252414/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="191"
+        data-permalink="untitled-011"
+        data-title="Untitled 011"
+        >
+        <a href="##untitled-011"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(191)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 011</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-011" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-010" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 192 }"
+        data-src="http://api.soundcloud.com/tracks/43252356/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="192"
+        data-permalink="untitled-010"
+        data-title="Untitled 010"
+        >
+        <a href="##untitled-010"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(192)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 010</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-010" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-009" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 193 }"
+        data-src="http://api.soundcloud.com/tracks/43252224/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="193"
+        data-permalink="untitled-009"
+        data-title="Untitled 009"
+        >
+        <a href="##untitled-009"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(193)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 009</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-009" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-008" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 194 }"
+        data-src="http://api.soundcloud.com/tracks/43252174/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="194"
+        data-permalink="untitled-008"
+        data-title="Untitled 008"
+        >
+        <a href="##untitled-008"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(194)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 008</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-008" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-007" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 195 }"
+        data-src="http://api.soundcloud.com/tracks/43252057/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="195"
+        data-permalink="untitled-007"
+        data-title="Untitled 007"
+        >
+        <a href="##untitled-007"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(195)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 007</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-007" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-006" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 196 }"
+        data-src="http://api.soundcloud.com/tracks/43251978/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="196"
+        data-permalink="untitled-006"
+        data-title="Untitled 006"
+        >
+        <a href="##untitled-006"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(196)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 006</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-006" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-005" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 197 }"
+        data-src="http://api.soundcloud.com/tracks/43251887/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="197"
+        data-permalink="untitled-005"
+        data-title="Untitled 005"
+        >
+        <a href="##untitled-005"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(197)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 005</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-005" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-004" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 198 }"
+        data-src="http://api.soundcloud.com/tracks/43251696/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="198"
+        data-permalink="untitled-004"
+        data-title="Untitled 004"
+        >
+        <a href="##untitled-004"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(198)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 004</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-004" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-003" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 199 }"
+        data-src="http://api.soundcloud.com/tracks/43251510/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="199"
+        data-permalink="untitled-003"
+        data-title="Untitled 003"
+        >
+        <a href="##untitled-003"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(199)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 003</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-003" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-002" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 200 }"
+        data-src="http://api.soundcloud.com/tracks/43251431/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="200"
+        data-permalink="untitled-002"
+        data-title="Untitled 002"
+        >
+        <a href="##untitled-002"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(200)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 002</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-002" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+      <li id="untitled-001" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == 201 }"
+        data-src="http://api.soundcloud.com/tracks/43251383/stream?client_id=1c21814089b72a7cd4ce9246009ddcfb"
+        data-index="201"
+        data-permalink="untitled-001"
+        data-title="Untitled 001"
+        >
+        <a href="##untitled-001"
+          class="flex-grow col-10 button button-transparent"
+          ng-click="player.playPause(201)">
+          <p class="h6 caps regular m0">
+            April 15, 2012
+          </p>
+          <h2 class="h3 caps bold m0">Untitled 001</h2>
+        </a>
+        <a href="http://soundcloud.com/jxnblk/untitled-001" class="button button-transparent" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+<path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "/>
+</svg>
+        </a>
+      </li>
+  </ul>
+</div>
 
-    <div class="maxwi3 wrap pr1 pl1">
-      <ul class="list-style-none">
-        <!-- <li class="pt1 borbo bor-ltgry">
-          <input type="text" placeholder="search" class="input wi100 borbox bor-ltgry" ng-model="query" />
-        </li> -->
-        <li ng-repeat="track in tracks | filter:query" class="posrel borbo bor-ltgry" ng-cloak>
-          <span id="{{track.permalink}}" class="offset-link"></span>
-          <a href="" ng-click="player.play(tracks, $index)" class="posrel db pt-5 pb-5"ng-class="{'dkgry': player.playing.id != track.id && player.paused.id != track.id}">
-            <p class="small mdgry">{{track.created_at | dateSimple}}</p>
-            <h2 class="p reg truncate pr1">{{track.title}}</h2>
-            <a ng-href="{{track.permalink_url}}" target="_blank" class="posabs top0 right0 bottom0 db lh3 pt-5 pr1 pb-5 pl1 mdgry">&raquo;</a>
-          </a>
-          
-        </li>
-      </ul>
+  <footer class="h5 p2 mb4">
+    <p>
+      Microbeats is an experiment in music production emphasizing quantity over quality. All loops are created by Jxnblk in under an hour and not mixed down or mastered.
+    </p>
+    <div class="mxn2">
+      <a href="http://jxnblk.com" class="button">Created by Jxnblk</a>
+      <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/" class="button">Licensed under Creative Commons</a>
+      <a href="http://soundcloud.com/jxnblk" class="button">SoundCloud</a>
     </div>
+  </footer>
 
-    <footer class="pt2 pr1 pb2 pl1 maxwi3 wrap" ng-show="tracks">
-      <p class="small mdgry">Microbeats is an experiment in music production emphasizing quantity over quality. All loops are created by Jxnblk in under an hour and not mixed down or mastered.</p>
-      <p><a href="http://jxnblk.com" class="small mdgry mr1">Created by Jxnblk</a> <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/" class="small mdgry mr1">Licensed under Creative Commons</a> <a href="http://soundcloud.com/jxnblk" class="small mdgry mr1">SoundCloud</a></p>
-    </footer>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.4/angular.min.js"></script>
+  <script src="js/app.min.js"></script>
 
-  </div>
-
-
-  <script src="js/lib/moment.min.js"></script>
-  <script src="js/lib/smoothscroll.min.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/services.js"></script>
-  <script src="js/controllers.js"></script>
 </body>
 </html>

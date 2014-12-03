@@ -1,7 +1,8 @@
 # Microbeats
-## Beats Created in Under an Hour
+Beats created in under an hour
 http://microbeats.cc
 
----
+Powered by Gulp, Handlebars, and Angular JS
 
-Built with AngularJS
+MIT License
+
