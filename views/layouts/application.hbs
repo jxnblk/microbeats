@@ -11,8 +11,8 @@
 <body ng-keydown="keydown($event)">
 
   <header class="tall-sticky top-0 z1 bg-white">
-    <div class="mt1 border-bottom">
-      <h1 class="h2 md-h1 lg-h0 caps bold px2 m0">
+    <div class="py1 border-bottom">
+      <h1 class="h2 md-h1 lg-h0 caps bold center md-left-align px2 m0">
         <span ng-hide="player.currentTrack">
           {{ title }}
         </span>
@@ -22,10 +22,10 @@
       </h1>
       <div class="md-flex flex-center">
         <div class="flex flex-center">
-          <button class="flex-grow button-transparent" ng-click="player.previous()">
+          <button class="flex-grow button-transparent" ng-click="previous()">
             {{icon "previous" }}
           </button>
-          <button class="flex-grow h2 button-transparent bg-lighter-gray" ng-click="player.playPause(player.i)">
+          <button class="flex-grow h2 button-transparent bg-lighter-gray" ng-click="playPause(player.i)">
             <span ng-hide="player.playing">
               {{icon "play" }}
             </span>
@@ -33,7 +33,7 @@
               {{icon "pause" }}
             </span>
           </button>
-          <button class="flex-grow button-transparent bg-lighter-gray" ng-click="player.next()">
+          <button class="flex-grow button-transparent bg-lighter-gray" ng-click="next()">
             {{icon "next" }}
           </button>
         </div>

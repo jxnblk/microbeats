@@ -4,7 +4,7 @@
 
 var audio = require('../services/audio');
 
-module.exports = function($scope, player) {
+module.exports = function($scope, $location, player) {
 
   $scope.tracks = [];
   $scope.player = player;
@@ -12,6 +12,20 @@ module.exports = function($scope, player) {
 
   $scope.currentTime = player.currentTime;
   $scope.duration = player.duration;
+
+  $scope.playPause = function(i) {
+    player.playPause(i);
+  };
+
+  $scope.previous = function() {
+    player.previous();
+    $location.hash(player.currentTrack.permalink);
+  };
+
+  $scope.next = function() {
+    player.next();
+    $location.hash(player.currentTrack.permalink);
+  };
 
   audio.addEventListener('timeupdate', function() {
     $scope.$apply(function() {
@@ -25,15 +39,15 @@ module.exports = function($scope, player) {
     switch (e.which) {
       case 32:
         e.preventDefault();
-        player.playPause(player.i);
+        $scope.playPause(player.i);
         break;
       case 39:
       case 74:
-        player.next();
+        $scope.next();
         break;
       case 37:
       case 75:
-        player.previous();
+        $scope.previous();
         break;
     };
   };
