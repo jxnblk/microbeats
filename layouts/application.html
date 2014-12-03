@@ -8,11 +8,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/css/base.min.css">
 </head>
-<body>
+<body ng-keydown="keydown($event)">
 
-  <header class="sm-sticky top-0 px2 bg-white">
-    <div class="center container py2 border-bottom">
-      <h1 class="h2 bold caps m0">
+  <header class="tall-sticky top-0 z1 bg-white">
+    <div class="mt1 border-bottom">
+      <h1 class="h2 md-h1 lg-h0 caps bold px2 m0">
         <span ng-hide="player.currentTrack">
           Microbeats
         </span>
@@ -20,49 +20,52 @@
           {% player.currentTrack.title %}
         </span>
       </h1>
-      <div class="flex flex-center">
-        <button class="flex-grow button-transparent" ng-click="player.previous()">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+      <div class="md-flex flex-center">
+        <div class="flex flex-center">
+          <button class="flex-grow button-transparent" ng-click="player.previous()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
 <path d="M4 4 H8 V14 L28 4 V28 L8 18 V28 H4 z "/>
 </svg>
-        </button>
-        <button class="flex-grow h2 button-transparent bg-lighter-gray" ng-hide="player.playing" ng-click="player.play(player.i)">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+          </button>
+          <button class="flex-grow h2 button-transparent bg-lighter-gray" ng-click="player.playPause(player.i)">
+            <span ng-hide="player.playing">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
 <path d="M4 4 L28 16 L4 28 z "/>
 </svg>
-        </button>
-        <button class="flex-grow h2 button-transparent" class="init-hide" ng-show="player.playing" ng-click="player.pause()">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+            </span>
+            <span class="ng-hide" ng-show="player.playing">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
 <path d="M4 4 H12 V28 H4 z M20 4 H28 V28 H20 z "/>
 </svg>
-        </button>
-        <button class="flex-grow button-transparent bg-lighter-gray" ng-click="player.next()">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
+            </span>
+          </button>
+          <button class="flex-grow button-transparent bg-lighter-gray" ng-click="player.next()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="fill:currentcolor">
 <path d="M4 4 L24 14 V4 H28 V28 H24 V18 L4 28 z "/>
 </svg>
-        </button>
-      </div>
-      <div>
-        <progress class="progress progress-blue mt1" value="{% currentTime / duration %}" ng-click="player.seek($event)"></progress>
-        <div class="h6 flex">
-          <div class="ng-hide" ng-show="currentTime >= 0">{% currentTime | time %}</div>
+          </button>
+        </div>
+        <div class="flex-auto px2">
+          <progress class="progress mt1 mb1 progress-blue" value="{% currentTime / duration %}" ng-click="player.seek($event)"></progress>
+        </div>
+        <div class="h6 flex px2">
+          <div class="ng-hide mr1" ng-show="currentTime >= 0">{% currentTime | time %}</div>
           <div class="flex-grow">&nbsp;</div>
-          <div class="right-align">{% duration | time %}</div>
+          <div class="ng-hide right-align" ng-show="currentTime >= 0">{% duration | time %}</div>
         </div>
       </div>
     </div>
   </header>
 
-    empty body
 
-  <footer class="h5 container p2">
+  <footer class="h5 p2 mb4">
     <p>
       Microbeats is an experiment in music production emphasizing quantity over quality. All loops are created by Jxnblk in under an hour and not mixed down or mastered.
     </p>
-    <div class="center mxn2 sm-flex">
-      <a href="http://jxnblk.com" class="flex-grow button">Created by Jxnblk</a>
-      <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/" class="flex-grow button">Licensed under Creative Commons</a>
-      <a href="http://soundcloud.com/jxnblk" class="flex-grow button">SoundCloud</a>
+    <div class="mxn2">
+      <a href="http://jxnblk.com" class="button">Created by Jxnblk</a>
+      <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/" class="button">Licensed under Creative Commons</a>
+      <a href="http://soundcloud.com/jxnblk" class="button">SoundCloud</a>
     </div>
   </footer>
 

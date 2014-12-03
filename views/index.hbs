@@ -1,23 +1,26 @@
 {{#extend "application" }}
 
 {{#content "body" }}
-<div class="container px2">
+<div class="sticky-offset">
   <ul class="list-reset" tracklist>
     {{#each tracks }}
-      <li class="flex flex-center border-bottom"
+      <li id="{{ permalink }}" class="flex flex-center border-bottom"
+        ng-class="{'blue bg-light-blue': player.i == {{ @index }} }"
         data-src="{{ stream_url }}?client_id={{ ../client_id }}"
+        data-index="{{ @index }}"
+        data-permalink="{{ permalink }}"
         data-title="{{ title }}"
-        data-index="{{ @index }}">
-        <a href="#!"
-          class="flex-grow col-10 button mxn2 button-transparent"
+        >
+        <a href="##{{ permalink }}"
+          class="flex-grow col-10 button button-transparent"
           ng-click="player.playPause({{ @index }})">
-          <p class="h5 regular m0">
+          <p class="h6 caps regular m0">
             {{date created_at }}
           </p>
-          <h2 class="h3 bold m0">{{ title }}</h2>
+          <h2 class="h3 caps bold m0">{{ title }}</h2>
         </a>
-        <a href="{{ permalink_url }}" class="button mxn2 button-transparent" target="_blank">
-          &raquo;
+        <a href="{{ permalink_url }}" class="button button-transparent" target="_blank">
+          {{icon "chevron-right" }}
         </a>
       </li>
     {{/each}}

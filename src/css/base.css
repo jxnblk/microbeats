@@ -16,9 +16,11 @@
 @import 'basscss-grid';
 @import 'basscss-color-basic';
 
+@import './base/typography';
 @import './base/progress';
 @import './base/svg';
 @import './utility/position';
+@import './color/colors';
 @import './color/progress-blue';
 @import './color/button-transparent';
 
@@ -39,6 +41,7 @@
   --heading-line-height: 1.25;
   --monospace-font-family: 'Source Code Pro', Consolas, monospace;
 
+  --h0: 3rem;
   --h1: 2rem;
   --h2: 1.5rem;
   --h3: 1.25rem;
@@ -54,7 +57,7 @@
   --space-4: 4rem;
 
   /* Grid container max-width */
-  --container-width: 56rem;
+  --container-width: 48rem;
 
   /* Colors */
   --blue: #0076df;

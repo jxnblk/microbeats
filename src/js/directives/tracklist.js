@@ -2,8 +2,7 @@
 'use strict';
 
 
-module.exports = ['$http', 'player', function($http, player) {
-  console.log(player);
+module.exports = function($http, $location, player) {
   return {
     scope: true,
     link: function(scope, el, attr) {
@@ -14,6 +13,7 @@ module.exports = ['$http', 'player', function($http, player) {
         var item = items[i];
         var track = {
           index: item.dataset.index,
+          permalink: item.dataset.permalink,
           title: item.dataset.title,
           src: item.dataset.src
         };
@@ -22,7 +22,17 @@ module.exports = ['$http', 'player', function($http, player) {
         player.load(track, i);
       };
 
+      if ($location.hash()) {
+        var currentTrack = $location.hash();
+        scope.tracks.forEach(function(track, i) {
+          if (track.permalink == currentTrack ) {
+            player.i = i;
+            player.currentTrack = player.tracks[player.i];
+          }
+        });
+      }
+
     }
   }
-}];
+};
 
