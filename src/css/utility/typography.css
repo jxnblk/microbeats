@@ -1,0 +1,7 @@
+
+@media (--breakpoint-md) {
+  .md-left-align {
+    text-align: left;
+  }
+}
+

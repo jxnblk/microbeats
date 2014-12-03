@@ -8,7 +8,7 @@ module.exports = function($http, $location, player) {
     link: function(scope, el, attr) {
       var $ = angular.element;
       var items = $(el).children();
-      //scope.tracks = scope.tracks || [];
+
       for (var i = 0; i < items.length; i++) {
         var item = items[i];
         var track = {

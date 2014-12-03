@@ -19,6 +19,7 @@
 @import './base/typography';
 @import './base/progress';
 @import './base/svg';
+@import './utility/typography';
 @import './utility/position';
 @import './color/colors';
 @import './color/progress-blue';
