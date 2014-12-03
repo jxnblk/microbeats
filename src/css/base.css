@@ -35,9 +35,9 @@
 /* Variables */
 :root {
 
-  --font-family: 'San Francisco Display', 'Helvetica Neue', Helvetica, sans-serif;
+  --font-family: 'San Francisco Display', 'Roboto', 'Avenir Next', 'Futura', 'Helvetica Neue', Helvetica, sans-serif;
   --line-height: 1.5;
-  --heading-font-family: var(--font-family);
+  --heading-font-family: inherit;
   --heading-font-weight: bold;
   --heading-line-height: 1.25;
   --monospace-font-family: 'Source Code Pro', Consolas, monospace;
