@@ -1,4 +1,5 @@
 
+var _ = require('lodash');
 var React = require('react');
 var Controls = require('./Controls.jsx');
 var Tracks = require('./Tracks.jsx');
@@ -31,6 +32,7 @@ var Root = React.createClass({
     if (player) {
       player.playPause(src);
       this.setState({ currentIndex: i, playing: player.playing });
+      window.location.hash = track.permalink;
     }
   },
 
@@ -68,12 +70,20 @@ var Root = React.createClass({
 
   componentDidMount: function() {
     if (typeof window !== 'undefined') {
+      var hash = window.location.hash;
+      if (hash) {
+        var index = _.findIndex(this.props.tracks, { permalink: hash.replace('#', '') })
+        this.setState({ currentIndex: index });
+      }
       var self = this;
       player.audio.addEventListener('timeupdate', function() {
         self.setState({
           currentTime: player.audio.currentTime,
           duration: player.audio.duration
         });
+      });
+      player.audio.addEventListener('ended', function() {
+        self.next();
       });
     }
   },
@@ -92,7 +102,7 @@ var Root = React.createClass({
       tracks: {
         position: 'relative',
         zIndex: 1,
-        marginTop: '13rem'
+        marginTop: '14rem',
       }
     };
 

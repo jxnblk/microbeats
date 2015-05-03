@@ -12,10 +12,24 @@ var Track = React.createClass({
     var yyyymmdd = this.props.track.created_at.split(' ')[0];
     var date = moment(yyyymmdd, 'YYYY/MM/DD').format('MMM D, YYYY');
     var active = this.props.index === this.props.currentIndex;
+    var styles = {
+      anchor: {
+        position: 'relative',
+        top: '-15rem',
+        visibility: 'hidden'
+      }
+    };
     return (
-      <button className={'col-12 block left-align button button-transparent ' + (active ? 'white bg-black' : '')}
+      <button
+        id={'button-' + this.props.track.permalink}
+        className={'col-12 block left-align button button-transparent ' + (active ? 'white bg-black' : '')}
         onClick={this.handleClick}>
-        <div className="flex">
+        <div id={this.props.track.permalink}
+          style={styles.anchor} />
+        <div className="flex flex-baseline">
+          <div className="h6 mr1">
+            {(this.props.tracks.length - this.props.currentIndex) + '.'}
+          </div>
           <div className="flex-auto">
             {this.props.track.title}
           </div>

@@ -1,0 +1,21 @@
+
+.progress::-webkit-progress-bar {
+  background-color: transparent
+}
+
+.button-transparent::before {
+  content: none;
+}
+
+.button-scale {
+  transition: transform .125s ease-out;
+}
+
+.button-scale:hover {
+  transform: scale(1.125);
+}
+
+.button-scale:active {
+  transform: scale(.9375);
+}
+
