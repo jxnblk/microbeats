@@ -17,11 +17,15 @@ var Root = React.createClass({
       player: player || false,
       currentTime: 0,
       duration: 0,
+      color: 'black',
+      backgroundColor: 'white',
     }
   },
 
   playPause: function(i) {
-    i = i || this.state.currentIndex;
+    if (typeof i === 'undefined') {
+      i = this.state.currentIndex;
+    }
     var track = this.props.tracks[i];
     var src = track.stream_url + '?client_id=' + this.props.client_id;
     if (player) {
@@ -30,11 +34,29 @@ var Root = React.createClass({
     }
   },
 
+  pause: function() {
+    if (player) {
+      player.pause();
+      this.setState({ playing: player.playing });
+    }
+  },
+
   next: function() {
-    var i = player.playing;
+    var i = this.state.currentIndex;
+    if (i < this.props.tracks.length) {
+      i++;
+      this.playPause(i);
+    }
   },
 
   previous: function() {
+    var i = this.state.currentIndex;
+    if (i > 0) {
+      i--;
+      this.playPause(i);
+    } else {
+      this.pause();
+    }
   },
 
   seek: function(e) {
@@ -59,6 +81,21 @@ var Root = React.createClass({
   render: function() {
     var initialProps = { __html: safeStringify(this.props) };
 
+    var styles = {
+      controls: {
+        position: 'fixed',
+        top: 0,
+        right: 0,
+        left: 0,
+        zIndex: 2,
+      },
+      tracks: {
+        position: 'relative',
+        zIndex: 1,
+        marginTop: '13rem'
+      }
+    };
+
     return (
       <html>
         <head>
@@ -67,16 +104,23 @@ var Root = React.createClass({
           <title>{this.props.name}</title>
           <style dangerouslySetInnerHTML={{ __html: this.props.bass }} />
         </head>
-        <body className="container px2">
-          <Controls {...this.props}
-            {...this.state}
-            playPause={this.playPause}
-            seek={this.seek}
-            previous={this.previous}
-            next={this.next} />
-          <Tracks {...this.props}
-            {...this.state}
-            playPause={this.playPause} />
+        <body className={'container px2 ' + this.state.color + ' bg-' + this.state.backgroundColor}>
+          <div style={styles.controls}
+            className={this.state.color + ' bg-' + this.state.backgroundColor}>
+            <div className="container px2">
+              <Controls {...this.props}
+                {...this.state}
+                playPause={this.playPause}
+                seek={this.seek}
+                previous={this.previous}
+                next={this.next} />
+            </div>
+          </div>
+          <div style={styles.tracks}>
+            <Tracks {...this.props}
+              {...this.state}
+              playPause={this.playPause} />
+          </div>
           <script id="initial-props" type="application/json" dangerouslySetInnerHTML={initialProps} />
           <script src="bundle.js" />
         </body>

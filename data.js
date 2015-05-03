@@ -6,7 +6,7 @@ module.exports = {
   tracks: require('./tracks.json'),
   client_id: '1c21814089b72a7cd4ce9246009ddcfb',
   bass: [
-    cssnext('@import "basscss";', {
+    cssnext('@import "basscss";@import "vhs";', {
       compress: true,
       features: {
         customProperties: {

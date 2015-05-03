@@ -4,8 +4,9 @@ var React = require('react');
 var Progress = React.createClass({
   render: function() {
     var styles = {
+      height: '.75rem',
       borderRadius: 0,
-      border: '2px solid currentcolor',
+      border: '1px solid currentcolor',
       backgroundColor: 'transparent',
       cursor: 'pointer'
     };
