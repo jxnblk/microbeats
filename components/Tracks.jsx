@@ -6,7 +6,7 @@ var Tracks = React.createClass({
 
   renderTrack: function(track, i) {
     return (
-      <li key={'track-'+i}>
+      <li key={'track-'+i} className="mxn2">
         <Track {...this.props} index={i} track={track} />
       </li>
     )

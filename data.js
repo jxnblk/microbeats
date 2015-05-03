@@ -9,8 +9,19 @@ module.exports = {
   client_id: '1c21814089b72a7cd4ce9246009ddcfb',
   bass: cssnext(
     [
-      '@import "basscss";',
-      '@import "vhs";',
+      '@import "basscss-base-reset";',
+      '@import "basscss-base-buttons";',
+      '@import "basscss-base-typography";',
+      '@import "basscss-utility-layout";',
+      '@import "basscss-utility-typography";',
+      '@import "basscss-white-space";',
+      '@import "basscss-grid";',
+      '@import "flex-object";',
+      '@import "basscss-color-base";',
+      '@import "basscss-button-transparent";',
+      '@import "basscss-progress";',
+      '@import "basscss-borders";',
+      '@import "basscss-defaults";',
       styles
     ].join('\n'),
     {
@@ -22,6 +33,7 @@ module.exports = {
             'container-width': '40rem',
             'bold-font-weight': '500',
             'heading-font-weight': '500',
+            'button-font-size': 'var(--h5)',
           }
         },
         rem: false,

@@ -22,13 +22,13 @@ var Track = React.createClass({
     return (
       <button
         id={'button-' + this.props.track.permalink}
-        className={'col-12 block left-align button button-transparent ' + (active ? 'white bg-black' : '')}
+        className={'col-12 block left-align button button-transparent ' + (active ? this.props.backgroundColor + ' bg-' + this.props.color : '')}
         onClick={this.handleClick}>
         <div id={this.props.track.permalink}
           style={styles.anchor} />
         <div className="flex flex-baseline">
           <div className="h6 mr1">
-            {(this.props.tracks.length - this.props.currentIndex) + '.'}
+            {(this.props.tracks.length - this.props.index) + '.'}
           </div>
           <div className="flex-auto">
             {this.props.track.title}

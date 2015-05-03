@@ -3,6 +3,8 @@ var _ = require('lodash');
 var React = require('react');
 var Controls = require('./Controls.jsx');
 var Tracks = require('./Tracks.jsx');
+var About = require('./About.jsx');
+var Footer = require('./Footer.jsx');
 
 if (typeof window !== 'undefined') {
   var Player = require('audio-player');
@@ -18,6 +20,7 @@ var Root = React.createClass({
       player: player || false,
       currentTime: 0,
       duration: 0,
+      theme: 0,
       color: 'black',
       backgroundColor: 'white',
     }
@@ -32,7 +35,10 @@ var Root = React.createClass({
     if (player) {
       player.playPause(src);
       this.setState({ currentIndex: i, playing: player.playing });
-      window.location.hash = track.permalink;
+      var updateHash = _.debounce(function() {
+        window.location.hash = track.permalink;
+      }, 100);
+      updateHash();
     }
   },
 
@@ -48,6 +54,7 @@ var Root = React.createClass({
     if (i < this.props.tracks.length) {
       i++;
       this.playPause(i);
+      this.toggleTheme();
     }
   },
 
@@ -56,6 +63,7 @@ var Root = React.createClass({
     if (i > 0) {
       i--;
       this.playPause(i);
+      this.toggleTheme();
     } else {
       this.pause();
     }
@@ -68,12 +76,58 @@ var Root = React.createClass({
     }
   },
 
+  toggleTheme: function() {
+    var themes = [
+      { color: 'black', backgroundColor: 'white' },
+      { color: 'white', backgroundColor: 'black' },
+      { color: 'red', backgroundColor: 'black' },
+      { color: 'red', backgroundColor: 'white' },
+      { color: 'maroon', backgroundColor: 'white' },
+      { color: 'maroon', backgroundColor: 'teal' },
+      { color: 'blue', backgroundColor: 'white' },
+      { color: 'navy', backgroundColor: 'gray' },
+      { color: 'navy', backgroundColor: 'teal' },
+    ];
+    var i = this.state.theme;
+    if (i < themes.length - 1 ) {
+      i++;
+    } else {
+      i = 0;
+    }
+    this.setState({ theme: i });
+    this.setState(themes[i]);
+  },
+
+  handleKeydown: function(e) {
+    if (e.metaKey) { return false; }
+    switch(e.keyCode) {
+      case 32:
+        e.preventDefault();
+        this.playPause();
+        break;
+      case 74:
+        e.preventDefault();
+        this.next();
+        break;
+      case 75:
+        e.preventDefault();
+        this.previous();
+        break;
+      case 90:
+        e.preventDefault();
+        this.toggleTheme();
+        break;
+    }
+  },
+
   componentDidMount: function() {
     if (typeof window !== 'undefined') {
       var hash = window.location.hash;
       if (hash) {
         var index = _.findIndex(this.props.tracks, { permalink: hash.replace('#', '') })
-        this.setState({ currentIndex: index });
+        if (index > -1) {
+          this.setState({ currentIndex: index });
+        }
       }
       var self = this;
       player.audio.addEventListener('timeupdate', function() {
@@ -85,6 +139,7 @@ var Root = React.createClass({
       player.audio.addEventListener('ended', function() {
         self.next();
       });
+      window.addEventListener('keydown', self.handleKeydown);
     }
   },
 
@@ -103,6 +158,12 @@ var Root = React.createClass({
         position: 'relative',
         zIndex: 1,
         marginTop: '14rem',
+      },
+      nav: {
+        position: 'fixed',
+        zIndex: 3,
+        top: 0,
+        right: 0,
       }
     };
 
@@ -114,9 +175,9 @@ var Root = React.createClass({
           <title>{this.props.name}</title>
           <style dangerouslySetInnerHTML={{ __html: this.props.bass }} />
         </head>
-        <body className={'container px2 ' + this.state.color + ' bg-' + this.state.backgroundColor}>
+        <body className={'transition-color px2 ' + this.state.color + ' bg-' + this.state.backgroundColor}>
           <div style={styles.controls}
-            className={this.state.color + ' bg-' + this.state.backgroundColor}>
+            className={'transition-color ' + this.state.color + ' bg-' + this.state.backgroundColor}>
             <div className="container px2">
               <Controls {...this.props}
                 {...this.state}
@@ -126,11 +187,21 @@ var Root = React.createClass({
                 next={this.next} />
             </div>
           </div>
-          <div style={styles.tracks}>
+          <div className="container" style={styles.tracks}>
             <Tracks {...this.props}
               {...this.state}
               playPause={this.playPause} />
           </div>
+          <div className="container">
+            <About />
+            <Footer />
+          </div>
+          <nav className="flex flex-baseline mr1" style={styles.nav}>
+            <h1 className="h5 m0">
+              <a href="#" className="button button-transparent">Microbeats</a>
+            </h1>
+            <a href="#about" className="button button-transparent">About</a>
+          </nav>
           <script id="initial-props" type="application/json" dangerouslySetInnerHTML={initialProps} />
           <script src="bundle.js" />
         </body>

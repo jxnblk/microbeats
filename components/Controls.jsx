@@ -26,17 +26,17 @@ var Controls = React.createClass({
         padding: 0,
       },
       previousNextButtons: {
-        width: '3rem',
-        height: '3rem',
+        width: '3.25rem',
+        height: '3.25rem',
         padding: 0,
       },
     };
 
     return (
-      <div className="center py3">
-        <h1 className="h2 mt0">{title}</h1>
-        <div className="inline-block mb1">
-          <div className="flex flex-center mx-auto">
+      <div className="py3">
+        <h2 className="m0">{title}</h2>
+        <div className="inline-block xmb1">
+          <div className="flex flex-center mxn2">
             <button className="h2 button button-transparent button-scale circle"
               title="Play Previous Track"
               style={styles.previousNextButtons}
@@ -63,7 +63,7 @@ var Controls = React.createClass({
             onClick={this.props.seek}
             value={progress}
             min={this.props.currentTime}
-            max={this.props.duration} />
+            max={this.props.duration || 0} />
           <div className="flex h6">
             <div>{hhmmss(this.props.currentTime)}</div>
             <div className="flex-auto" />
