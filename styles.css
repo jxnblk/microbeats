@@ -1,0 +1,53 @@
+
+.transition-color {
+  transition: color .3s ease-out,
+    background-color .3s ease-out;
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+a:hover {
+  color: var(--blue);
+}
+
+.progress::-webkit-progress-bar {
+  background-color: transparent
+}
+
+.button-transparent::before {
+  content: none;
+}
+
+.button-scale {
+  transition: transform .125s ease-out;
+}
+
+.button-scale:hover {
+  transform: scale(1.125);
+}
+
+.button-scale:active {
+  transform: scale(.9375);
+}
+
+.white  { color: white }
+.black  { color: var(--black) }
+.blue   { color: var(--blue) }
+.red    { color: var(--red) }
+.teal   { color: var(--teal) }
+.maroon { color: var(--maroon) }
+.navy   { color: var(--navy) }
+.gray   { color: var(--gray) }
+
+.bg-white  { background-color: white }
+.bg-black  { background-color: var(--black) }
+.bg-blue   { background-color: var(--blue) }
+.bg-red    { background-color: var(--red) }
+.bg-teal   { background-color: var(--teal) }
+.bg-maroon { background-color: var(--maroon) }
+.bg-navy   { background-color: var(--navy) }
+.bg-gray   { background-color: var(--gray) }
+
