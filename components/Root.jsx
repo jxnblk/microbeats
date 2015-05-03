@@ -13,19 +13,20 @@ var Root = React.createClass({
   getInitialState: function() {
     return {
       playing: false,
-      index: 0,
+      currentIndex: 0,
       player: player || false,
       currentTime: 0,
+      duration: 0,
     }
   },
 
   playPause: function(i) {
-    i = i || this.state.index;
+    i = i || this.state.currentIndex;
     var track = this.props.tracks[i];
     var src = track.stream_url + '?client_id=' + this.props.client_id;
     if (player) {
       player.playPause(src);
-      this.setState({ index: i, playing: player.playing });
+      this.setState({ currentIndex: i, playing: player.playing });
     }
   },
 
@@ -36,12 +37,21 @@ var Root = React.createClass({
   previous: function() {
   },
 
+  seek: function(e) {
+    e.offsetX = e.clientX - e.target.offsetLeft;
+    if (player) {
+      player.seek(e);
+    }
+  },
+
   componentDidMount: function() {
     if (typeof window !== 'undefined') {
       var self = this;
       player.audio.addEventListener('timeupdate', function() {
-        console.log(player.audio.currentTime);
-        self.setState({ currentTime: player.audio.currentTime });
+        self.setState({
+          currentTime: player.audio.currentTime,
+          duration: player.audio.duration
+        });
       });
     }
   },
@@ -57,10 +67,13 @@ var Root = React.createClass({
           <title>{this.props.name}</title>
           <style dangerouslySetInnerHTML={{ __html: this.props.bass }} />
         </head>
-        <body className="">
+        <body className="container px2">
           <Controls {...this.props}
             {...this.state}
-            playPause={this.playPause} />
+            playPause={this.playPause}
+            seek={this.seek}
+            previous={this.previous}
+            next={this.next} />
           <Tracks {...this.props}
             {...this.state}
             playPause={this.playPause} />
