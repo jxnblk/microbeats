@@ -5,7 +5,7 @@ var styles = fs.readFileSync('styles.css', 'utf8');
 
 module.exports = {
   name: 'microbeats',
-  tracks: require('./tracks.json'),
+  initialTracks: require('./tracks.json'),
   client_id: '1c21814089b72a7cd4ce9246009ddcfb',
   bass: cssnext(
     [
