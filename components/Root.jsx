@@ -23,6 +23,7 @@ var Root = React.createClass({
       theme: 0,
       color: 'black',
       backgroundColor: 'white',
+      tracks: this.props.initialTracks
     }
   },
 
@@ -30,7 +31,7 @@ var Root = React.createClass({
     if (typeof i === 'undefined') {
       i = this.state.currentIndex;
     }
-    var track = this.props.tracks[i];
+    var track = this.state.tracks[i];
     var src = track.stream_url + '?client_id=' + this.props.client_id;
     if (player) {
       player.playPause(src);
@@ -51,7 +52,7 @@ var Root = React.createClass({
 
   next: function() {
     var i = this.state.currentIndex;
-    if (i < this.props.tracks.length) {
+    if (i < this.state.tracks.length) {
       i++;
       this.playPause(i);
       this.toggleTheme();
@@ -74,6 +75,12 @@ var Root = React.createClass({
     if (player) {
       player.seek(e);
     }
+  },
+
+  reverse: function() {
+    var tracks = this.state.tracks;
+    tracks.reverse();
+    this.setState({ tracks: tracks });
   },
 
   toggleTheme: function() {
@@ -117,6 +124,10 @@ var Root = React.createClass({
         e.preventDefault();
         this.toggleTheme();
         break;
+      case 88:
+        e.preventDefault();
+        this.reverse();
+        break;
     }
   },
 
@@ -124,7 +135,7 @@ var Root = React.createClass({
     if (typeof window !== 'undefined') {
       var hash = window.location.hash;
       if (hash) {
-        var index = _.findIndex(this.props.tracks, { permalink: hash.replace('#', '') })
+        var index = _.findIndex(this.state.tracks, { permalink: hash.replace('#', '') })
         if (index > -1) {
           this.setState({ currentIndex: index });
         }
