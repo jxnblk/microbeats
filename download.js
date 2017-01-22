@@ -17,8 +17,6 @@ const tracks = require('./tracks.json')
 const miss = require('./missing.json')
 const clientID = '1c21814089b72a7cd4ce9246009ddcfb'
 
-// const API = 'https://microbeats.now.sh'
-// const API = 'https://microbeats-api-syugzpqodk.now.sh'
 // dev
 const API = 'http://localhost:3000'
 
@@ -33,7 +31,6 @@ const download = (track, cb) => {
     return cb('Error')
   }
   const url = (download_url + `?client_id=${clientID}`)
-    // .replace(/^http:/, 'https:')
   console.log('Downloading.. ', title, url)
 
   const get = /^https/.test(url)
@@ -58,11 +55,9 @@ const download = (track, cb) => {
         if (ext === 'wav') {
           console.log('converting wav to mp3')
           wavToMp3(filename, () => {
-            // file.close()
             cb()
           })
         } else {
-          // file.close()
           cb()
         }
       })
@@ -81,7 +76,6 @@ const wavToMp3 = (filename, cb) => {
     reader.pipe(encoder).pipe(outFile)
     encoder.on('finish', () => {
       console.log('Done encoding', filename)
-      // outFile.close()
       cb()
     })
   }
@@ -128,18 +122,6 @@ const upload = (track, token, cb) => {
     })
 }
 
-const missing = [
-  // Needs API to accept large files
-  'mmmxiii',
-  'it-all-started-with-a-smile',
-]
-.map(name => {
-  const track = find(tracks, { permalink: name })
-  return track
-})
-
-console.log(missing)
-
 const downloadTrack = (track) => {
   download(track, (err) => {
     if (err) {
@@ -148,10 +130,12 @@ const downloadTrack = (track) => {
     console.log('Downloaded and converted', track.title)
   })
 }
+
 // Download tracks from soundcloud
-// miss.forEach(downloadTrack)
+// tracks.forEach(downloadTrack)
 
 
+/*
 auth((err, token) => {
   if (err) return console.error(err)
   console.log('Got token', token)
@@ -164,12 +148,6 @@ auth((err, token) => {
     })
   })
 })
-/*
 */
 
-/* Test single
-download(tracks[0], (file) => {
-  console.log('done')
-})
-*/
 
