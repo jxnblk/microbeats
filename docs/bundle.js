@@ -5176,10 +5176,8 @@ App.getInitialProps = function () {
             _require = __webpack_require__(5), ServerStyleSheet = _require.ServerStyleSheet;
             sheet = new ServerStyleSheet();
 
-            sheet.collectStyles(_react2.default.createElement(Component, props));
+            sheet.collectStyles(_react2.default.createElement(Component, (0, _extends3.default)({}, props, { tracks: tracks })));
             styles = sheet.getStyleTags();
-            // const styles = sheet.getStyleElement()
-
             return _context.abrupt('return', {
               tracks: tracks,
               styles: styles

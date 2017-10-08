@@ -182,9 +182,8 @@ App.getInitialProps = async ({ Component, props }) => {
 
   const { ServerStyleSheet } = require('styled-components')
   const sheet = new ServerStyleSheet()
-  sheet.collectStyles(<Component {...props} />)
+  sheet.collectStyles(<Component {...props} tracks={tracks} />)
   const styles = sheet.getStyleTags()
-  // const styles = sheet.getStyleElement()
 
   return {
     tracks,
