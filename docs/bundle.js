@@ -4789,8 +4789,6 @@ var setIndex = function setIndex(index) {
     return { index: index };
   };
 };
-// import { ThemeProvider } from 'glamorous'
-
 
 var hoc = (0, _recompose.compose)(_refunk2.default, (0, _recompose.mapProps)(function (props) {
   return (0, _extends3.default)({}, props, {
