@@ -33,6 +33,29 @@ const hoc = compose(
   withAudio
 )
 
+class Catch extends React.Component {
+  constructor () {
+    super()
+    this.state = {
+      err: null
+    }
+  }
+
+  componentDidCatch (err) {
+    this.setState({ err })
+  }
+
+  componentWillReceiveProps () {
+    this.setState({ err: false })
+  }
+
+  render () {
+    if (this.state.err) return false
+    if (!this.props.children) return false
+    return React.Children.only(this.props.children)
+  }
+}
+
 const App = hoc(props => [
   <title>microbeats</title>,
   <meta name='viewport' content='width=device-width,initial-scale=1' />,
@@ -43,7 +66,7 @@ const App = hoc(props => [
   <meta name='twitter:description' content='Beats created in under an hour' />,
   <meta name='twitter:image' content='apple-touch-icon.png' />,
   <Style key='basestyle' css={props.css} />,
-  // <div key='styled' dangerouslySetInnerHTML={{ __html: props.styles }} />,
+  !!props.styles && <Catch><div dangerouslySetInnerHTML={{ __html: props.styles }} /></Catch>,
   <ThemeProvider theme={theme}>
     <Container>
       <Keyboard {...props} />
@@ -53,7 +76,7 @@ const App = hoc(props => [
         height='96px'
         bg='white'
         top right left>
-        <Container py={4}>
+        <Container py={2}>
           <header>
             <Flex w={1} align='center'>
               <CircleButton
@@ -78,7 +101,7 @@ const App = hoc(props => [
             </Flex>
             <Box px={3}>
               <Progress
-                mt={3}
+                mt={2}
                 onClick={e => {
                   const n = e.clientX - e.target.offsetLeft
                   const p = n / e.target.offsetWidth
@@ -154,20 +177,18 @@ App.defaultProps = {
 App.getInitialProps = async ({ Component, props }) => {
   const fetch = require('isomorphic-fetch')
   const res = await fetch('https://microbeats.now.sh/tracks')
-  const tracks = await res.json()
-  const sorted = tracks
-    .sort((a, b) => new Date(b.date) - new Date(a.date))
+  const json = await res.json()
+  const tracks = json.sort((a, b) => new Date(b.date) - new Date(a.date))
 
-  // would be neat if this worked
-  // const { ServerStyleSheet } = require('styled-components')
-  // const sheet = new ServerStyleSheet()
-  // sheet.collectStyles(<Component {...props} />)
-  // const styles = sheet.getStyleTags()
+  const { ServerStyleSheet } = require('styled-components')
+  const sheet = new ServerStyleSheet()
+  sheet.collectStyles(<Component {...props} />)
+  const styles = sheet.getStyleTags()
   // const styles = sheet.getStyleElement()
 
   return {
-    tracks: sorted,
-    // styles
+    tracks,
+    styles
   }
 }
 
