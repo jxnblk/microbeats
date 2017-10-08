@@ -41,6 +41,7 @@ const App = hoc(props => [
   <meta name='twitter:site' content='@jxnblk' />,
   <meta name='twitter:title' content='microbeats' />,
   <meta name='twitter:description' content='Beats created in under an hour' />,
+  <meta name='twitter:image' content='apple-touch-icon.png' />,
   <Style key='basestyle' css={props.css} />,
   // <div key='styled' dangerouslySetInnerHTML={{ __html: props.styles }} />,
   <ThemeProvider theme={theme}>
@@ -137,7 +138,9 @@ const App = hoc(props => [
         </Flex>
       </footer>
     </Container>
-  </ThemeProvider>
+  </ThemeProvider>,
+  <script async src='https://www.googletagmanager.com/gtag/js?id=UA-4603832-10' />,
+  <script dangerouslySetInnerHTML={{ __html: ga }} />
 ])
 
 App.defaultProps = {
@@ -167,5 +170,12 @@ App.getInitialProps = async ({ Component, props }) => {
     // styles
   }
 }
+
+const ga = `
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-4603832-10');
+`
 
 export default App
