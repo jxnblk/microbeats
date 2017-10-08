@@ -30,6 +30,14 @@ const withAudio = Component => {
         this.props.update({ playing: false })
       }
 
+      this.playPause = () => {
+        if (this.props.playing) {
+          this.pause()
+        } else {
+          this.play()
+        }
+      }
+
       this.previous = () => {
         this.props.update(previous)
       }
@@ -58,7 +66,7 @@ const withAudio = Component => {
       }
     }
 
-    componentWillMount () {
+    componentDidMount () {
       if (typeof document === 'undefined') return
       this.audio = document.createElement('audio')
       this.audio.src = this.props.track.url
@@ -89,6 +97,7 @@ const withAudio = Component => {
           audio={this.audio}
           play={this.play}
           pause={this.pause}
+          playPause={this.playPause}
           previous={this.previous}
           next={this.next}
           seek={this.seek}

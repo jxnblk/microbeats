@@ -6,12 +6,14 @@ import hhmmss from 'hhmmss'
 import { format } from 'date-fns'
 import theme from '../theme'
 import withAudio from './withAudio'
+import Keyboard from './Keyboard'
 import Style from './Style'
 import Icon from './Icon'
 
 // lab
 import Box from './ui/Box'
 import Flex from './ui/Flex'
+import Container from './ui/Container'
 import Position from './ui/Position'
 import TruncatedHeading from './ui/TruncatedHeading'
 import Text from './ui/Text'
@@ -32,20 +34,27 @@ const hoc = compose(
 )
 
 const App = hoc(props => [
+  <title>microbeats</title>,
+  <meta name='description' content='Beats created in under an hour' />,
+  <meta name='twitter:card' content='summary' />,
+  <meta name='twitter:site' content='@jxnblk' />,
+  <meta name='twitter:title' content='microbeats' />,
+  <meta name='twitter:description' content='Beats created in under an hour' />,
   <Style css={props.css} />,
   <ThemeProvider theme={theme}>
-    <div>
+    <Container>
+      <Keyboard {...props} />
       <Position
         width={1}
         position='fixed'
-        height='96px'
+        height='66px'
         bg='white'
         top right left>
-        <Box p={2}>
+        <Container py={2}>
           <header>
             <Flex w={1} align='center'>
               <CircleButton
-                onClick={e => props.playing ? props.pause() : props.play()}>
+                onClick={e => props.playPause()}>
                 <Icon name={props.playing ? 'pause' : 'play'} />
               </CircleButton>
               <Box px={2}>
@@ -64,19 +73,27 @@ const App = hoc(props => [
                 <Icon name='next' />
               </CircleButton>
             </Flex>
-            <Progress
-              mt={2}
-              onClick={e => {
-                const n = e.clientX - e.target.offsetLeft
-                const p = n / e.target.offsetWidth
-                props.seek(p)
-              }}
-              value={props.currentTime / props.duration}
-            />
+            <Box px={3}>
+              <Progress
+                mt={2}
+                onClick={e => {
+                  const n = e.clientX - e.target.offsetLeft
+                  const p = n / e.target.offsetWidth
+                  props.seek(p)
+                }}
+                value={props.currentTime / props.duration}
+              />
+            </Box>
           </header>
-        </Box>
+        </Container>
       </Position>
-      <Box py={96}>
+      <Box py={80}>
+        <Box px={3} py={4} width={[ 1, null, null, 1024 ]}>
+          <Text fontSize={4}>
+            Microbeats is an experiment in music production emphasizing quantity over quality.
+            All beats are created by Jxnblk in under an hour and not mixed down or mastered.
+          </Text>
+        </Box>
         {props.tracks.map((track, i) => (
           <Box key={track._id} id={track.name}>
             <Button
@@ -85,6 +102,9 @@ const App = hoc(props => [
               px={3}
               onClick={e => {
                 props.update(setIndex(i))
+                if (props.index === i && !props.playing) {
+                  props.play()
+                }
               }}>
               <Flex align='center'>
                 <Text mr={3}>
@@ -102,16 +122,19 @@ const App = hoc(props => [
         ))}
       </Box>
       <footer>
-        <Flex px={3} py={4}>
-          <Link href='https://compositor.io' mr={3}>
+        <Flex wrap px={3} py={4}>
+          <Link href='https://compositor.io' mr={3} my={3}>
             Built with Compositor
           </Link>
-          <Link href='http://jxnblk.com' mr={3}>
+          <Link href='http://jxnblk.com' mr={3} my={3}>
             Made by Jxnblk
+          </Link>
+          <Link href='https://github.com/jxnblk/Microbeats' mr={3} my={3}>
+            GitHub
           </Link>
         </Flex>
       </footer>
-    </div>
+    </Container>
   </ThemeProvider>
 ])
 

@@ -233,6 +233,20 @@
         "<TruncatedHeading />"
       ],
       "system": []
+    },
+    {
+      "name": "Container",
+      "type": "Box",
+      "props": {
+        "mx": "auto"
+      },
+      "style": {
+        "maxWidth": "1024px"
+      },
+      "examples": [
+        "<Container />"
+      ],
+      "system": []
     }
   ]
 }
