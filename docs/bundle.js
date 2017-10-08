@@ -4801,7 +4801,9 @@ var App = hoc(function (props) {
     'title',
     null,
     'microbeats'
-  ), _react2.default.createElement('meta', { name: 'description', content: 'Beats created in under an hour' }), _react2.default.createElement('meta', { name: 'twitter:card', content: 'summary' }), _react2.default.createElement('meta', { name: 'twitter:site', content: '@jxnblk' }), _react2.default.createElement('meta', { name: 'twitter:title', content: 'microbeats' }), _react2.default.createElement('meta', { name: 'twitter:description', content: 'Beats created in under an hour' }), _react2.default.createElement(_Style2.default, { css: props.css }), _react2.default.createElement(
+  ), _react2.default.createElement('meta', { name: 'description', content: 'Beats created in under an hour' }), _react2.default.createElement('meta', { name: 'twitter:card', content: 'summary' }), _react2.default.createElement('meta', { name: 'twitter:site', content: '@jxnblk' }), _react2.default.createElement('meta', { name: 'twitter:title', content: 'microbeats' }), _react2.default.createElement('meta', { name: 'twitter:description', content: 'Beats created in under an hour' }), _react2.default.createElement(_Style2.default, { key: 'basestyle', css: props.css }),
+  // <div key='styled' dangerouslySetInnerHTML={{ __html: props.styles }} />,
+  _react2.default.createElement(
     _styledComponents.ThemeProvider,
     { theme: _theme2.default },
     _react2.default.createElement(
@@ -4975,34 +4977,41 @@ App.defaultProps = {
 
 App.getInitialProps = function () {
   var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref2) {
-    var Component = _ref2.Component;
-
-    var fetch, _require, ServerStyleSheet, res, tracks, sorted;
-
+    var Component = _ref2.Component,
+        props = _ref2.props;
+    var fetch, res, tracks, sorted;
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             fetch = __webpack_require__(364);
-            _require = __webpack_require__(5), ServerStyleSheet = _require.ServerStyleSheet;
-            _context.next = 4;
+            _context.next = 3;
             return fetch('https://microbeats.now.sh/tracks');
 
-          case 4:
+          case 3:
             res = _context.sent;
-            _context.next = 7;
+            _context.next = 6;
             return res.json();
 
-          case 7:
+          case 6:
             tracks = _context.sent;
             sorted = tracks.sort(function (a, b) {
               return new Date(b.date) - new Date(a.date);
             });
+
+            // would be neat if this worked
+            // const { ServerStyleSheet } = require('styled-components')
+            // const sheet = new ServerStyleSheet()
+            // sheet.collectStyles(<Component {...props} />)
+            // const styles = sheet.getStyleTags()
+            // const styles = sheet.getStyleElement()
+
             return _context.abrupt('return', {
               tracks: sorted
+              // styles
             });
 
-          case 10:
+          case 9:
           case 'end':
             return _context.stop();
         }

@@ -40,7 +40,8 @@ const App = hoc(props => [
   <meta name='twitter:site' content='@jxnblk' />,
   <meta name='twitter:title' content='microbeats' />,
   <meta name='twitter:description' content='Beats created in under an hour' />,
-  <Style css={props.css} />,
+  <Style key='basestyle' css={props.css} />,
+  // <div key='styled' dangerouslySetInnerHTML={{ __html: props.styles }} />,
   <ThemeProvider theme={theme}>
     <Container>
       <Keyboard {...props} />
@@ -146,16 +147,23 @@ App.defaultProps = {
   duration: 0
 }
 
-App.getInitialProps = async ({ Component }) => {
+App.getInitialProps = async ({ Component, props }) => {
   const fetch = require('isomorphic-fetch')
-  const { ServerStyleSheet } = require('styled-components')
   const res = await fetch('https://microbeats.now.sh/tracks')
   const tracks = await res.json()
   const sorted = tracks
     .sort((a, b) => new Date(b.date) - new Date(a.date))
 
+  // would be neat if this worked
+  // const { ServerStyleSheet } = require('styled-components')
+  // const sheet = new ServerStyleSheet()
+  // sheet.collectStyles(<Component {...props} />)
+  // const styles = sheet.getStyleTags()
+  // const styles = sheet.getStyleElement()
+
   return {
-    tracks: sorted
+    tracks: sorted,
+    // styles
   }
 }
 
