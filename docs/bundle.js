@@ -4801,7 +4801,7 @@ var App = hoc(function (props) {
     'title',
     null,
     'microbeats'
-  ), _react2.default.createElement('meta', { name: 'description', content: 'Beats created in under an hour' }), _react2.default.createElement('meta', { name: 'twitter:card', content: 'summary' }), _react2.default.createElement('meta', { name: 'twitter:site', content: '@jxnblk' }), _react2.default.createElement('meta', { name: 'twitter:title', content: 'microbeats' }), _react2.default.createElement('meta', { name: 'twitter:description', content: 'Beats created in under an hour' }), _react2.default.createElement(_Style2.default, { key: 'basestyle', css: props.css }),
+  ), _react2.default.createElement('meta', { name: 'viewport', content: 'width=device-width,initial-scale=1' }), _react2.default.createElement('meta', { name: 'description', content: 'Beats created in under an hour' }), _react2.default.createElement('meta', { name: 'twitter:card', content: 'summary' }), _react2.default.createElement('meta', { name: 'twitter:site', content: '@jxnblk' }), _react2.default.createElement('meta', { name: 'twitter:title', content: 'microbeats' }), _react2.default.createElement('meta', { name: 'twitter:description', content: 'Beats created in under an hour' }), _react2.default.createElement(_Style2.default, { key: 'basestyle', css: props.css }),
   // <div key='styled' dangerouslySetInnerHTML={{ __html: props.styles }} />,
   _react2.default.createElement(
     _styledComponents.ThemeProvider,

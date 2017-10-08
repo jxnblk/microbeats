@@ -35,6 +35,7 @@ const hoc = compose(
 
 const App = hoc(props => [
   <title>microbeats</title>,
+  <meta name='viewport' content='width=device-width,initial-scale=1' />,
   <meta name='description' content='Beats created in under an hour' />,
   <meta name='twitter:card' content='summary' />,
   <meta name='twitter:site' content='@jxnblk' />,
