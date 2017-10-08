@@ -4968,15 +4968,15 @@ var Catch = function (_React$Component) {
 }(_react2.default.Component);
 
 var App = hoc(function (props) {
-  return [_react2.default.createElement(
-    'title',
-    null,
-    'microbeats'
-  ), _react2.default.createElement('meta', { name: 'viewport', content: 'width=device-width,initial-scale=1' }), _react2.default.createElement('meta', { name: 'description', content: 'Beats created in under an hour' }), _react2.default.createElement('meta', { name: 'twitter:card', content: 'summary' }), _react2.default.createElement('meta', { name: 'twitter:site', content: '@jxnblk' }), _react2.default.createElement('meta', { name: 'twitter:title', content: 'microbeats' }), _react2.default.createElement('meta', { name: 'twitter:description', content: 'Beats created in under an hour' }), _react2.default.createElement('meta', { name: 'twitter:image', content: 'apple-touch-icon.png' }), _react2.default.createElement(_Style2.default, { key: 'basestyle', css: props.css }), !!props.styles && _react2.default.createElement(
+  return [!!props.styles && _react2.default.createElement(
     Catch,
     null,
     _react2.default.createElement('div', { dangerouslySetInnerHTML: { __html: props.styles } })
   ), _react2.default.createElement(
+    'title',
+    null,
+    'microbeats'
+  ), _react2.default.createElement('meta', { name: 'viewport', content: 'width=device-width,initial-scale=1' }), _react2.default.createElement('meta', { name: 'description', content: 'Beats created in under an hour' }), _react2.default.createElement('meta', { name: 'twitter:card', content: 'summary' }), _react2.default.createElement('meta', { name: 'twitter:site', content: '@jxnblk' }), _react2.default.createElement('meta', { name: 'twitter:title', content: 'microbeats' }), _react2.default.createElement('meta', { name: 'twitter:description', content: 'Beats created in under an hour' }), _react2.default.createElement('meta', { name: 'twitter:image', content: 'apple-touch-icon.png' }), _react2.default.createElement(_Style2.default, { key: 'basestyle', css: props.css }), _react2.default.createElement(
     _styledComponents.ThemeProvider,
     { theme: _theme2.default },
     _react2.default.createElement(
