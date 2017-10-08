@@ -4968,11 +4968,9 @@ var Catch = function (_React$Component) {
 }(_react2.default.Component);
 
 var App = hoc(function (props) {
-  return [!!props.styles && _react2.default.createElement(
-    Catch,
-    null,
-    _react2.default.createElement('div', { dangerouslySetInnerHTML: { __html: props.styles } })
-  ), _react2.default.createElement(
+  return [
+  // !!props.styles && <Catch><div dangerouslySetInnerHTML={{ __html: props.styles }} /></Catch>,
+  _react2.default.createElement(
     'title',
     null,
     'microbeats'

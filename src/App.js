@@ -57,7 +57,7 @@ class Catch extends React.Component {
 }
 
 const App = hoc(props => [
-  !!props.styles && <Catch><div dangerouslySetInnerHTML={{ __html: props.styles }} /></Catch>,
+  // !!props.styles && <Catch><div dangerouslySetInnerHTML={{ __html: props.styles }} /></Catch>,
   <title>microbeats</title>,
   <meta name='viewport' content='width=device-width,initial-scale=1' />,
   <meta name='description' content='Beats created in under an hour' />,
