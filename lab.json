@@ -1,0 +1,237 @@
+{
+  "name": "Microbeats",
+  "library": "styled-components",
+  "components": [
+    {
+      "name": "Box",
+      "type": "div",
+      "props": {},
+      "style": {
+        "minWidth": 0
+      },
+      "examples": [
+        "<Box>Hello</Box>"
+      ],
+      "system": []
+    },
+    {
+      "name": "Flex",
+      "type": "Box",
+      "props": {},
+      "style": {
+        "display": "flex",
+        "flexWrap": "${props.wrap ? \"wrap\" : null}",
+        "alignItems": "${props.align}",
+        "justifyContent": "${props.justify}"
+      },
+      "examples": [
+        "<Flex />"
+      ],
+      "system": []
+    },
+    {
+      "name": "Text",
+      "type": "div",
+      "props": {
+        "fontWeight": "600"
+      },
+      "style": {},
+      "examples": [
+        "<Text>Hello</Text>"
+      ],
+      "system": [
+        "fontWeight"
+      ]
+    },
+    {
+      "name": "Button",
+      "type": "button",
+      "props": {
+        "fontSize": 1,
+        "px": 0,
+        "color": "inherit",
+        "bg": "transparent",
+        "borderRadius": 0,
+        "borderWidth": 0,
+        "hover": {
+          "backgroundColor": "rgba(0, 0, 0, .0625)"
+        },
+        "py": 0
+      },
+      "style": {
+        "display": "inline-block",
+        "webkitTextAlign": "left",
+        "textAlign": "left",
+        "fontFamily": "inherit",
+        "webkitAppearance": "none",
+        "mozAppearance": "none",
+        "appearance": "none",
+        "cursor": "pointer",
+        "transitionProperty": "background-color",
+        "transitionDuration": ".1s",
+        "transitionTimingFunction": "ease-out",
+        "color": "${props.active ? \"white\" : null}",
+        "backgroundColor": "${props.active ? \"black\" : null}"
+      },
+      "examples": [
+        "<Button>Hello</Button>",
+        "<Button active>Hello</Button>"
+      ],
+      "system": [
+        "borderRadius",
+        "borderWidth",
+        "hover"
+      ]
+    },
+    {
+      "name": "CircleButton",
+      "type": "Button",
+      "props": {
+        "width": 40,
+        "py": 0,
+        "px": 0,
+        "bg": "transparent",
+        "borderRadius": 99999,
+        "borderWidth": 0
+      },
+      "style": {
+        "textAlign": "center",
+        "height": "40px",
+        "flex": "none"
+      },
+      "examples": [
+        "<CircleButton>\n  P\n</CircleButton>"
+      ],
+      "system": [
+        "borderRadius",
+        "borderWidth"
+      ]
+    },
+    {
+      "name": "Link",
+      "type": "a",
+      "props": {
+        "color": "inherit",
+        "fontWeight": "600",
+        "fontSize": 10
+      },
+      "style": {
+        "textTransform": "uppercase",
+        "textDecoration": "none",
+        "letterSpacing": "0.125em"
+      },
+      "examples": [
+        "<Link>Hello</Link>"
+      ],
+      "system": [
+        "fontWeight"
+      ]
+    },
+    {
+      "name": "Heading",
+      "type": "h1",
+      "props": {
+        "fontSize": 4,
+        "m": 0,
+        "fontWeight": "800"
+      },
+      "style": {
+        "lineHeight": 1.25
+      },
+      "examples": [
+        "<Heading>Hello</Heading>"
+      ],
+      "system": [
+        "fontWeight"
+      ]
+    },
+    {
+      "name": "Progress",
+      "type": "progress",
+      "props": {
+        "m": 0,
+        "borderWidth": 6,
+        "borderColor": "transparent",
+        "borderBottom": true,
+        "borderTop": true,
+        "hover": {
+          "&::-webkit-progress-value": {
+            "backgroundColor": "#07c"
+          }
+        }
+      },
+      "style": {
+        "display": "block",
+        "width": "100%",
+        "height": "16px",
+        "WebkitAppearance": "none",
+        "MozAppearance": "none",
+        "appearance": "none",
+        "cursor": "pointer",
+        "&::-webkit-progress-bar": {
+          "backgroundColor": "#f6f6f6"
+        },
+        "&::-webkit-progress-value": {
+          "backgroundColor": "black",
+          "transitionProperty": "background-color",
+          "transitionTimingFunction": "ease-out",
+          "transitionDuration": ".2s"
+        }
+      },
+      "examples": [
+        "<Progress\n  value={.25}\n/>"
+      ],
+      "system": [
+        "borderWidth",
+        "borderColor",
+        "hover"
+      ]
+    },
+    {
+      "name": "Position",
+      "type": "div",
+      "props": {},
+      "style": {
+        "position": "${props.position}",
+        "height": "${props.height}",
+        "top": "${props.top ? 0 : null}",
+        "right": "${props.right ? 0 : null}",
+        "bottom": "${props.bottom ? 0 : null}",
+        "left": "${props.left ? 0 : null}"
+      },
+      "examples": [
+        "<Position>Hello</Position>"
+      ],
+      "system": []
+    },
+    {
+      "name": "TruncatedHeading",
+      "type": "Heading",
+      "props": {},
+      "style": {
+        "maxWidth": "100%",
+        "overflow": "hidden",
+        "whiteSpace": "nowrap",
+        "textOverflow": "ellipsis"
+      },
+      "examples": [
+        "<TruncatedHeading />"
+      ],
+      "system": []
+    },
+    {
+      "name": "Container",
+      "type": "Box",
+      "props": {
+        "mx": "auto"
+      },
+      "style": {
+        "maxWidth": "1024px"
+      },
+      "examples": [
+        "<Container />"
+      ],
+      "system": []
+    }
+  ]
+}
