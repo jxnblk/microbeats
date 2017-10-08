@@ -48,10 +48,10 @@ const App = hoc(props => [
       <Position
         width={1}
         position='fixed'
-        height='66px'
+        height='96px'
         bg='white'
         top right left>
-        <Container py={2}>
+        <Container py={4}>
           <header>
             <Flex w={1} align='center'>
               <CircleButton
@@ -76,7 +76,7 @@ const App = hoc(props => [
             </Flex>
             <Box px={3}>
               <Progress
-                mt={2}
+                mt={3}
                 onClick={e => {
                   const n = e.clientX - e.target.offsetLeft
                   const p = n / e.target.offsetWidth
@@ -88,7 +88,7 @@ const App = hoc(props => [
           </header>
         </Container>
       </Position>
-      <Box py={80}>
+      <Box py={96}>
         <Box px={3} py={4} width={[ 1, null, null, 1024 ]}>
           <Text fontSize={4}>
             Microbeats is an experiment in music production emphasizing quantity over quality.

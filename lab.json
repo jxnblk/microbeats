@@ -188,21 +188,6 @@
       ]
     },
     {
-      "name": "Header",
-      "imports": [
-        "Flex",
-        "Box",
-        "CircleButton",
-        "Text",
-        "Heading"
-      ],
-      "jsx": "<Flex align='center'>\n  <CircleButton onClick={props.onPlayPause}>\n    {props.playing ? 'Pause' : 'Play'}\n  </CircleButton>\n  <Box px={2}>\n    <Text fontSize={0}>microbeats</Text>\n    <Heading fontSize={3}>\n      {props.title}\n    </Heading>\n  </Box>\n  <CircleButton ml='auto' onClick={props.onPrevious}>\n    Prev\n  </CircleButton>\n  <CircleButton onClick={props.onNext}>\n    Next\n  </CircleButton>\n</Flex>",
-      "examples": [
-        "<Header\n  title='Strange Tings'\n/>"
-      ],
-      "system": []
-    },
-    {
       "name": "Position",
       "type": "div",
       "props": {},

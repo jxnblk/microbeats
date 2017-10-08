@@ -4789,6 +4789,8 @@ var setIndex = function setIndex(index) {
     return { index: index };
   };
 };
+// import { ThemeProvider } from 'glamorous'
+
 
 var hoc = (0, _recompose.compose)(_refunk2.default, (0, _recompose.mapProps)(function (props) {
   return (0, _extends3.default)({}, props, {
@@ -4815,12 +4817,12 @@ var App = hoc(function (props) {
         {
           width: 1,
           position: 'fixed',
-          height: '66px',
+          height: '96px',
           bg: 'white',
           top: true, right: true, left: true },
         _react2.default.createElement(
           _Container2.default,
-          { py: 2 },
+          { py: 4 },
           _react2.default.createElement(
             'header',
             null,
@@ -4877,7 +4879,7 @@ var App = hoc(function (props) {
               _Box2.default,
               { px: 3 },
               _react2.default.createElement(_Progress2.default, {
-                mt: 2,
+                mt: 3,
                 onClick: function onClick(e) {
                   var n = e.clientX - e.target.offsetLeft;
                   var p = n / e.target.offsetWidth;
@@ -4891,7 +4893,7 @@ var App = hoc(function (props) {
       ),
       _react2.default.createElement(
         _Box2.default,
-        { py: 80 },
+        { py: 96 },
         _react2.default.createElement(
           _Box2.default,
           { px: 3, py: 4, width: [1, null, null, 1024] },
