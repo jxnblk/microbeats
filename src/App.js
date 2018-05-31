@@ -33,6 +33,11 @@ const hoc = compose(
   withAudio
 )
 
+const sorts = {
+  reverse: (a, b) => new Date(b.date) - new Date(a.date),
+  chronological: (a, b) => new Date(a.date) - new Date(b.date),
+}
+
 class Catch extends React.Component {
   constructor () {
     super()
@@ -115,13 +120,35 @@ const App = hoc(props => [
         </Container>
       </Position>
       <Box py={96}>
-        <Box px={3} py={4} width={[ 1, null, null, 1024 ]}>
+        <Box px={3} pt={4} width={[ 1, null, null, 1024 ]}>
           <Text fontSize={4}>
             Microbeats is an experiment in music production emphasizing quantity over quality.
             All beats are created by Jxnblk in under an hour and not mixed down or mastered.
           </Text>
         </Box>
-        {props.tracks.map((track, i) => (
+        <Flex
+          align='center'
+          px={3}
+          pt={2}
+          pb={4}
+          fontSize={0}>
+          <Box mx='auto' />
+          <label>Sort</label>
+          <Box ml={1} />
+          <select
+            value={props.sort}
+            onChange={e => {
+              const { value } = e.target
+              props.update({ sort: value })
+            }}
+          >
+            <option value='reverse'>Reverse</option>
+            <option value='chronological'>Chronological</option>
+          </select>
+        </Flex>
+        {props.tracks
+          .sort(sorts[props.sort])
+          .map((track, i) => (
           <Box key={track._id} id={track.name}>
             <Button
               width={1}
@@ -172,14 +199,15 @@ App.defaultProps = {
   index: 0,
   playing: false,
   currentTime: 0,
-  duration: 0
+  duration: 0,
+  sort: 'reverse'
 }
 
 App.getInitialProps = async ({ Component, props }) => {
   const fetch = require('isomorphic-fetch')
   const res = await fetch('https://microbeats.now.sh/tracks')
   const json = await res.json()
-  const tracks = json.sort((a, b) => new Date(b.date) - new Date(a.date))
+  const tracks = json.sort(sorts.reverse)
 
   const { ServerStyleSheet } = require('styled-components')
   const sheet = new ServerStyleSheet()
