@@ -4932,6 +4932,15 @@ var hoc = (0, _recompose.compose)(_refunk2.default, (0, _recompose.mapProps)(fun
   });
 }), _withAudio2.default);
 
+var sorts = {
+  reverse: function reverse(a, b) {
+    return new Date(b.date) - new Date(a.date);
+  },
+  chronological: function chronological(a, b) {
+    return new Date(a.date) - new Date(b.date);
+  }
+};
+
 var Catch = function (_React$Component) {
   (0, _inherits3.default)(Catch, _React$Component);
 
@@ -5065,14 +5074,51 @@ var App = hoc(function (props) {
         { py: 96 },
         _react2.default.createElement(
           _Box2.default,
-          { px: 3, py: 4, width: [1, null, null, 1024] },
+          { px: 3, pt: 4, width: [1, null, null, 1024] },
           _react2.default.createElement(
             _Text2.default,
             { fontSize: 4 },
             'Microbeats is an experiment in music production emphasizing quantity over quality. All beats are created by Jxnblk in under an hour and not mixed down or mastered.'
           )
         ),
-        props.tracks.map(function (track, i) {
+        _react2.default.createElement(
+          _Flex2.default,
+          {
+            align: 'center',
+            px: 3,
+            pt: 2,
+            pb: 4,
+            fontSize: 0 },
+          _react2.default.createElement(_Box2.default, { mx: 'auto' }),
+          _react2.default.createElement(
+            'label',
+            null,
+            'Sort'
+          ),
+          _react2.default.createElement(_Box2.default, { ml: 1 }),
+          _react2.default.createElement(
+            'select',
+            {
+              value: props.sort,
+              onChange: function onChange(e) {
+                var value = e.target.value;
+
+                props.update({ sort: value });
+              }
+            },
+            _react2.default.createElement(
+              'option',
+              { value: 'reverse' },
+              'Reverse'
+            ),
+            _react2.default.createElement(
+              'option',
+              { value: 'chronological' },
+              'Chronological'
+            )
+          )
+        ),
+        props.tracks.sort(sorts[props.sort]).map(function (track, i) {
           return _react2.default.createElement(
             _Box2.default,
             { key: track._id, id: track.name },
@@ -5143,7 +5189,8 @@ App.defaultProps = {
   index: 0,
   playing: false,
   currentTime: 0,
-  duration: 0
+  duration: 0,
+  sort: 'reverse'
 };
 
 App.getInitialProps = function () {
@@ -5168,9 +5215,7 @@ App.getInitialProps = function () {
 
           case 6:
             json = _context.sent;
-            tracks = json.sort(function (a, b) {
-              return new Date(b.date) - new Date(a.date);
-            });
+            tracks = json.sort(sorts.reverse);
             _require = __webpack_require__(5), ServerStyleSheet = _require.ServerStyleSheet;
             sheet = new ServerStyleSheet();
 
