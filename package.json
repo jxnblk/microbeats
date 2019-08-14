@@ -1,42 +1,24 @@
 {
+  "private": true,
   "name": "microbeats",
-  "version": "4.0.0-0",
+  "version": "5.0.0",
   "description": "Beats created in under an hour",
   "author": "Brent Jackson",
   "license": "MIT",
-  "devDependencies": {},
   "scripts": {
-    "start": "x0 dev src/App.js -op 8888",
-    "build": "lab -d src/ui && x0 build src/App.js -d docs",
-    "dev": "lab -wd src/ui"
+    "start": "gatsby develop",
+    "build": "gatsby build",
+    "clean": "gatsby clean",
+    "serve": "gatsby serve",
+    "track": "./edit.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jxnblk/Microbeats.git"
-  },
-  "keywords": [
-    "music",
-    "beats",
-    "react"
-  ],
-  "bugs": {
-    "url": "https://github.com/jxnblk/Microbeats/issues"
-  },
-  "homepage": "https://github.com/jxnblk/Microbeats",
   "dependencies": {
-    "@compositor/lab": "^1.0.0-30",
-    "@compositor/x0": "^2.0.0-1",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.6.0",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1",
-    "date-fns": "^1.28.5",
-    "hhmmss": "^1.0.0",
-    "isomorphic-fetch": "^2.2.1",
-    "react": "^16.0.0",
-    "react-icons": "^2.2.7",
-    "recompose": "^0.26.0",
-    "refunk": "^2.0.0-1",
-    "styled-components": "^2.2.1"
+    "aws-sdk": "^2.509.0",
+    "gatsby": "^2.13.62",
+    "gatsby-plugin-theme-ui": "^0.2.33",
+    "lodash.kebabcase": "^4.1.1",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "theme-ui": "^0.2.33"
   }
 }
