@@ -4,11 +4,12 @@ const path = require('path')
 const prompt = require('prompts')
 const hyphenate = require('lodash.kebabcase')
 const tracks = require('./src/tracks.json')
+const datefn = require('date-fns')
 
 const filename = path.join(__dirname, 'src', 'tracks.json')
 
 const add = async () => {
-  const date = new Date().toISOString()
+  const date = datefn.format(new Date(), 'YYYY-MM-DD')
   const { title, url } = await prompt([
     {
       type: 'text',
@@ -45,5 +46,31 @@ const add = async () => {
   }
 }
 
-add()
+// add()
+
+/*
+const formatDates = () => {
+  const next = tracks.map(track => {
+    const date = track.date.split('T')[0]
+    return {
+      ...track,
+      date,
+    }
+  })
+  fs.writeFileSync(filename, JSON.stringify(next, null, 2))
+}
+formatDates()
+*/
+
+/*
+const sort = () => {
+  const next = tracks.sort((a, b) => new Date(a.date) - new Date(b.date))
+    .map((track, i) => ({
+      ...track,
+      id: 'MB' + (`${i + 1}`.padStart(3, '0')),
+    }))
+  fs.writeFileSync(filename, JSON.stringify(next, null, 2))
+}
+sort()
+*/
 
