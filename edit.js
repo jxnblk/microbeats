@@ -5,11 +5,6 @@ const prompt = require('prompts')
 const hyphenate = require('lodash.kebabcase')
 const tracks = require('./src/tracks.json')
 
-// todo....
-// const S3 = require('aws-sdk/clients/s3')
-// const [ ,, file ] = process.arvg
-// const bucket = new S3({ params: { Bucket: 'microbeats' } })
-
 const filename = path.join(__dirname, 'src', 'tracks.json')
 
 const add = async () => {
@@ -50,4 +45,18 @@ const add = async () => {
   }
 }
 
-add()
+// add()
+
+const sort = () => {
+  const next = tracks.sort((a, b) => {
+    return new Date(a.date) - new Date(b.date)
+  }).map((track, i) => {
+    return {
+      ...track,
+      id: 'MB' + ((i + '').padStart(3, '0'))
+    }
+  })
+  console.log(next)
+}
+
+sort()
