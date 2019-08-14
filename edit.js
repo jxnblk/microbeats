@@ -23,7 +23,7 @@ const add = async () => {
   ])
   const name = hyphenate(title)
   const track = {
-    id: 'MB' + (tracks.length + 1),
+    id: 'MB' + (`${tracks.length + 1}`.padStart(3, '0')),
     date,
     name,
     title,
@@ -45,18 +45,5 @@ const add = async () => {
   }
 }
 
-// add()
+add()
 
-const sort = () => {
-  const next = tracks.sort((a, b) => {
-    return new Date(a.date) - new Date(b.date)
-  }).map((track, i) => {
-    return {
-      ...track,
-      id: 'MB' + ((i + '').padStart(3, '0'))
-    }
-  })
-  console.log(next)
-}
-
-sort()
