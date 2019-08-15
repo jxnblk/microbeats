@@ -31,11 +31,8 @@ export default props => {
   const {
     tracks,
     index,
-    setIndex,
     playing,
     playPause,
-    chronological,
-    setSort
   } = useMicrobeats()
   const activeItem = useRef(null)
 
@@ -44,7 +41,7 @@ export default props => {
     const el = activeItem.current
     const rect = el.getBoundingClientRect()
     if (rect.top < 128) {
-      window.scrollTo(0, el.offsetTop - 128)
+      window.scrollTo(0, el.offsetTop - 256)
     } else if (rect.bottom > window.innerHeight) {
       window.scrollTo(0, el.offsetTop - window.innerHeight + rect.height)
     }
@@ -52,36 +49,6 @@ export default props => {
 
   return (
     <Layout>
-      <div
-        sx={{
-          display: 'flex',
-          p: 3,
-        }}>
-        <label
-          sx={{
-            ml: 'auto'
-          }}>
-          Sort:
-          <button
-            onClick={e => {
-              setSort(!chronological)
-              if (playing) setIndex(tracks.length - 1 - index)
-            }}
-            sx={{
-              appearance: 'none',
-              color: 'inherit',
-              fontFamily: 'inherit',
-              fontSize: 'inherit',
-              bg: 'muted',
-              border: 0,
-              borderRadius: 4,
-              m: 0,
-              ml: 2,
-            }}>
-            {chronological ? 'Chronological' : 'Newest First'}
-          </button>
-        </label>
-      </div>
       <ul
         sx={{
           listStyle: 'none',

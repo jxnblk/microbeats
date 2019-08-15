@@ -19,12 +19,12 @@ export default props => {
         onClick={seek}
         sx={{
           appearance: 'none',
+          display: 'block',
           width: '100%',
           height: 16,
           m: 0,
           cursor: 'pointer',
-          borderColor: 'transparent',
-          borderStyle: 'solid',
+          border: '0px solid transparent',
           borderTopWidth: 5,
           borderBottomWidth: 5,
           '::-webkit-progress-bar': {
@@ -35,8 +35,11 @@ export default props => {
             bg: 'currentcolor',
           },
           ':hover': {
+            '::-webkit-progress-bar': {
+              // bg: 'primary',
+            },
             '::-webkit-progress-value': {
-              bg: 'primary',
+              // bg: 'primary',
             }
           },
         }}

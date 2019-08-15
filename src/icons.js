@@ -7,6 +7,7 @@ const SVG = ({ size = 24, ...props }) =>
     width={size}
     height={size}
     viewBox="0 0 24 24"
+    fill='currentcolor'
     {...props}
   />
 
@@ -65,4 +66,21 @@ export const Previous = props =>
 export const Next = props =>
   <SVG {...props}>
     <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
+  </SVG>
+
+export const Dot = props =>
+  <SVG {...props} viewBox='0 0 32 32'>
+    <circle cx="16" cy="16" r="14" fill="none" stroke="currentcolor" strokeWidth="4"
+    />
+    <path d="M 16 0 A 16 16 0 0 0 16 32 z" />
+  </SVG>
+
+export const Up = props =>
+  <SVG {...props}>
+    <path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/>
+  </SVG>
+
+export const Down = props =>
+  <SVG {...props}>
+    <path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"/>
   </SVG>

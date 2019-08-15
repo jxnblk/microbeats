@@ -1,4 +1,6 @@
 export default {
+  initialColorMode: 'dark',
+  useCustomProperties: true,
   fonts: {
     body: '"Roboto Mono", Menlo, monospace',
     heading: '"Roboto Mono", Menlo, monospace',
@@ -13,10 +15,42 @@ export default {
     bold: 700,
   },
   colors: {
-    text: 'black',
-    background: 'white',
-    primary: 'hsl(220, 100%, 50%)',
+    text: 'white',
+    background: 'black',
+    primary: 'hsl(180, 100%, 60%)',
     muted: 'hsla(220, 100%, 80%, .0625)',
+    modes: {
+      lite: {
+        text: 'black',
+        background: 'white',
+        primary: 'hsl(220, 100%, 50%)',
+        muted: 'hsla(220, 100%, 80%, .0625)',
+      },
+      orange: {
+        text: 'hsl(40, 100%, 60%)',
+        background: 'black',
+        primary: 'hsl(40, 100%, 80%)',
+        muted: 'hsla(40, 100%, 80%, .0625)',
+      },
+      green: {
+        text: 'hsl(130, 100%, 60%)',
+        background: 'black',
+        primary: 'hsl(130, 100%, 80%)',
+        muted: 'hsla(130, 100%, 80%, .0625)',
+      },
+      cyan: {
+        text: 'hsl(160, 100%, 60%)',
+        background: 'black',
+        primary: 'hsl(160, 100%, 80%)',
+        muted: 'hsla(160, 100%, 80%, .0625)',
+      },
+      pink: {
+        text: 'hsl(340, 100%, 60%)',
+        background: 'black',
+        primary: 'hsl(340, 100%, 80%)',
+        muted: 'hsla(340, 100%, 80%, .0625)',
+      },
+    },
   },
   layout: {
     container: {
@@ -39,6 +73,9 @@ export default {
     },
     h3: {
       fontSize: 'inherit',
+    },
+    a: {
+      color: 'primary',
     },
     navlink: {
       color: 'inherit',

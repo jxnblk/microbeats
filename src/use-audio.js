@@ -83,6 +83,8 @@ export default (tracks = []) => {
     }
   }, [audio, index])
 
+  const title = audio && audio.src ? tracks[index].title : 'beats created in under an hour'
+
   return {
     audio,
     time,
@@ -95,5 +97,6 @@ export default (tracks = []) => {
     next,
     seek,
     progress,
+    title,
   }
 }
