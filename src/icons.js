@@ -25,6 +25,8 @@ export const Button = ({
       bg: 'transparent',
       p: 1,
       m: 0,
+      fontFamily: 'inherit',
+      fontSize: 'inherit',
       width: size,
       height: size,
       borderRadius: 99999,
