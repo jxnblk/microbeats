@@ -2,22 +2,29 @@
 import { jsx, Styled } from 'theme-ui'
 import { Link } from 'gatsby'
 import { Global } from '@emotion/core'
+import Controls from './controls'
+import Progress from './progress'
 
 const NavLink = props =>
   <Link
     {...props}
     sx={{
       variant: 'styles.navlink',
+      display: 'block',
     }}
   />
 
 export default ({
-  center,
   ...props
 }) =>
   <Styled.root
     sx={{
-      variant: center ? 'layout.container' : null,
+      display: 'grid',
+      gridTemplateColumns: [
+        'auto',
+        'minmax(256px, 1fr) 2fr',
+      ],
+      minHeight: '100vh',
     }}>
     <Global
       styles={{
@@ -32,18 +39,41 @@ export default ({
     <header
       sx={{
         display: 'flex',
+        flexDirection: 'column',
         p: 3,
-        alignItems: 'center',
-        mb: 5,
+        maxHeight: '100vh',
       }}>
       <NavLink to='/'>microbeats</NavLink>
+      <div
+        sx={{
+          my: [ 2, 4 ]
+        }}>
+        <Controls />
+      </div>
+      <div sx={{ my: 'auto' }} />
       <Styled.h1>beats created in under an hour</Styled.h1>
-      <div sx={{ mx: 'auto' }} />
-      <NavLink to='/about'>
+      <NavLink to='/about' sx={{ mb: 3 }}>
         about
       </NavLink>
     </header>
-    {props.children}
+    <main
+      sx={{
+      }}>
+      <div sx={{ p: 3 }}>
+        <Progress />
+      </div>
+      {props.children}
+    </main>
+    <footer
+      sx={{
+        px: 3,
+        py: 4,
+      }}>
+      © 2011–2019 Brent Jackson
+    </footer>
+  </Styled.root>
+
+  /*
     <footer
       sx={{
         display: 'flex',
@@ -57,8 +87,5 @@ export default ({
       <NavLink to='/about'>
         about
       </NavLink>
-      <div>
-        © 2011–2019 Brent Jackson
-      </div>
     </footer>
-  </Styled.root>
+  */

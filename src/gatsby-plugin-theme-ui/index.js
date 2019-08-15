@@ -32,13 +32,13 @@ export default {
       fontWeight: 'body',
     },
     h1: {
-      fontSize: 1,
+      fontSize: 'inherit',
     },
     h2: {
-      fontSize: 1,
+      fontSize: 'inherit',
     },
     h3: {
-      fontSize: 1,
+      fontSize: 'inherit',
     },
     navlink: {
       color: 'inherit',

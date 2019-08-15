@@ -1,22 +1,10 @@
 /** @jsx jsx */
 import { jsx, Styled } from 'theme-ui'
-import {
-  useEffect,
-  useRef,
-} from 'react'
+import { useEffect, useRef } from 'react'
 import { Link } from 'gatsby'
 import { format } from 'date-fns'
-import hhmmss from 'hhmmss'
 import { useMicrobeats } from '..'
 import Layout from '../layout'
-import {
-  Button,
-  Play,
-  Pause,
-  Previous,
-  Next,
-} from '../icons'
-import Progress from '../progress'
 
 const Select = props =>
   <select
@@ -42,16 +30,10 @@ const Select = props =>
 export default props => {
   const {
     tracks,
-    time,
-    duration,
     index,
     setIndex,
     playing,
     playPause,
-    previous,
-    next,
-    seek,
-    progress,
     chronological,
     setSort
   } = useMicrobeats()
@@ -72,68 +54,33 @@ export default props => {
     <Layout>
       <div
         sx={{
-          position: 'sticky',
-          top: 0,
-          bg: 'background',
-          px: 3,
-          mb: 5,
+          display: 'flex',
+          p: 3,
         }}>
-        <div
+        <label
           sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+            ml: 'auto'
           }}>
-          <Button
-            title='Previous'
-            onClick={previous}>
-            <Previous />
-          </Button>
-          <div sx={{ mx: 2 }} />
-          <Button
-            title='Play/Pause'
-            size={48}
-            onClick={e => playPause()}>
-            {playing ? (
-              <Pause size={40} />
-            ) : (
-              <Play size={40} />
-            )}
-          </Button>
-          <div sx={{ mx: 2 }} />
-          <Button
-            title='Next'
-            onClick={next}>
-            <Next />
-          </Button>
-        </div>
-        <Progress
-          onClick={seek}
-          value={progress}
-          children={progress}
-        />
-        <div
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            py: 3,
-          }}>
-          <div>{hhmmss(time)}/{hhmmss(duration)}</div>
-          <div sx={{ mx: 'auto' }} />
-          <label>
-            Sort by
-            <button
-              onClick={e => {
-                setSort(!chronological)
-                setIndex(tracks.length - 1 - index)
-              }}
-              sx={{
-                ml: 2,
-              }}>
-              {chronological ? 'Chronological' : 'Newest First'}
-            </button>
-          </label>
-        </div>
+          Sort:
+          <button
+            onClick={e => {
+              setSort(!chronological)
+              if (playing) setIndex(tracks.length - 1 - index)
+            }}
+            sx={{
+              appearance: 'none',
+              color: 'inherit',
+              fontFamily: 'inherit',
+              fontSize: 'inherit',
+              bg: 'muted',
+              border: 0,
+              borderRadius: 4,
+              m: 0,
+              ml: 2,
+            }}>
+            {chronological ? 'Chronological' : 'Newest First'}
+          </button>
+        </label>
       </div>
       <ul
         sx={{
@@ -155,6 +102,8 @@ export default props => {
                 display: 'flex',
                 p: 3,
                 alignItems: 'center',
+                userSelect: 'none',
+                cursor: 'pointer',
                 ':hover': {
                   color: 'primary',
                   bg: 'muted',

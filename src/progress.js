@@ -1,30 +1,54 @@
 /** @jsx jsx */
 import { jsx } from 'theme-ui'
+import hhmmss from 'hhmmss'
+import { useMicrobeats } from './index'
 
-export default props =>
-  <progress
-    {...props}
-    sx={{
-      appearance: 'none',
-      width: '100%',
-      height: 16,
-      m: 0,
-      cursor: 'pointer',
-      borderColor: 'transparent',
-      borderStyle: 'solid',
-      borderTopWidth: 5,
-      borderBottomWidth: 5,
-      '::-webkit-progress-bar': {
-        bg: 'muted',
-      },
-      '::-webkit-progress-value': {
-        transition: 'background-color .2s ease-out',
-        bg: 'currentcolor',
-      },
-      ':hover': {
-        '::-webkit-progress-value': {
-          bg: 'primary',
-        }
-      },
-    }}
-  />
+export default props => {
+  const {
+    progress,
+    time,
+    duration,
+    seek,
+  } = useMicrobeats()
+
+  return (
+    <div>
+      <progress
+        value={progress}
+        children={progress}
+        onClick={seek}
+        sx={{
+          appearance: 'none',
+          width: '100%',
+          height: 16,
+          m: 0,
+          cursor: 'pointer',
+          borderColor: 'transparent',
+          borderStyle: 'solid',
+          borderTopWidth: 5,
+          borderBottomWidth: 5,
+          '::-webkit-progress-bar': {
+            bg: 'muted',
+          },
+          '::-webkit-progress-value': {
+            transition: 'background-color .2s ease-out',
+            bg: 'currentcolor',
+          },
+          ':hover': {
+            '::-webkit-progress-value': {
+              bg: 'primary',
+            }
+          },
+        }}
+      />
+      <div
+        sx={{
+          display: 'flex',
+        }}>
+        <div>{hhmmss(time)}</div>
+        <div sx={{ mx: 'auto' }} />
+        <div>{hhmmss(duration)}</div>
+      </div>
+    </div>
+  )
+}
