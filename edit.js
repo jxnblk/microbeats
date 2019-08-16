@@ -46,7 +46,7 @@ const add = async () => {
   }
 }
 
-// add()
+add()
 
 /*
 const formatDates = () => {
