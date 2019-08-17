@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx, Styled } from 'theme-ui'
 import { useEffect, useRef } from 'react'
-import { Link } from 'gatsby'
+import { graphql, Link } from 'gatsby'
 import { format } from 'date-fns'
 import { useMicrobeats } from '..'
 import Layout from '../layout'
@@ -67,7 +67,6 @@ export default props => {
               aria-current={active}
               sx={{
                 display: 'flex',
-                p: 3,
                 alignItems: 'center',
                 userSelect: 'none',
                 cursor: 'pointer',
@@ -84,19 +83,39 @@ export default props => {
                   boxShadow: '0 0 0 2px',
                 }
               }}>
-              <div>
+              <div
+                sx={{
+                  p: 3
+                }}>
                 {track.id}
               </div>
               <div
                 sx={{
-                  px: 2,
+                  py: 3,
                   fontWeight: 'bold',
                 }}>
                 {track.title}
               </div>
               <div sx={{ mx: 'auto' }} />
-              <div>
-                {format(track.date, 'ddd, MMM DD, YYYY')}
+              <div
+                onClick={e => {
+                  e.stopPropagation()
+                }}>
+                <Link to={'/' + track.name}
+                  sx={{
+                    textDecoration: 'none',
+                    color: 'inherit',
+                    display: 'block',
+                    p: 3,
+                    ':hover': {
+                      color: 'primary',
+                    },
+                    ':focus': {
+                      outline: '2px solid',
+                    }
+                  }}>
+                  {format(track.date, 'ddd. MMM DD, YYYY')}
+                </Link>
               </div>
             </li>
           )

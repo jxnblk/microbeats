@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { globalHistory, navigate } from '@reach/router'
 
 export default (tracks = []) => {
   const [ audio, setAudio ] = useState(null)
@@ -43,6 +44,9 @@ export default (tracks = []) => {
     audio.src = track.url
     setIndex(n)
     audio.play()
+    if (globalHistory.location.pathname !== '/') {
+      navigate('/' + track.name)
+    }
   }
 
   const seek = e => {
@@ -82,6 +86,15 @@ export default (tracks = []) => {
       audio.removeEventListener('ended', next)
     }
   }, [audio, index])
+
+  useEffect(() => {
+    const { pathname } = globalHistory.location
+    if (pathname === '/') return
+    const name = pathname.replace(/^\//, '')
+    const index = tracks.findIndex(t => t.name === name)
+    if (index < 0) return
+    setIndex(index)
+  }, [])
 
   const title = audio && audio.src ? tracks[index].title : 'beats created in under an hour'
 

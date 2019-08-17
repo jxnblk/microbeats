@@ -81,6 +81,9 @@ export default {
       color: 'inherit',
       fontWeight: 'bold',
       textDecoration: 'none',
+      ':focus': {
+        outline: '2px solid',
+      }
     },
   },
 }
