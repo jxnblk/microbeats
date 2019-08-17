@@ -36,6 +36,9 @@ export default (tracks = []) => {
     audio.src = track.url
     setIndex(n)
     audio.play()
+    if (globalHistory.location.pathname !== '/') {
+      navigate('/' + track.name)
+    }
   }
 
   const next = () => {

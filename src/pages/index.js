@@ -85,6 +85,7 @@ export default props => {
               }}>
               <div
                 sx={{
+                  flex: 'none',
                   p: 3
                 }}>
                 {track.id}
@@ -98,6 +99,9 @@ export default props => {
               </div>
               <div sx={{ mx: 'auto' }} />
               <div
+                sx={{
+                  flex: 'none',
+                }}
                 onClick={e => {
                   e.stopPropagation()
                 }}>

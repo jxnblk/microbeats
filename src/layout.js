@@ -38,7 +38,15 @@ export default ({
   }
 
   return (
-    <Styled.root>
+    <Styled.root
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: [
+          null,
+          null,
+          '1fr 1fr'
+        ]
+      }}>
       <Helmet
         htmlAttributes={{ lang: 'en-us' }}>
         <title>microbeats</title>
@@ -64,6 +72,7 @@ export default ({
         sx={{
           position: 'sticky',
           top: 0,
+          alignSelf: 'flex-start',
           bg: 'background',
           p: 3,
         }}>
@@ -93,10 +102,11 @@ export default ({
         <Progress />
       </header>
       <main
-        sx={center ? {
+        sx={{
           p: 3,
           maxWidth: 768,
-        } : null}>
+          minHeight: '100vh',
+        }}>
         {props.children}
       </main>
       <footer
