@@ -12,7 +12,7 @@ export default props => {
       <link rel='icon' href='/icon.png' />
       <meta name='twitter:card' content='summary' />
       <meta name='twitter:site' content='jxnblk' />
-      <meta name='twitter:title' content='microbeats' />
+      <meta name='twitter:title' content={title} />
       <meta name='twitter:description' content='Beats created in under an hour' />
       <meta name='twitter:image' content='https://microbeats.cc/card.png' />
     </Helmet>
