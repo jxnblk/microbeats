@@ -5,19 +5,18 @@ import { useMicrobeats } from './index'
 import { Play } from './icons'
 
 export default props => {
-  const { id } = props.pageContext
+  const { id, title } = props.pageContext
   const { tracks, playPause } = useMicrobeats()
   const track = tracks.find(t => t.id === id)
 
   const {
     name,
-    title,
     date,
     url,
   } = track
 
   return (
-    <Layout>
+    <Layout title={title}>
       <div
         sx={{
           p: 3,

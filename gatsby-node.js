@@ -5,10 +5,16 @@ exports.createPages = async ({
 }) => {
   const result = await graphql(`
     query MyQuery {
-      tracks: allTracksJson {
+      tracks: allTracksJson(
+        sort: {
+          fields: date,
+          order: DESC
+        }
+      ) {
         nodes {
           id
           name
+          title
         }
       }
     }
@@ -16,13 +22,14 @@ exports.createPages = async ({
 
   const tracks = result.data.tracks.nodes
 
-  tracks.forEach(({ id, name, }) => {
+  tracks.forEach(({ id, name, title }) => {
     actions.createPage({
       path: '/' + name,
       component: require.resolve('./src/track.js'),
       context: {
         id,
         name,
+        title
       }
     })
   })

@@ -2,7 +2,7 @@
 import { jsx, Styled, useColorMode } from 'theme-ui'
 import { Link } from 'gatsby'
 import { Global } from '@emotion/core'
-import { Helmet } from 'react-helmet'
+import Head from './head'
 import Controls from './controls'
 import Title from './title'
 import Progress from './progress'
@@ -47,17 +47,7 @@ export default ({
           '1fr 1fr'
         ]
       }}>
-      <Helmet
-        htmlAttributes={{ lang: 'en-us' }}>
-        <title>microbeats</title>
-        <meta name='description' content='Beats created in under an hour' />
-        <link rel='icon' href='/icon.png' />
-        <meta name='twitter:card' content='summary' />
-        <meta name='twitter:site' content='jxnblk' />
-        <meta name='twitter:title' content='microbeats' />
-        <meta name='twitter:description' content='Beats created in under an hour' />
-        <meta name='twitter:image' content='https://microbeats.cc/card.png' />
-      </Helmet>
+      <Head {...props} />
       <Global
         styles={{
           '*': {
