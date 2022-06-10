@@ -7,7 +7,7 @@ import { Play } from './icons'
 export default props => {
   const { id, title } = props.pageContext
   const { tracks, playPause } = useMicrobeats()
-  const track = tracks.find(t => t.id === id)
+  const track = tracks.find(t => t.id === id) || {}
 
   const {
     name,
