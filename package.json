@@ -10,6 +10,7 @@
     "build": "gatsby build",
     "clean": "gatsby clean",
     "serve": "gatsby serve",
+    "deploy": "gh-pages -d public",
     "icon": "npx capture-website-cli \"https://contrast.now.sh/fff/000?text=m&font=Roboto%20Mono&fontSize=2&fontWeight=400&size=32\" static/icon.png --width=32 --height=32 --overwrite",
     "card": "npx capture-website-cli \"https://contrast.now.sh/fff/000?text=m&font=Roboto%20Mono&fontSize=2&fontWeight=400&size=512\" static/card.png --width=512 --height=512 --overwrite",
     "track": "./edit.js"
@@ -27,6 +28,7 @@
     "gatsby-plugin-theme-ui": "^0.2.33",
     "gatsby-source-filesystem": "^4.16.0",
     "gatsby-transformer-json": "^4.16.0",
+    "gh-pages": "^6.0.0",
     "hhmmss": "^1.0.0",
     "lodash.kebabcase": "^4.1.1",
     "react": "^18.1.0",
